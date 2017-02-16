@@ -4,12 +4,14 @@ Scene.Boot = function (game){
 };
 
 Scene.Boot.prototype = {
-	preload: function(){
-		this.load.image('logo', './source/media/js/games/asteroid2/assets/img/logo.png');
-		this.load.image('load', './source/media/js/games/asteroid2/assets/img/loading.png');
-		this.load.image('title', './source/media/js/games/asteroid2/assets/img/title.png');
-		this.load.image('start', './source/media/js/games/asteroid2/assets/img/start.png');
-		this.load.image('home', './source/media/js/games/asteroid2/assets/img/home.png');				
+	preload: function(){		
+		this.imgPath = "games/asteroid/assets/img/";
+
+		this.load.image('logo', this.imgPath + 'logo.png');
+		this.load.image('load', this.imgPath + 'loading.png');
+		this.load.image('title', this.imgPath + 'title.png');
+		this.load.image('start', this.imgPath + 'start.png');
+		this.load.image('home', this.imgPath + 'home.png');				
 	},
 
 	create: function(){

@@ -5,7 +5,8 @@ Scene.Preloader = function (game) {
 
 Scene.Preloader.prototype = {
 	preload: function () {
-		this.imgPath = "./source/media/js/games/";
+		this.imgPath = "games/asteroid/assets/img/";
+		this.audioPath = "games/asteroid/assets/audio/";
 
 		this.background = this.add.sprite(0, 0, 'home');
 		this.game.physics.enable(this.background, Phaser.Physics.ARCADE);
@@ -23,29 +24,29 @@ Scene.Preloader.prototype = {
 		this.logo.scale.y = 0.25;
 		this.logo.anchor.set(1,1);
 
-		this.load.image('ship', this.imgPath +'asteroid2/assets/img/ship.png');
-		this.load.image('bullet', this.imgPath +'asteroid2/assets/img/rocket.png');
-		this.load.spritesheet('asteroid', this.imgPath +'asteroid2/assets/img/asteroid.png', 150, 150, 4);
-		this.load.spritesheet('asteroidBig', this.imgPath +'asteroid2/assets/img/asteroidBig.png', 289, 289, 3);
-		this.load.spritesheet('explosion', this.imgPath +'asteroid2/assets/img/explosion.png',40, 40, 5);
-		this.load.spritesheet('powerups', this.imgPath +'asteroid2/assets/img/powerups.png', 144, 144, 3);
-		this.load.image('shield', this.imgPath +'asteroid2/assets/img/shield.png');
-		this.load.image('space', this.imgPath +'asteroid2/assets/img/space.png');
-		this.load.image('dead', this.imgPath +'asteroid2/assets/img/dead.png');
-		this.load.image('restart', this.imgPath +'asteroid2/assets/img/restart.png');
-		this.load.image('fb', this.imgPath +'asteroid2/assets/img/fb.png');
-		this.load.image('twitter', this.imgPath +'asteroid2/assets/img/twitter.png');
+		this.load.image('ship', this.imgPath +'ship.png');
+		this.load.image('bullet', this.imgPath +'rocket.png');
+		this.load.spritesheet('asteroid', this.imgPath +'asteroid.png', 150, 150, 4);
+		this.load.spritesheet('asteroidBig', this.imgPath +'asteroidBig.png', 289, 289, 3);
+		this.load.spritesheet('explosion', this.imgPath +'explosion.png',40, 40, 5);
+		this.load.spritesheet('powerups', this.imgPath +'powerups.png', 144, 144, 3);
+		this.load.image('shield', this.imgPath +'shield.png');
+		this.load.image('space', this.imgPath +'space.png');
+		this.load.image('dead', this.imgPath +'dead.png');
+		this.load.image('restart', this.imgPath +'restart.png');
+		this.load.image('fb', this.imgPath +'fb.png');
+		this.load.image('twitter', this.imgPath +'twitter.png');
 		
-		this.load.audio('menuMusic', this.imgPath +'asteroid2/assets/audio/startMusic.mp3')
-		this.load.audio('gameMusic', this.imgPath +'asteroid2/assets/audio/gameMusic.mp3');		
-		this.load.audio('fire', this.imgPath +'asteroid2/assets/audio/fire.mp3');
-		this.load.audio('death', this.imgPath +'asteroid2/assets/audio/playerDeath.mp3');		
-		this.load.audio('hit', this.imgPath +'asteroid2/assets/audio/hit.mp3');		
-		this.load.audio('explode', this.imgPath +'asteroid2/assets/audio/explode.mp3');	
-		this.load.audio('powerup', this.imgPath +'asteroid2/assets/audio/powerup.mp3');		
-		this.load.audio('shieldActivate', this.imgPath +'asteroid2/assets/audio/shieldActivate.mp3');
-		this.load.audio('deflect', this.imgPath +'asteroid2/assets/audio/deflect.mp3');
-		this.load.audio('endMusic', this.imgPath +'asteroid2/assets/audio/endScreen.mp3');
+		this.load.audio('menuMusic', this.audioPath +'startMusic.mp3')
+		this.load.audio('gameMusic', this.audioPath +'gameMusic.mp3');		
+		this.load.audio('fire', this.audioPath +'fire.mp3');
+		this.load.audio('death', this.audioPath +'playerDeath.mp3');		
+		this.load.audio('hit', this.audioPath +'hit.mp3');		
+		this.load.audio('explode', this.audioPath +'explode.mp3');	
+		this.load.audio('powerup', this.audioPath +'powerup.mp3');		
+		this.load.audio('shieldActivate', this.audioPath +'shieldActivate.mp3');
+		this.load.audio('deflect', this.audioPath +'deflect.mp3');
+		this.load.audio('endMusic', this.audioPath +'endScreen.mp3');
 		
 		this.game.input.addPointer();
 		this.game.input.keyboard.addKeyCapture(Phaser.Keyboard.UP);
