@@ -7,6 +7,15 @@ export default class MainScene extends ScrollingSpaceScene {
     private screenCenter: Point2D
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
 
+    // Text
+    private ammoText: Phaser.GameObjects.Text
+    private scoreText: Phaser.GameObjects.Text
+    private powerText: Phaser.GameObjects.Text
+
+    private score: number = 0;
+    private scoreTimer: number = 0;
+
+
     // Player
     private player: Phaser.GameObjects.Sprite;
     private playerBody: Phaser.Physics.Arcade.Body;
@@ -33,6 +42,12 @@ export default class MainScene extends ScrollingSpaceScene {
 
     create() {
         this.initSpaceBackground();
+        this.ammoText = this.add.text(30, 30, "Ammo: "+ this.ammo , GameConstants.DEFAULT_TEXT_STYLE);
+        this.ammoText.setDepth(Number.MAX_VALUE)
+		this.scoreText = this.add.text(290, 30, "Score: " + this.score , GameConstants.DEFAULT_TEXT_STYLE);
+        this.scoreText.setDepth(Number.MAX_VALUE)	
+		this.powerText = this.add.text(125, 30, "" , {font: GameConstants.TEXT_FONT, color: GameConstants.SHIELD_TEXT_COLOUR });
+        this.powerText.setDepth(Number.MAX_VALUE)
 
 
         if(GameConstants.AUDIO_ENABLED){
@@ -56,6 +71,14 @@ export default class MainScene extends ScrollingSpaceScene {
 
     update() { 
         this.debugLog();
+        if(this.time.now > this.scoreTimer){
+            this.scoreTimer = this.time.now + GameConstants.SCORE_INCREMENT;
+            this.score++;
+        }
+
+        this.ammoText.setText("Ammo: " + this.ammo);
+		this.scoreText.setText("Score: " + this.score);
+
 
         this.scrollSpaceBackground();
         this.player.body.velocity.x = 0;
