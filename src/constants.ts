@@ -4,6 +4,9 @@ export const AUDIO_PATH = "assets/audio";
 export const DEBUG_ENABLED = false;
 export const AUDIO_ENABLED = false;
 
+export const TEXT_DEPTH = Number.MAX_VALUE;
+export const SPRITE_DEPTH = Number.MAX_VALUE / 2;
+
 export const SPRITE_SCALE = 0.2;
 
 export const SCORE_INCREMENT = 1000;

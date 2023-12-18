@@ -51,11 +51,11 @@ export default class MainScene extends ScrollingSpaceScene {
     create() {
         this.initSpaceBackground();
         this.ammoText = this.add.text(30, 30, "Ammo: "+ this.ammo , GameConstants.DEFAULT_TEXT_STYLE);
-        this.ammoText.setDepth(Number.MAX_VALUE)
+        this.ammoText.setDepth(GameConstants.TEXT_DEPTH)
 		this.scoreText = this.add.text(290, 30, "Score: " + this.score , GameConstants.DEFAULT_TEXT_STYLE);
-        this.scoreText.setDepth(Number.MAX_VALUE)	
+        this.scoreText.setDepth(GameConstants.TEXT_DEPTH)	
 		this.powerText = this.add.text(125, 30, "" , {font: GameConstants.TEXT_FONT, color: GameConstants.SHIELD_TEXT_COLOUR });
-        this.powerText.setDepth(Number.MAX_VALUE)
+        this.powerText.setDepth(GameConstants.TEXT_DEPTH)
 
 
         if(GameConstants.AUDIO_ENABLED){
@@ -69,7 +69,7 @@ export default class MainScene extends ScrollingSpaceScene {
         this.player = this.physics.add.sprite(200, 540, 'ship');
         this.player.setOrigin(0.5, 0);
         this.player.setScale(GameConstants.SPRITE_SCALE);
-        this.player.setDepth(Number.MAX_VALUE)
+        this.player.setDepth(GameConstants.SPRITE_DEPTH)
         this.physics.world.enable(this.player);
 
         // Issue with type-checking on setCollideWorldBounds()
@@ -128,7 +128,7 @@ export default class MainScene extends ScrollingSpaceScene {
         let bullet = this.bullets.create(x, y, 'bullet');
         bullet.setScale(GameConstants.SPRITE_SCALE);
         bullet.setOrigin(0.5, 0); 
-        bullet.setDepth(Number.MAX_VALUE)
+        bullet.setDepth(GameConstants.SPRITE_DEPTH)
 
         this.physics.world.enable(bullet);
         bullet.body.velocity.y = -GameConstants.BULLET_SPEED;
@@ -187,7 +187,7 @@ export default class MainScene extends ScrollingSpaceScene {
 
         let asteroid = this.largeAsteroids.create(spawnX, GameConstants.ASTEROID_SPAWN_Y, 'asteroidBig');
         asteroid.setScale(GameConstants.SPRITE_SCALE);
-        asteroid.setDepth(Number.MAX_VALUE)
+        asteroid.setDepth(GameConstants.SPRITE_DEPTH)
         this.physics.world.enable(asteroid);
         asteroid.body.velocity.x = GameConstants.ASTEROID_VELOCITY_X;
         asteroid.body.velocity.y = GameConstants.LARGE_ASTEROID_SPEED;
@@ -213,7 +213,7 @@ export default class MainScene extends ScrollingSpaceScene {
 
         let asteroid = this.asteroids.create(spawnX, GameConstants.ASTEROID_SPAWN_Y, 'asteroid');
         asteroid.setScale(GameConstants.SPRITE_SCALE);
-        asteroid.setDepth(Number.MAX_VALUE)
+        asteroid.setDepth(GameConstants.SPRITE_DEPTH)
         this.physics.world.enable(asteroid);
         asteroid.body.velocity.x = GameConstants.ASTEROID_VELOCITY_X;
         asteroid.body.velocity.y = asteroidSpeed;
