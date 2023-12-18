@@ -13,3 +13,12 @@ export function getScreenCenter(mainCamera: Camera): Point2D {
 
     return { x: centerX, y: centerY}
 }
+
+export function getRandomFromSelection(selection: Array<any>){
+    // -1 because although rare it can hit the max and then be out of bounds
+    let upperBound = (selection.length * 100) - 1;
+    let random = Phaser.Math.Between(0, upperBound);
+    let roundedRandom = Math.floor(random / 100);
+
+    return selection[roundedRandom];
+}

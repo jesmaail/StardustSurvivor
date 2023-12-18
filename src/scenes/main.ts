@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { getScreenCenter, Point2D } from '../helpers';
+import { getScreenCenter, Point2D, getRandomFromSelection } from '../helpers';
 import ScrollingSpaceScene from './scrollingSpaceScene';
 import * as GameConstants from '../constants';
 
@@ -12,9 +12,9 @@ export default class MainScene extends ScrollingSpaceScene {
     private scoreText: Phaser.GameObjects.Text
     private powerText: Phaser.GameObjects.Text
 
+    // Score
     private score: number = 0;
     private scoreTimer: number = 0;
-
 
     // Player
     private player: Phaser.GameObjects.Sprite;
@@ -23,9 +23,15 @@ export default class MainScene extends ScrollingSpaceScene {
     // Bullets
     private bullets: Phaser.GameObjects.Group;
     private bulletSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
-
     private ammo: number = GameConstants.STARTING_AMMO;
     private fireTimer: number = 0;
+
+    // Asteroids
+    private asteroids: Phaser.GameObjects.Group;
+    private largeAsteroids: Phaser.GameObjects.Group;
+    private asteroidX: number = 0;
+    private asteroidY: number = 20;
+    
 
     constructor() {
         super({ key: 'MainScene' })
@@ -34,6 +40,8 @@ export default class MainScene extends ScrollingSpaceScene {
     preload () { 
         this.bullets = this.add.group();
         this.spaceScroll = this.add.group();
+        this.asteroids = this.add.group();
+        this.largeAsteroids = this.add.group();
 
         this.screenCenter = getScreenCenter(this.cameras.main);
 
@@ -81,6 +89,7 @@ export default class MainScene extends ScrollingSpaceScene {
 
 
         this.scrollSpaceBackground();
+        this.spawnAsteroids();
         this.player.body.velocity.x = 0;
 
         this.playerControls();
@@ -127,6 +136,89 @@ export default class MainScene extends ScrollingSpaceScene {
         this.bulletSound.play();
 
         this.ammo--;
+    }
+
+    spawnAsteroids() {
+        // TODO - Probably worth extracting Asteroid spawn logic out entirely.
+
+        // I need to remember what this is for...
+        // Looks like X and Y were bad values for this.
+        this.asteroidX++; 
+
+        if(this.asteroidX % this.asteroidY != 0){
+            return;
+        }
+
+        // Not sure what this logic chunk is doing either :D
+        if(this.asteroidX % 25 == 0){
+            if(this.asteroidY == 3){
+                this.asteroidY = 20;
+            }
+            this.asteroidY -=1;
+        }
+
+        let spawnLargeChance = Phaser.Math.Between(0, GameConstants.LARGE_ASTEROID_CHANCE);
+        let spawnPointX = Phaser.Math.Between(-100, 4050) / 10; // Again, why these numbers?
+
+        if(spawnLargeChance > 250 && spawnLargeChance < 300){
+            this.spawnLargeAsteroid(spawnPointX);
+            return;
+        }        
+        
+        this.spawnNormalAsteroid(spawnPointX);
+    }
+
+    spawnLargeAsteroid(spawnX: number){
+        // TODO - There is a third animation frame
+        // but it isn't loading, either fix or throw out when improving
+        // graphics
+        let asteroidAnimations = ['la0', 'la1'];
+        let selectedAnimation = getRandomFromSelection(asteroidAnimations);
+
+        if(this.largeAsteroids.getLength() == 0){
+            asteroidAnimations.forEach((value: string, index: number) => {
+                console.log(`init ${index}`)
+                this.anims.create({
+                    key: value,
+                    frames: [{key: 'asteroidBig', frame: index}]
+                });
+            });    
+        }
+
+        let asteroid = this.largeAsteroids.create(spawnX, GameConstants.ASTEROID_SPAWN_Y, 'asteroidBig');
+        asteroid.setScale(GameConstants.SPRITE_SCALE);
+        asteroid.setDepth(Number.MAX_VALUE)
+        this.physics.world.enable(asteroid);
+        asteroid.body.velocity.x = GameConstants.ASTEROID_VELOCITY_X;
+        asteroid.body.velocity.y = GameConstants.LARGE_ASTEROID_SPEED;
+        
+        asteroid.play(selectedAnimation);
+    }
+
+    spawnNormalAsteroid(spawnX: number){
+        let asteroidSpeed = Phaser.Math.Between(GameConstants.ASTEROID_SPEED_MIN, GameConstants.ASTEROID_SPEED_MAX);
+
+        let asteroidAnimations = ['a0', 'a1', 'a2', 'a3'];
+        let selectedAnimation = getRandomFromSelection(asteroidAnimations);
+
+        if(this.asteroids.getLength() == 0){
+            asteroidAnimations.forEach((value: string, index: number) => {
+                this.anims.create({
+                    key: value,
+                    frames: [{key: 'asteroid', frame: index}]
+                });
+            });    
+        }
+
+
+        let asteroid = this.asteroids.create(spawnX, GameConstants.ASTEROID_SPAWN_Y, 'asteroid');
+        asteroid.setScale(GameConstants.SPRITE_SCALE);
+        asteroid.setDepth(Number.MAX_VALUE)
+        this.physics.world.enable(asteroid);
+        asteroid.body.velocity.x = GameConstants.ASTEROID_VELOCITY_X;
+        asteroid.body.velocity.y = asteroidSpeed;
+        
+        asteroid.play(selectedAnimation);
     }
 
     gameObjectCulling(){
