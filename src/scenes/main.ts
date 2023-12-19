@@ -232,6 +232,7 @@ export default class MainScene extends ScrollingSpaceScene {
     collisionDetection(){
         this.physics.add.collider(this.bullets, this.asteroids, this.collideBulletAsteroid, null, this)
         this.physics.add.collider(this.bullets, this.largeAsteroids, this.collideBulletLargeAsteroid, null, this)
+        this.physics.add.collider(this.explosions, this.asteroids, this.collideBulletAsteroid, null, this)
     }
 
     collideBulletAsteroid(bullet: Phaser.Physics.Arcade.Sprite, asteroid: Phaser.Physics.Arcade.Sprite){
@@ -260,6 +261,8 @@ export default class MainScene extends ScrollingSpaceScene {
     createExplosion(spawn: Point2D){
         let explosion: Phaser.Physics.Arcade.Sprite = this.explosions.create(spawn.x, spawn.y, 'explosion');
         explosion.setDepth(GameConstants.SPRITE_DEPTH);
+        this.physics.world.enable(explosion);
+
         // TODO - Can use this animations config to set up animations once rather than each creation
         var config = {
             key: 'boom',
@@ -275,7 +278,6 @@ export default class MainScene extends ScrollingSpaceScene {
         explosion.play('boom');
         this.explosionSound.play();
     }
-
 
     gameObjectCulling(){
         this.bullets.getChildren().forEach((bullet: Phaser.GameObjects.Sprite) => {
