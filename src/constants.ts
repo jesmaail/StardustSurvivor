@@ -1,7 +1,7 @@
 export const IMAGE_PATH = "assets/img";
 export const AUDIO_PATH = "assets/audio";
 
-export const DEBUG_ENABLED = false;
+export const DEBUG_ENABLED = true;
 export const AUDIO_ENABLED = false;
 
 export const TEXT_DEPTH = Number.MAX_VALUE;

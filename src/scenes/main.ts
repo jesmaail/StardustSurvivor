@@ -31,6 +31,8 @@ export default class MainScene extends ScrollingSpaceScene {
     private largeAsteroids: Phaser.GameObjects.Group;
     private asteroidX: number = 0;
     private asteroidY: number = 20;
+    private explosions: Phaser.GameObjects.Group;
+    private explosionSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
     
 
     constructor() {
@@ -42,10 +44,12 @@ export default class MainScene extends ScrollingSpaceScene {
         this.spaceScroll = this.add.group();
         this.asteroids = this.add.group();
         this.largeAsteroids = this.add.group();
+        this.explosions = this.add.group();
 
         this.screenCenter = getScreenCenter(this.cameras.main);
 
         this.bulletSound = this.game.sound.add('fire');
+        this.explosionSound = this.game.sound.add('explode');
     }
 
     create() {
@@ -78,8 +82,7 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     update() {
-        debugLogGroupCount(this.largeAsteroids);
-        debugLogGroupCount(this.largeAsteroids);
+        debugLogGroupCount(this.explosions);
         if(this.time.now > this.scoreTimer){
             this.scoreTimer = this.time.now + GameConstants.SCORE_INCREMENT;
             this.score++;
@@ -94,6 +97,7 @@ export default class MainScene extends ScrollingSpaceScene {
         this.player.body.velocity.x = 0;
 
         this.playerControls();
+        this.collisionDetection();
         this.gameObjectCulling();
     }
 
@@ -210,7 +214,6 @@ export default class MainScene extends ScrollingSpaceScene {
             });    
         }
 
-
         let asteroid = this.asteroids.create(spawnX, GameConstants.ASTEROID_SPAWN_Y, 'asteroid');
         asteroid.setScale(GameConstants.SPRITE_SCALE);
         asteroid.setDepth(GameConstants.SPRITE_DEPTH)
@@ -221,6 +224,35 @@ export default class MainScene extends ScrollingSpaceScene {
         asteroid.play(selectedAnimation);
     }
 
+    collisionDetection(){
+        this.physics.add.collider(this.bullets, this.asteroids, this.collideBulletAsteroid, null, this)
+    }
+
+    collideBulletAsteroid(bullet: Phaser.Physics.Arcade.Sprite, asteroid: Phaser.Physics.Arcade.Sprite){
+        bullet.destroy();
+        let explosionPoint: Point2D = { x: asteroid.x, y: asteroid.y};
+        asteroid.destroy();
+        this.createExplosion(explosionPoint);
+    }
+
+    createExplosion(spawn: Point2D){
+        let explosion: Phaser.Physics.Arcade.Sprite = this.explosions.create(spawn.x, spawn.y, 'explosion');
+        explosion.setDepth(GameConstants.SPRITE_DEPTH);
+        // TODO - Can use this animations config to set up animations once rather than each creation
+        var config = {
+            key: 'boom',
+            frames: 'explosion',
+            frameRate: 15,
+            repeat: 0
+        };
+        this.anims.create(config);
+        explosion.on('animationcomplete-boom', () => {
+            explosion.destroy();
+        });
+
+        explosion.play('boom');
+        this.explosionSound.play();
+    }
 
 
     gameObjectCulling(){
