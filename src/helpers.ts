@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import * as GameConstants from './constants';
 
 import Camera = Phaser.Cameras.Scene2D.Camera
 
@@ -21,4 +22,12 @@ export function getRandomFromSelection(selection: Array<any>){
     let roundedRandom = Math.floor(random / 100);
 
     return selection[roundedRandom];
+}
+
+export function debugLogGroupCount(group: Phaser.GameObjects.Group){
+    if(!GameConstants.DEBUG_ENABLED){
+        return;
+    }
+
+    console.log(`${group.getLength()}`)
 }

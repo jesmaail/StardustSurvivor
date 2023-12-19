@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { getScreenCenter, Point2D, getRandomFromSelection } from '../helpers';
+import { getScreenCenter, Point2D, getRandomFromSelection, debugLogGroupCount } from '../helpers';
 import ScrollingSpaceScene from './scrollingSpaceScene';
 import * as GameConstants from '../constants';
 
@@ -77,8 +77,9 @@ export default class MainScene extends ScrollingSpaceScene {
         this.playerBody.setCollideWorldBounds(true);
     }
 
-    update() { 
-        this.debugLog();
+    update() {
+        debugLogGroupCount(this.largeAsteroids);
+        debugLogGroupCount(this.largeAsteroids);
         if(this.time.now > this.scoreTimer){
             this.scoreTimer = this.time.now + GameConstants.SCORE_INCREMENT;
             this.score++;
@@ -177,7 +178,6 @@ export default class MainScene extends ScrollingSpaceScene {
 
         if(this.largeAsteroids.getLength() == 0){
             asteroidAnimations.forEach((value: string, index: number) => {
-                console.log(`init ${index}`)
                 this.anims.create({
                     key: value,
                     frames: [{key: 'asteroidBig', frame: index}]
@@ -221,20 +221,24 @@ export default class MainScene extends ScrollingSpaceScene {
         asteroid.play(selectedAnimation);
     }
 
+
+
     gameObjectCulling(){
         this.bullets.getChildren().forEach((bullet: Phaser.GameObjects.Sprite) => {
             if(bullet.y < this.physics.world.bounds.top){
                 bullet.destroy();
             }
         })
-    }
 
-    debugLog(){
-        if(!GameConstants.DEBUG_ENABLED){
-            return;
-        }
-
-        let bulletCount = this.bullets.getLength();
-        console.log(`Bullets: ${bulletCount}`)
+        this.asteroids.getChildren().forEach((asteroid: Phaser.GameObjects.Sprite) => {
+            if(asteroid.y > this.physics.world.bounds.bottom){
+                asteroid.destroy();
+            }
+        })
+        this.largeAsteroids.getChildren().forEach((largeAsteroid: Phaser.GameObjects.Sprite) => {
+            if((largeAsteroid.y - largeAsteroid.height) > this.physics.world.bounds.bottom){
+                largeAsteroid.destroy();
+            }
+        })
     }
 }
