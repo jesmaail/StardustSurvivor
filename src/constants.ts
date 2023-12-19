@@ -27,6 +27,10 @@ export const ASTEROID_SPEED_MIN = 325;
 export const ASTEROID_SPEED_MAX = 375;
 export const ASTEROID_SPAWN_Y = -50;
 export const ASTEROID_VELOCITY_X = 0;
+export const FRACTURED_ASTEROID_SPEED_MIN = 250;
+export const FRACTURED_ASTEROID_SPEED_MAX = 350;
+export const FRACTURED_ASTEROID_DRIFT_MIN = 0;
+export const FRACTURED_ASTEROID_DRIFT_MAX = 150;
 
 
 // TODO - Would be nice to have another constants file for asset/sprite names

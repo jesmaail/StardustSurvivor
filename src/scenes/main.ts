@@ -32,6 +32,7 @@ export default class MainScene extends ScrollingSpaceScene {
     private asteroidX: number = 0;
     private asteroidY: number = 20;
     private explosions: Phaser.GameObjects.Group;
+    private hitSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
     private explosionSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
     
 
@@ -49,6 +50,7 @@ export default class MainScene extends ScrollingSpaceScene {
         this.screenCenter = getScreenCenter(this.cameras.main);
 
         this.bulletSound = this.game.sound.add('fire');
+        this.hitSound = this.game.sound.add('hit');
         this.explosionSound = this.game.sound.add('explode');
     }
 
@@ -168,9 +170,9 @@ export default class MainScene extends ScrollingSpaceScene {
         if(spawnLargeChance > 250 && spawnLargeChance < 300){
             this.spawnLargeAsteroid(spawnPointX);
             return;
-        }        
-        
-        this.spawnNormalAsteroid(spawnPointX);
+        }
+        let asteroidSpeed = Phaser.Math.Between(GameConstants.ASTEROID_SPEED_MIN, GameConstants.ASTEROID_SPEED_MAX);
+        this.spawnNormalAsteroid(spawnPointX, asteroidSpeed);
     }
 
     spawnLargeAsteroid(spawnX: number){
@@ -199,8 +201,11 @@ export default class MainScene extends ScrollingSpaceScene {
         asteroid.play(selectedAnimation);
     }
 
-    spawnNormalAsteroid(spawnX: number){
-        let asteroidSpeed = Phaser.Math.Between(GameConstants.ASTEROID_SPEED_MIN, GameConstants.ASTEROID_SPEED_MAX);
+    spawnNormalAsteroid(
+        spawnX: number,
+        velocityY: number,
+        spawnY: number = GameConstants.ASTEROID_SPAWN_Y,
+        velocityX: number = GameConstants.ASTEROID_VELOCITY_X){
 
         let asteroidAnimations = ['a0', 'a1', 'a2', 'a3'];
         let selectedAnimation = getRandomFromSelection(asteroidAnimations);
@@ -214,25 +219,42 @@ export default class MainScene extends ScrollingSpaceScene {
             });    
         }
 
-        let asteroid = this.asteroids.create(spawnX, GameConstants.ASTEROID_SPAWN_Y, 'asteroid');
+        let asteroid = this.asteroids.create(spawnX, spawnY, 'asteroid');
         asteroid.setScale(GameConstants.SPRITE_SCALE);
         asteroid.setDepth(GameConstants.SPRITE_DEPTH)
         this.physics.world.enable(asteroid);
-        asteroid.body.velocity.x = GameConstants.ASTEROID_VELOCITY_X;
-        asteroid.body.velocity.y = asteroidSpeed;
+        asteroid.body.velocity.x = velocityX;
+        asteroid.body.velocity.y = velocityY;
         
         asteroid.play(selectedAnimation);
     }
 
     collisionDetection(){
         this.physics.add.collider(this.bullets, this.asteroids, this.collideBulletAsteroid, null, this)
+        this.physics.add.collider(this.bullets, this.largeAsteroids, this.collideBulletLargeAsteroid, null, this)
     }
 
     collideBulletAsteroid(bullet: Phaser.Physics.Arcade.Sprite, asteroid: Phaser.Physics.Arcade.Sprite){
         bullet.destroy();
-        let explosionPoint: Point2D = { x: asteroid.x, y: asteroid.y};
+        let collisionPoint: Point2D = { x: asteroid.x, y: asteroid.y};
         asteroid.destroy();
-        this.createExplosion(explosionPoint);
+        this.createExplosion(collisionPoint);
+    }
+
+    collideBulletLargeAsteroid(bullet: Phaser.Physics.Arcade.Sprite, largeAsteroid: Phaser.Physics.Arcade.Sprite){
+        bullet.destroy();
+
+        let collisionPoint: Point2D = { x: largeAsteroid.x, y: largeAsteroid.y};
+
+        let randomSpeed = Phaser.Math.Between(GameConstants.FRACTURED_ASTEROID_SPEED_MIN, GameConstants.FRACTURED_ASTEROID_SPEED_MAX);
+        let randomPositiveDrift = Phaser.Math.Between(0, GameConstants.FRACTURED_ASTEROID_DRIFT_MAX);
+        let randomNegativeDrift = Phaser.Math.Between(0, -GameConstants.FRACTURED_ASTEROID_DRIFT_MAX)
+
+        largeAsteroid.destroy();
+        this.hitSound.play();
+
+        this.spawnNormalAsteroid(collisionPoint.x, randomSpeed, collisionPoint.y, randomPositiveDrift);
+        this.spawnNormalAsteroid(collisionPoint.x, randomSpeed, collisionPoint.y, randomNegativeDrift);
     }
 
     createExplosion(spawn: Point2D){
