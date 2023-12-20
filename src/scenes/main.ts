@@ -73,11 +73,12 @@ export default class MainScene extends ScrollingSpaceScene {
 
     create() {
         this.initSpaceBackground();
-        this.ammoText = this.add.text(30, 30, "Ammo: "+ this.ammo , GameConstants.DEFAULT_TEXT_STYLE);
+        this.ammoText = this.add.text(30, GameConstants.TEXT_Y, "Ammo: "+ this.ammo , GameConstants.DEFAULT_TEXT_STYLE);
         this.ammoText.setDepth(GameConstants.TEXT_DEPTH);
-		this.scoreText = this.add.text(290, 30, "Score: " + this.score , GameConstants.DEFAULT_TEXT_STYLE);
+		this.scoreText = this.add.text(290, GameConstants.TEXT_Y, "Score: " + this.score , GameConstants.DEFAULT_TEXT_STYLE);
         this.scoreText.setDepth(GameConstants.TEXT_DEPTH);
-		this.shieldText = this.add.text(125, 30, "" , {font: GameConstants.TEXT_FONT, color: GameConstants.SHIELD_TEXT_COLOUR });
+		this.shieldText = this.add.text(200, GameConstants.TEXT_Y, "" , {font: GameConstants.TEXT_FONT, color: GameConstants.SHIELD_TEXT_COLOUR });
+        this.shieldText.setOrigin(0.5, 0)
         this.shieldText.setDepth(GameConstants.TEXT_DEPTH);
 
 
@@ -100,7 +101,7 @@ export default class MainScene extends ScrollingSpaceScene {
         this.playerBody.setCollideWorldBounds(true);
         this.playerBody.setImmovable(true);
 
-        this.shield = this.physics.add.sprite(this.playerBody.x, this.playerBody.y - GameConstants.SHIELD_Y_BUFFER, 'shield');
+        this.shield = this.physics.add.sprite(-100, -100, 'shield');
         this.shield.setScale(GameConstants.SPRITE_SCALE);
         this.shield.setDepth(GameConstants.SPRITE_DEPTH);
         this.shield.setVisible(false);
@@ -306,6 +307,9 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     collideShieldAsteroid(_shield: Phaser.Physics.Arcade.Sprite, asteroid: Phaser.Physics.Arcade.Sprite){
+        if(this.shieldTimer < this.time.now){
+            return;
+        }
         asteroid.destroy();
         this.shieldDeflectSound.play();
     }
