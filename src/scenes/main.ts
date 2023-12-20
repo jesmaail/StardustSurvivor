@@ -1,11 +1,12 @@
 import * as Phaser from 'phaser';
-import { getScreenCenter, Point2D, getRandomFromSelection, rollPercentageChance, debugLogGroupCount } from '../helpers';
+import { Point2D, getRandomFromSelection, rollPercentageChance, debugLogGroupCount } from '../helpers';
 import ScrollingSpaceScene from './scrollingSpaceScene';
 import * as GameConstants from '../constants';
 
 export default class MainScene extends ScrollingSpaceScene {
-    private screenCenter: Point2D
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
+
+    private music: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
 
     // Text
     private ammoText: Phaser.GameObjects.Text
@@ -19,6 +20,9 @@ export default class MainScene extends ScrollingSpaceScene {
     // Player
     private player: Phaser.GameObjects.Sprite;
     private playerBody: Phaser.Physics.Arcade.Body;
+    private playerDeathSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
+    private playerDestroyed: boolean = false;
+    private playerDeathTimer: number;
 
     // Bullets
     private bullets: Phaser.GameObjects.Group;
@@ -51,7 +55,7 @@ export default class MainScene extends ScrollingSpaceScene {
         super({ key: 'MainScene' })
     }
 
-    preload () { 
+    preload () {
         this.bullets = this.add.group();
         this.spaceScroll = this.add.group();
         this.asteroids = this.add.group();
@@ -61,14 +65,14 @@ export default class MainScene extends ScrollingSpaceScene {
         this.doublePowerups = this.add.group();
         this.ammoPowerups = this.add.group();
 
-        this.screenCenter = getScreenCenter(this.cameras.main);
-
         this.bulletSound = this.game.sound.add('fire');
         this.hitSound = this.game.sound.add('hit');
         this.explosionSound = this.game.sound.add('explode');
         this.powerupSound = this.game.sound.add('powerup');
         this.shieldActivateSound = this.game.sound.add('shieldActivate');
         this.shieldDeflectSound = this.game.sound.add('deflect');
+        this.playerDeathSound = this.game.sound.add('death');
+        this.music = this.game.sound.add('gameMusic');
     }
 
     create() {
@@ -83,9 +87,8 @@ export default class MainScene extends ScrollingSpaceScene {
 
 
         if(GameConstants.AUDIO_ENABLED){
-            let bgMusic = this.game.sound.add('gameMusic')
-            bgMusic.loop = true;
-            bgMusic.play();
+            this.music.loop = true;
+            this.music.play();
         }
         
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -110,6 +113,18 @@ export default class MainScene extends ScrollingSpaceScene {
 
     update() {
         debugLogGroupCount(this.explosions);
+        
+        this.scrollSpaceBackground();
+        this.spawnAsteroids();
+        this.player.body.velocity.x = 0;
+        this.gameObjectCulling();
+
+        if(this.playerDestroyed){
+            this.endingHandler();
+            return;
+        }
+        // Everything above here needs to happen regardless of player state
+
         if(this.time.now > this.scoreTimer){
             this.scoreTimer = this.time.now + GameConstants.SCORE_INCREMENT;
             this.score++;
@@ -119,17 +134,16 @@ export default class MainScene extends ScrollingSpaceScene {
 		this.scoreText.setText("Score: " + this.score);
 
 
-        this.scrollSpaceBackground();
-        this.spawnAsteroids();
-        this.player.body.velocity.x = 0;
-
         this.playerControls();
         this.collisionDetection();
         this.shieldSystem();
-        this.gameObjectCulling();
     }
 
     playerControls(){
+        if(this.playerDestroyed){
+            return;
+        }
+
         switch(true){
             case this.cursors.left.isDown:
                 this.player.body.velocity.x = -GameConstants.PLAYER_SPEED;
@@ -277,6 +291,10 @@ export default class MainScene extends ScrollingSpaceScene {
         // Shield collisions
         this.physics.add.collider(this.shield, this.asteroids, this.collideShieldAsteroid, null, this);
         this.physics.add.collider(this.shield, this.largeAsteroids, this.collideShieldAsteroid, null, this);
+
+        // Player collisions
+        this.physics.add.collider(this.player, this.asteroids, this.collidePlayer, null, this);
+        this.physics.add.collider(this.player, this.largeAsteroids, this.collidePlayer, null, this);
     }
 
     collideBulletAsteroid(bullet: Phaser.Physics.Arcade.Sprite, asteroid: Phaser.Physics.Arcade.Sprite){
@@ -312,6 +330,19 @@ export default class MainScene extends ScrollingSpaceScene {
         }
         asteroid.destroy();
         this.shieldDeflectSound.play();
+    }
+
+    collidePlayer(player: Phaser.Physics.Arcade.Sprite, asteroid: Phaser.Physics.Arcade.Sprite){
+        asteroid.destroy();
+        player.setVisible(false);
+
+        this.music.stop();
+        this.playerDeathSound.play();
+        
+
+        this.createExplosion({x: player.body.x, y: player.body.y});
+        this.playerDestroyed = true;
+        this.playerDeathTimer = this.time.now + GameConstants.PLAYER_DEATH_WAIT;
     }
 
     createExplosion(spawn: Point2D){
@@ -419,5 +450,22 @@ export default class MainScene extends ScrollingSpaceScene {
                 largeAsteroid.destroy();
             }
         })
+    }
+
+    endingHandler(){
+        if(this.playerDeathTimer < this.time.now){
+            let finalScore = this.score;
+
+            // Clean up state ready for restart
+            this.playerDeathTimer = 0;
+            this.shieldTimer = 0;
+            this.ammo = GameConstants.STARTING_AMMO;
+            this.score = 0;
+            this.playerDestroyed = false;
+            this.shieldAvailable = false;
+
+            this.scene.stop();
+            this.scene.start('EndScene', { score: finalScore });
+        }
     }
 }

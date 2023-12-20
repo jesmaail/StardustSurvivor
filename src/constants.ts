@@ -16,6 +16,7 @@ export const PLAYER_SPEED = 350;
 export const FIRE_DELAY = 550;
 export const STARTING_AMMO = 30;
 export const BULLET_SPEED = 600;
+export const PLAYER_DEATH_WAIT = 500;
 
 // TODO - Improve the font?
 export const TEXT_FONT = "15px Arial";

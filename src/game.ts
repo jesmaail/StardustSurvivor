@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import EndScene from './scenes/end';
 import MainScene from './scenes/main';
 import PreloadScene from './scenes/preload';
 
@@ -20,7 +21,7 @@ const config: GameConfig = {
             debug: false
         }
     },
-    scene: [PreloadScene, MainScene]
+    scene: [PreloadScene, MainScene, EndScene]
 };
 
 const game = new Phaser.Game(config);

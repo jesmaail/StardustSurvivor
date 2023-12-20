@@ -57,7 +57,10 @@ export default class PreloadScene extends ScrollingSpaceScene {
     private loadImages() {
         // Backgrounds
 		this.load.image('space', `${IMAGE_PATH}/space.png`);
+
+        // Text
 		this.load.image('dead', `${IMAGE_PATH}/dead.png`);
+		this.load.image('restart', `${IMAGE_PATH}/restart.png`);
 
         // Menus
 		this.load.image('title', `${IMAGE_PATH}/title.png`);

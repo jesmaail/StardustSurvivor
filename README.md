@@ -1,13 +1,9 @@
 # AsteroidGame
 DeciGames Asteroid game
 
-Refactor in progress...
+Game has been ported across from Phaser 2 Javascript to Phaser 3 Typescript :tada:
 
 # TODO
-## Port to Typescript
-- Ship collision with Asteroids
-- Death Screen
-
 ## Improvements
 - Linting and better Typescript formatting
     - Research best practices etc.
