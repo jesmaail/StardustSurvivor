@@ -21,7 +21,7 @@ export const DEFAULT_TEXT_COLOUR = "#fff"
 export const SHIELD_TEXT_COLOUR = "ff0000";
 export const DEFAULT_TEXT_STYLE = {font: TEXT_FONT, color: DEFAULT_TEXT_COLOUR};
 
-export const LARGE_ASTEROID_CHANCE = 500;
+export const LARGE_ASTEROID_CHANCE = 10;
 export const LARGE_ASTEROID_SPEED = 250;
 export const ASTEROID_SPEED_MIN = 325;
 export const ASTEROID_SPEED_MAX = 375;

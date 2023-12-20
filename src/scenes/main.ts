@@ -172,10 +172,9 @@ export default class MainScene extends ScrollingSpaceScene {
             this.asteroidY -=1;
         }
 
-        let spawnLargeChance = Phaser.Math.Between(0, GameConstants.LARGE_ASTEROID_CHANCE);
         let spawnPointX = Phaser.Math.Between(-100, 4050) / 10; // Again, why these numbers?
 
-        if(spawnLargeChance > 250 && spawnLargeChance < 300){
+        if(rollPercentageChance(GameConstants.LARGE_ASTEROID_CHANCE)){
             this.spawnLargeAsteroid(spawnPointX);
             return;
         }
