@@ -5,11 +5,6 @@ Refactor in progress...
 
 # TODO
 ## Port to Typescript
-- Ammo powerup usage
-- Shield Powerup usage
-    - Acquisition
-    - Deployment
-- Double Powerup usage
 - Ship collision with Asteroids
 - Death Screen
 
@@ -24,3 +19,4 @@ Refactor in progress...
     - e.g. Ship, Asteroids, Powerups.
 - Improve asteroid spawning pattern
     - Preserve old behaviour as "2014 mode"
+- Countdown for powerup durations

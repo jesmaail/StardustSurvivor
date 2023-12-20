@@ -10,7 +10,7 @@ export default class MainScene extends ScrollingSpaceScene {
     // Text
     private ammoText: Phaser.GameObjects.Text
     private scoreText: Phaser.GameObjects.Text
-    private powerText: Phaser.GameObjects.Text
+    private shieldText: Phaser.GameObjects.Text
 
     // Score
     private score: number = 0;
@@ -34,12 +34,18 @@ export default class MainScene extends ScrollingSpaceScene {
     private explosions: Phaser.GameObjects.Group;
     private hitSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
     private explosionSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
-    
 
     // Powerups 
     private shieldPowerups: Phaser.GameObjects.Group;
     private doublePowerups: Phaser.GameObjects.Group;
     private ammoPowerups: Phaser.GameObjects.Group;
+    private powerupSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
+    private shieldAvailable: boolean = false;
+    private shieldTimer: number = 0;
+    private doubleBulletTimer: number = 0;
+    private shield: Phaser.GameObjects.Sprite;
+    private shieldActivateSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
+    private shieldDeflectSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
 
     constructor() {
         super({ key: 'MainScene' })
@@ -60,16 +66,19 @@ export default class MainScene extends ScrollingSpaceScene {
         this.bulletSound = this.game.sound.add('fire');
         this.hitSound = this.game.sound.add('hit');
         this.explosionSound = this.game.sound.add('explode');
+        this.powerupSound = this.game.sound.add('powerup');
+        this.shieldActivateSound = this.game.sound.add('shieldActivate');
+        this.shieldDeflectSound = this.game.sound.add('deflect');
     }
 
     create() {
         this.initSpaceBackground();
         this.ammoText = this.add.text(30, 30, "Ammo: "+ this.ammo , GameConstants.DEFAULT_TEXT_STYLE);
-        this.ammoText.setDepth(GameConstants.TEXT_DEPTH)
+        this.ammoText.setDepth(GameConstants.TEXT_DEPTH);
 		this.scoreText = this.add.text(290, 30, "Score: " + this.score , GameConstants.DEFAULT_TEXT_STYLE);
-        this.scoreText.setDepth(GameConstants.TEXT_DEPTH)	
-		this.powerText = this.add.text(125, 30, "" , {font: GameConstants.TEXT_FONT, color: GameConstants.SHIELD_TEXT_COLOUR });
-        this.powerText.setDepth(GameConstants.TEXT_DEPTH)
+        this.scoreText.setDepth(GameConstants.TEXT_DEPTH);
+		this.shieldText = this.add.text(125, 30, "" , {font: GameConstants.TEXT_FONT, color: GameConstants.SHIELD_TEXT_COLOUR });
+        this.shieldText.setDepth(GameConstants.TEXT_DEPTH);
 
 
         if(GameConstants.AUDIO_ENABLED){
@@ -83,12 +92,19 @@ export default class MainScene extends ScrollingSpaceScene {
         this.player = this.physics.add.sprite(200, 540, 'ship');
         this.player.setOrigin(0.5, 0);
         this.player.setScale(GameConstants.SPRITE_SCALE);
-        this.player.setDepth(GameConstants.SPRITE_DEPTH)
+        this.player.setDepth(GameConstants.SPRITE_DEPTH);
         this.physics.world.enable(this.player);
 
         // Issue with type-checking on setCollideWorldBounds()
-        this.playerBody = this.player.body as Phaser.Physics.Arcade.Body
+        this.playerBody = this.player.body as Phaser.Physics.Arcade.Body;
         this.playerBody.setCollideWorldBounds(true);
+        this.playerBody.setImmovable(true);
+
+        this.shield = this.physics.add.sprite(this.playerBody.x, this.playerBody.y - GameConstants.SHIELD_Y_BUFFER, 'shield');
+        this.shield.setScale(GameConstants.SPRITE_SCALE);
+        this.shield.setDepth(GameConstants.SPRITE_DEPTH);
+        this.shield.setVisible(false);
+        this.physics.world.enable(this.shield);
     }
 
     update() {
@@ -108,6 +124,7 @@ export default class MainScene extends ScrollingSpaceScene {
 
         this.playerControls();
         this.collisionDetection();
+        this.shieldSystem();
         this.gameObjectCulling();
     }
 
@@ -125,7 +142,10 @@ export default class MainScene extends ScrollingSpaceScene {
                 }
                 break;
             case this.cursors.down.isDown:
-                console.log("TODO Shield!");
+                this.shieldText.setText("");
+                this.shieldTimer = this.time.now + GameConstants.SHIELD_POWERUP_DURATION;
+                this.shieldAvailable = false;
+                this.shieldActivateSound.play();
                 break;
         }
     }
@@ -133,6 +153,12 @@ export default class MainScene extends ScrollingSpaceScene {
     fire(){
         this.fireTimer = this.time.now + GameConstants.FIRE_DELAY;
         if(this.ammo <= 0){
+            return;
+        }
+        
+        if(this.doubleBulletTimer > this.time.now){
+            this.createBullet(this.playerBody.x, this.playerBody.y);
+            this.createBullet((this.playerBody.x + this.playerBody.width), this.playerBody.y);
             return;
         }
         
@@ -237,9 +263,19 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     collisionDetection(){
+        // Asteroid collisions
         this.physics.add.collider(this.bullets, this.asteroids, this.collideBulletAsteroid, null, this)
         this.physics.add.collider(this.bullets, this.largeAsteroids, this.collideBulletLargeAsteroid, null, this)
         this.physics.add.collider(this.explosions, this.asteroids, this.collideBulletAsteroid, null, this)
+
+        // Powerup collisions
+        this.physics.add.collider(this.player, this.ammoPowerups, this.obtainAmmoPowerup, null, this);
+        this.physics.add.collider(this.player, this.doublePowerups, this.obtainDoublePowerup, null, this);
+        this.physics.add.collider(this.player, this.shieldPowerups, this.obtainShieldPowerup, null, this);
+
+        // Shield collisions
+        this.physics.add.collider(this.shield, this.asteroids, this.collideShieldAsteroid, null, this);
+        this.physics.add.collider(this.shield, this.largeAsteroids, this.collideShieldAsteroid, null, this);
     }
 
     collideBulletAsteroid(bullet: Phaser.Physics.Arcade.Sprite, asteroid: Phaser.Physics.Arcade.Sprite){
@@ -267,6 +303,11 @@ export default class MainScene extends ScrollingSpaceScene {
 
         this.spawnNormalAsteroid(collisionPoint.x, randomSpeed, collisionPoint.y, randomPositiveDrift);
         this.spawnNormalAsteroid(collisionPoint.x, randomSpeed, collisionPoint.y, randomNegativeDrift);
+    }
+
+    collideShieldAsteroid(_shield: Phaser.Physics.Arcade.Sprite, asteroid: Phaser.Physics.Arcade.Sprite){
+        asteroid.destroy();
+        this.shieldDeflectSound.play();
     }
 
     createExplosion(spawn: Point2D){
@@ -321,6 +362,40 @@ export default class MainScene extends ScrollingSpaceScene {
         this.physics.world.enable(powerup);
 
         powerup.body.velocity.y = GameConstants.POWERUP_SPEED;
+    }
+
+    obtainAmmoPowerup(_player: Phaser.Physics.Arcade.Sprite, powerup: Phaser.Physics.Arcade.Sprite){
+        powerup.destroy();
+        this.powerupSound.play();
+        this.ammo += GameConstants.AMMO_POWERUP_INCREMENT;
+    }
+
+    obtainDoublePowerup(_player: Phaser.Physics.Arcade.Sprite, powerup: Phaser.Physics.Arcade.Sprite){
+        powerup.destroy();
+        this.powerupSound.play();
+        this.doubleBulletTimer = this.time.now + GameConstants.DOUBLE_POWERUP_DURATION;
+    }
+
+    obtainShieldPowerup(_player: Phaser.Physics.Arcade.Sprite, powerup: Phaser.Physics.Arcade.Sprite){
+        powerup.destroy();
+        this.powerupSound.play();
+        this.shieldAvailable = true;
+    }
+
+    shieldSystem(){
+        if(this.shieldTimer > this.time.now){
+            this.shield.setVisible(true);
+            let shieldBody = this.shield.body as Phaser.Physics.Arcade.Body;
+            shieldBody.x = this.playerBody.x;
+            shieldBody.y = this.playerBody.y - GameConstants.SHIELD_Y_BUFFER;
+        }else{
+            this.shield.setVisible(false);
+        }
+
+        if(this.shieldAvailable){
+            this.shieldText.setText(GameConstants.SHIELD_POWERUP_TEXT);
+        }
+        
     }
 
     gameObjectCulling(){

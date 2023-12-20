@@ -1,7 +1,7 @@
 export const IMAGE_PATH = "assets/img";
 export const AUDIO_PATH = "assets/audio";
 
-export const DEBUG_ENABLED = true;
+export const DEBUG_ENABLED = false;
 export const AUDIO_ENABLED = false;
 
 export const TEXT_DEPTH = Number.MAX_VALUE;
@@ -18,7 +18,7 @@ export const BULLET_SPEED = 600;
 // TODO - Improve the font?
 export const TEXT_FONT = "15px Arial";
 export const DEFAULT_TEXT_COLOUR = "#fff"
-export const SHIELD_TEXT_COLOUR = "ff0000";
+export const SHIELD_TEXT_COLOUR = "#ff0000";
 export const DEFAULT_TEXT_STYLE = {font: TEXT_FONT, color: DEFAULT_TEXT_COLOUR};
 
 export const LARGE_ASTEROID_CHANCE = 10;
@@ -37,5 +37,10 @@ export const SHIELD_POWERUP_FRAME_KEY = 0;
 export const DOUBLE_POWERUP_FRAME_KEY = 1;
 export const AMMO_POWERUP_FRAME_KEY = 2;
 export const POWERUP_SPEED = 200;
+export const AMMO_POWERUP_INCREMENT = 5;
+export const DOUBLE_POWERUP_DURATION = 2500;
+export const SHIELD_POWERUP_TEXT = "Shields Online"
+export const SHIELD_Y_BUFFER = 10;
+export const SHIELD_POWERUP_DURATION = 2500;
 
 // TODO - Would be nice to have another constants file for asset/sprite names
