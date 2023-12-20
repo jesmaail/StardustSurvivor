@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { getScreenCenter, Point2D, getRandomFromSelection, debugLogGroupCount } from '../helpers';
+import { getScreenCenter, Point2D, getRandomFromSelection, rollPercentageChance, debugLogGroupCount } from '../helpers';
 import ScrollingSpaceScene from './scrollingSpaceScene';
 import * as GameConstants from '../constants';
 
@@ -36,6 +36,11 @@ export default class MainScene extends ScrollingSpaceScene {
     private explosionSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
     
 
+    // Powerups 
+    private shieldPowerups: Phaser.GameObjects.Group;
+    private doublePowerups: Phaser.GameObjects.Group;
+    private ammoPowerups: Phaser.GameObjects.Group;
+
     constructor() {
         super({ key: 'MainScene' })
     }
@@ -46,6 +51,9 @@ export default class MainScene extends ScrollingSpaceScene {
         this.asteroids = this.add.group();
         this.largeAsteroids = this.add.group();
         this.explosions = this.add.group();
+        this.shieldPowerups = this.add.group();
+        this.doublePowerups = this.add.group();
+        this.ammoPowerups = this.add.group();
 
         this.screenCenter = getScreenCenter(this.cameras.main);
 
@@ -240,6 +248,10 @@ export default class MainScene extends ScrollingSpaceScene {
         let collisionPoint: Point2D = { x: asteroid.x, y: asteroid.y};
         asteroid.destroy();
         this.createExplosion(collisionPoint);
+
+        if(rollPercentageChance(GameConstants.POWERUP_SPAWN_CHANCE)){
+            this.spawnPowerup(collisionPoint);
+        }
     }
 
     collideBulletLargeAsteroid(bullet: Phaser.Physics.Arcade.Sprite, largeAsteroid: Phaser.Physics.Arcade.Sprite){
@@ -277,6 +289,39 @@ export default class MainScene extends ScrollingSpaceScene {
 
         explosion.play('boom');
         this.explosionSound.play();
+    }
+
+    spawnPowerup(spawn: Point2D){
+        let powerups = [
+            GameConstants.SHIELD_POWERUP_FRAME_KEY,
+            GameConstants.DOUBLE_POWERUP_FRAME_KEY,
+            GameConstants.AMMO_POWERUP_FRAME_KEY
+        ]
+
+        let selectedPowerupFrameKey = getRandomFromSelection(powerups);
+
+        let powerupSpawnGroup: Phaser.GameObjects.Group = null;
+
+
+        switch(selectedPowerupFrameKey){
+            case GameConstants.SHIELD_POWERUP_FRAME_KEY:
+                powerupSpawnGroup = this.shieldPowerups;
+                break;
+            case GameConstants.DOUBLE_POWERUP_FRAME_KEY:
+                powerupSpawnGroup = this.doublePowerups;
+                break;
+            case GameConstants.AMMO_POWERUP_FRAME_KEY:
+                powerupSpawnGroup = this.ammoPowerups;
+                break;
+        }
+
+        let powerup = powerupSpawnGroup.create(spawn.x, spawn.y, 'powerups', selectedPowerupFrameKey);
+        powerup.setScale(GameConstants.SPRITE_SCALE);
+        powerup.setDepth(GameConstants.SPRITE_DEPTH);
+        
+        this.physics.world.enable(powerup);
+
+        powerup.body.velocity.y = GameConstants.POWERUP_SPEED;
     }
 
     gameObjectCulling(){

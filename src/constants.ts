@@ -32,5 +32,10 @@ export const FRACTURED_ASTEROID_SPEED_MAX = 350;
 export const FRACTURED_ASTEROID_DRIFT_MIN = 0;
 export const FRACTURED_ASTEROID_DRIFT_MAX = 150;
 
+export const POWERUP_SPAWN_CHANCE = 25;
+export const SHIELD_POWERUP_FRAME_KEY = 0;
+export const DOUBLE_POWERUP_FRAME_KEY = 1;
+export const AMMO_POWERUP_FRAME_KEY = 2;
+export const POWERUP_SPEED = 200;
 
 // TODO - Would be nice to have another constants file for asset/sprite names

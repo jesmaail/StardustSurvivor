@@ -24,6 +24,11 @@ export function getRandomFromSelection(selection: Array<any>){
     return selection[roundedRandom];
 }
 
+export function rollPercentageChance(chance: number): boolean {
+    const randomNumber = Math.random() * 100;
+    return randomNumber < chance;
+}
+
 export function debugLogGroupCount(group: Phaser.GameObjects.Group){
     if(!GameConstants.DEBUG_ENABLED){
         return;
