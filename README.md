@@ -9,9 +9,6 @@ Game has been ported across from Phaser 2 Javascript to Phaser 3 Typescript :tad
     - Kuiper Clash
 
 ## Improvements
-- Linting and better Typescript formatting
-    - Research best practices etc.
-    - VSCode tooling & extensions
 - Add more simple textures than my old handmades
 - Abstract logic out of main.ts
 - Encapsulate behaviours

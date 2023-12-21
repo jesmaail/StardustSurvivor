@@ -14,7 +14,9 @@ export default class EndScene extends Phaser.Scene {
         super({ key: "EndScene" });
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     init(data: any) {
+        console.log(data);
         this.score = data.score;
     }
 

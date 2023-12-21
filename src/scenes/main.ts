@@ -352,7 +352,7 @@ export default class MainScene extends ScrollingSpaceScene {
         this.physics.world.enable(explosion);
 
         // TODO - Can use this animations config to set up animations once rather than each creation
-        var config = {
+        const config = {
             key: "boom",
             frames: Assets.EXPLOSION,
             frameRate: 15,
