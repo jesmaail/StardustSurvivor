@@ -1,3 +1,6 @@
+export const DEBUG_ENABLED = false;
+export const AUDIO_ENABLED = true;
+
 export const TEXT_DEPTH = Number.MAX_VALUE;
 export const SPRITE_DEPTH = Number.MAX_VALUE / 2;
 
