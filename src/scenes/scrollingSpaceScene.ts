@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import * as Assets from '../constants/assetConstants';
 
 export default class ScrollingSpaceScene extends Phaser.Scene {
     scrollBuffer: number = 0;
@@ -10,7 +11,7 @@ export default class ScrollingSpaceScene extends Phaser.Scene {
     }
 
     initSpaceBackground() {
-        let background = this.add.sprite(0, 0, 'space');
+        let background = this.add.sprite(0, 0, Assets.SPACE_BACKGROUND);
         background.setOrigin(0, 0);
         this.physics.world.enable(background);
         background.body.velocity.y = this.spaceScrollVelocity;
@@ -20,7 +21,7 @@ export default class ScrollingSpaceScene extends Phaser.Scene {
 
     scrollSpaceBackground() {
         if (this.spaceScroll.countActive(true) < 5 && this.scrollBuffer < this.time.now) {
-            let space: Phaser.GameObjects.Sprite = this.spaceScroll.create(0, 0, 'space');
+            let space: Phaser.GameObjects.Sprite = this.spaceScroll.create(0, 0, Assets.SPACE_BACKGROUND);
             space.setOrigin(0, 1);
             space.setDepth(Number.MIN_VALUE)
             this.physics.world.enable(space);

@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import { getScreenCenter, Point2D } from '../helpers';
+import * as Assets from '../constants/assetConstants';
 
 export default class EndScene extends Phaser.Scene {
     private screenCenter: Point2D
@@ -20,20 +21,20 @@ export default class EndScene extends Phaser.Scene {
     preload() {
         this.screenCenter = getScreenCenter(this.cameras.main);
 
-        this.endMusic = this.game.sound.add('endMusic');
+        this.endMusic = this.game.sound.add(Assets.END_MUSIC);
 
         this.restartKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
     }
 
     create() {
         this.endMusic.play();
-        let background = this.add.sprite(0, 0, 'space');
+        let background = this.add.sprite(0, 0, Assets.SPACE_BACKGROUND);
         background.setOrigin(0, 0);
 
-        let deathText = this.add.sprite(this.screenCenter.x, 20, 'dead');
+        let deathText = this.add.sprite(this.screenCenter.x, 20, Assets.DEATH_TEXT);
         deathText.setOrigin(0.5, 0);
 
-        let restartText = this.add.sprite(this.screenCenter.x, 500, 'restart');
+        let restartText = this.add.sprite(this.screenCenter.x, 500, Assets.RESTART_TEXT);
         restartText.setOrigin(0.5, 0);
 
         let scoreText = this.add.text(this.cameras.main.centerX, 350, `YOU SURVIVED ${this.score} SECONDS!`, { 

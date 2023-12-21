@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import { Point2D, getRandomFromSelection, rollPercentageChance, debugLogGroupCount } from '../helpers';
 import ScrollingSpaceScene from './scrollingSpaceScene';
 import * as GameConstants from '../constants/gameplayConstants';
+import * as Assets from '../constants/assetConstants';
 
 export default class MainScene extends ScrollingSpaceScene {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -65,14 +66,14 @@ export default class MainScene extends ScrollingSpaceScene {
         this.doublePowerups = this.add.group();
         this.ammoPowerups = this.add.group();
 
-        this.bulletSound = this.game.sound.add('fire');
-        this.hitSound = this.game.sound.add('hit');
-        this.explosionSound = this.game.sound.add('explode');
-        this.powerupSound = this.game.sound.add('powerup');
-        this.shieldActivateSound = this.game.sound.add('shieldActivate');
-        this.shieldDeflectSound = this.game.sound.add('deflect');
-        this.playerDeathSound = this.game.sound.add('death');
-        this.music = this.game.sound.add('gameMusic');
+        this.bulletSound = this.game.sound.add(Assets.FIRE_SOUND);
+        this.hitSound = this.game.sound.add(Assets.HIT_SOUND);
+        this.explosionSound = this.game.sound.add(Assets.EXPLODE_SOUND);
+        this.powerupSound = this.game.sound.add(Assets.POWERUP_SOUND);
+        this.shieldActivateSound = this.game.sound.add(Assets.SHIELD_SOUND);
+        this.shieldDeflectSound = this.game.sound.add(Assets.DEFLECT_SOUND);
+        this.playerDeathSound = this.game.sound.add(Assets.DEATH_SOUND);
+        this.music = this.game.sound.add(Assets.GAME_MUSIC);
     }
 
     create() {
@@ -93,7 +94,7 @@ export default class MainScene extends ScrollingSpaceScene {
         
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        this.player = this.physics.add.sprite(200, 540, 'ship');
+        this.player = this.physics.add.sprite(200, 540, Assets.SHIP);
         this.player.setOrigin(0.5, 0);
         this.player.setScale(GameConstants.SPRITE_SCALE);
         this.player.setDepth(GameConstants.SPRITE_DEPTH);
@@ -104,7 +105,7 @@ export default class MainScene extends ScrollingSpaceScene {
         this.playerBody.setCollideWorldBounds(true);
         this.playerBody.setImmovable(true);
 
-        this.shield = this.physics.add.sprite(-100, -100, 'shield');
+        this.shield = this.physics.add.sprite(-100, -100, Assets.SHIELD);
         this.shield.setScale(GameConstants.SPRITE_SCALE);
         this.shield.setDepth(GameConstants.SPRITE_DEPTH);
         this.shield.setVisible(false);
@@ -181,7 +182,7 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     createBullet(x: number, y: number) {
-        let bullet = this.bullets.create(x, y, 'bullet');
+        let bullet = this.bullets.create(x, y, Assets.BULLET);
         bullet.setScale(GameConstants.SPRITE_SCALE);
         bullet.setOrigin(0.5, 0); 
         bullet.setDepth(GameConstants.SPRITE_DEPTH)
@@ -234,12 +235,12 @@ export default class MainScene extends ScrollingSpaceScene {
             asteroidAnimations.forEach((value: string, index: number) => {
                 this.anims.create({
                     key: value,
-                    frames: [{key: 'asteroidBig', frame: index}]
+                    frames: [{key: Assets.ASTEROID_BIG, frame: index}]
                 });
             });    
         }
 
-        let asteroid = this.largeAsteroids.create(spawnX, GameConstants.ASTEROID_SPAWN_Y, 'asteroidBig');
+        let asteroid = this.largeAsteroids.create(spawnX, GameConstants.ASTEROID_SPAWN_Y, Assets.ASTEROID_BIG);
         asteroid.setScale(GameConstants.SPRITE_SCALE);
         asteroid.setDepth(GameConstants.SPRITE_DEPTH)
         this.physics.world.enable(asteroid);
@@ -262,12 +263,12 @@ export default class MainScene extends ScrollingSpaceScene {
             asteroidAnimations.forEach((value: string, index: number) => {
                 this.anims.create({
                     key: value,
-                    frames: [{key: 'asteroid', frame: index}]
+                    frames: [{key: Assets.ASTEROID, frame: index}]
                 });
             });    
         }
 
-        let asteroid = this.asteroids.create(spawnX, spawnY, 'asteroid');
+        let asteroid = this.asteroids.create(spawnX, spawnY, Assets.ASTEROID);
         asteroid.setScale(GameConstants.SPRITE_SCALE);
         asteroid.setDepth(GameConstants.SPRITE_DEPTH)
         this.physics.world.enable(asteroid);
@@ -346,14 +347,14 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     createExplosion(spawn: Point2D){
-        let explosion: Phaser.Physics.Arcade.Sprite = this.explosions.create(spawn.x, spawn.y, 'explosion');
+        let explosion: Phaser.Physics.Arcade.Sprite = this.explosions.create(spawn.x, spawn.y, Assets.EXPLOSION);
         explosion.setDepth(GameConstants.SPRITE_DEPTH);
         this.physics.world.enable(explosion);
 
         // TODO - Can use this animations config to set up animations once rather than each creation
         var config = {
             key: 'boom',
-            frames: 'explosion',
+            frames: Assets.EXPLOSION,
             frameRate: 15,
             repeat: 0
         };
@@ -390,7 +391,7 @@ export default class MainScene extends ScrollingSpaceScene {
                 break;
         }
 
-        let powerup = powerupSpawnGroup.create(spawn.x, spawn.y, 'powerups', selectedPowerupFrameKey);
+        let powerup = powerupSpawnGroup.create(spawn.x, spawn.y, Assets.POWERUPS, selectedPowerupFrameKey);
         powerup.setScale(GameConstants.SPRITE_SCALE);
         powerup.setDepth(GameConstants.SPRITE_DEPTH);
         
