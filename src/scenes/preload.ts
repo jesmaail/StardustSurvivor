@@ -1,9 +1,9 @@
-import * as Phaser from 'phaser';
-import { AUDIO_PATH, IMAGE_PATH, SITE_LINK } from '../constants/assetConstants';
-import { getScreenCenter, Point2D } from '../helpers';
-import ScrollingSpaceScene from './scrollingSpaceScene';
-import * as GameConstants from '../constants/gameplayConstants';
-import * as Assets from '../constants/assetConstants';
+import * as Phaser from "phaser";
+import { AUDIO_PATH, IMAGE_PATH, SITE_LINK } from "../constants/assetConstants";
+import { getScreenCenter, Point2D } from "../helpers";
+import ScrollingSpaceScene from "./scrollingSpaceScene";
+import * as GameConstants from "../constants/gameplayConstants";
+import * as Assets from "../constants/assetConstants";
 
 import ImageFrameConfig = Phaser.Types.Loader.FileTypes.ImageFrameConfig
 
@@ -14,7 +14,7 @@ export default class PreloadScene extends ScrollingSpaceScene {
     private music: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
     
     constructor() {
-        super({ key: 'PreloadScene' });
+        super({ key: "PreloadScene" });
     }
 
     preload() {
@@ -46,7 +46,7 @@ export default class PreloadScene extends ScrollingSpaceScene {
         logo.setOrigin(0.5);
         logo.setDepth(GameConstants.SPRITE_DEPTH);
         logo.setInteractive();
-        logo.on('pointerdown', () => this.linkToSite());
+        logo.on("pointerdown", () => this.linkToSite());
 
 
         if(GameConstants.AUDIO_ENABLED){
@@ -60,7 +60,7 @@ export default class PreloadScene extends ScrollingSpaceScene {
     update() { 
         if (this.startKey.isDown){
             this.music.stop();
-            this.scene.start('MainScene');
+            this.scene.start("MainScene");
         }
 
         this.scrollSpaceBackground();
@@ -128,7 +128,7 @@ export default class PreloadScene extends ScrollingSpaceScene {
     }
 
     linkToSite(){
-        window.open(SITE_LINK, '_blank');
+        window.open(SITE_LINK, "_blank");
     }
 
 }

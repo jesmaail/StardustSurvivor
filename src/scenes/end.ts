@@ -1,6 +1,6 @@
-import * as Phaser from 'phaser';
-import { getScreenCenter, Point2D } from '../helpers';
-import * as Assets from '../constants/assetConstants';
+import * as Phaser from "phaser";
+import { getScreenCenter, Point2D } from "../helpers";
+import * as Assets from "../constants/assetConstants";
 
 export default class EndScene extends Phaser.Scene {
     private screenCenter: Point2D;
@@ -11,7 +11,7 @@ export default class EndScene extends Phaser.Scene {
     private score: number = 0;
 
     constructor() {
-        super({ key: 'EndScene' });
+        super({ key: "EndScene" });
     }
 
     init(data: any) {
@@ -39,8 +39,8 @@ export default class EndScene extends Phaser.Scene {
 
         const scoreText = this.add.text(this.cameras.main.centerX, 350, `YOU SURVIVED ${this.score} SECONDS!`, { 
             font: "bold 23px Courier New", 
-            color: '#ff7800',
-            align: 'center'
+            color: "#ff7800",
+            align: "center"
         });
         scoreText.setOrigin(0.5, 0);
     }
@@ -49,7 +49,7 @@ export default class EndScene extends Phaser.Scene {
         if(this.restartKey.isDown){
             this.endMusic.stop();
             this.scene.stop();
-            this.scene.start('MainScene');
+            this.scene.start("MainScene");
 
         }
     }

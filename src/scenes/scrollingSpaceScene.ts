@@ -1,5 +1,5 @@
-import * as Phaser from 'phaser';
-import * as Assets from '../constants/assetConstants';
+import * as Phaser from "phaser";
+import * as Assets from "../constants/assetConstants";
 
 export default class ScrollingSpaceScene extends Phaser.Scene {
     scrollBuffer: number = 0;

@@ -1,5 +1,5 @@
-import * as Phaser from 'phaser';
-import * as GameConstants from './constants/gameplayConstants';
+import * as Phaser from "phaser";
+import * as GameConstants from "./constants/gameplayConstants";
 
 import Camera = Phaser.Cameras.Scene2D.Camera
 

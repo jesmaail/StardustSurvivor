@@ -1,8 +1,8 @@
-import * as Phaser from 'phaser';
-import { Point2D, getRandomFromSelection, rollPercentageChance, debugLogGroupCount } from '../helpers';
-import ScrollingSpaceScene from './scrollingSpaceScene';
-import * as GameConstants from '../constants/gameplayConstants';
-import * as Assets from '../constants/assetConstants';
+import * as Phaser from "phaser";
+import { Point2D, getRandomFromSelection, rollPercentageChance, debugLogGroupCount } from "../helpers";
+import ScrollingSpaceScene from "./scrollingSpaceScene";
+import * as GameConstants from "../constants/gameplayConstants";
+import * as Assets from "../constants/assetConstants";
 
 export default class MainScene extends ScrollingSpaceScene {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -53,7 +53,7 @@ export default class MainScene extends ScrollingSpaceScene {
     private shieldDeflectSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
 
     constructor() {
-        super({ key: 'MainScene' });
+        super({ key: "MainScene" });
     }
 
     preload () {
@@ -228,7 +228,7 @@ export default class MainScene extends ScrollingSpaceScene {
         // TODO - There is a third animation frame
         // but it isn't loading, either fix or throw out when improving
         // graphics
-        const asteroidAnimations = ['la0', 'la1'];
+        const asteroidAnimations = ["la0", "la1"];
         const selectedAnimation = getRandomFromSelection(asteroidAnimations);
 
         if(this.largeAsteroids.getLength() == 0){
@@ -256,7 +256,7 @@ export default class MainScene extends ScrollingSpaceScene {
         spawnY: number = GameConstants.ASTEROID_SPAWN_Y,
         velocityX: number = GameConstants.ASTEROID_VELOCITY_X){
 
-        const asteroidAnimations = ['a0', 'a1', 'a2', 'a3'];
+        const asteroidAnimations = ["a0", "a1", "a2", "a3"];
         const selectedAnimation = getRandomFromSelection(asteroidAnimations);
 
         if(this.asteroids.getLength() == 0){
@@ -353,17 +353,17 @@ export default class MainScene extends ScrollingSpaceScene {
 
         // TODO - Can use this animations config to set up animations once rather than each creation
         var config = {
-            key: 'boom',
+            key: "boom",
             frames: Assets.EXPLOSION,
             frameRate: 15,
             repeat: 0
         };
         this.anims.create(config);
-        explosion.on('animationcomplete-boom', () => {
+        explosion.on("animationcomplete-boom", () => {
             explosion.destroy();
         });
 
-        explosion.play('boom');
+        explosion.play("boom");
         this.explosionSound.play();
     }
 
@@ -467,7 +467,7 @@ export default class MainScene extends ScrollingSpaceScene {
             this.shieldAvailable = false;
 
             this.scene.stop();
-            this.scene.start('EndScene', { score: finalScore });
+            this.scene.start("EndScene", { score: finalScore });
         }
     }
 }
