@@ -23,7 +23,7 @@ export default class ScrollingSpaceScene extends Phaser.Scene {
         if (this.spaceScroll.countActive(true) < 5 && this.scrollBuffer < this.time.now) {
             let space: Phaser.GameObjects.Sprite = this.spaceScroll.create(0, 0, Assets.SPACE_BACKGROUND);
             space.setOrigin(0, 1);
-            space.setDepth(Number.MIN_VALUE)
+            space.setDepth(Number.MIN_VALUE);
             this.physics.world.enable(space);
             space.body.velocity.y = this.spaceScrollVelocity;
 

@@ -17,7 +17,7 @@ export const PLAYER_DEATH_WAIT = 500;
 
 // TODO - Improve the font?
 export const TEXT_FONT = "15px Arial";
-export const DEFAULT_TEXT_COLOUR = "#fff"
+export const DEFAULT_TEXT_COLOUR = "#fff";
 export const SHIELD_TEXT_COLOUR = "#ff0000";
 export const DEFAULT_TEXT_STYLE = {font: TEXT_FONT, color: DEFAULT_TEXT_COLOUR};
 
@@ -39,6 +39,6 @@ export const AMMO_POWERUP_FRAME_KEY = 2;
 export const POWERUP_SPEED = 200;
 export const AMMO_POWERUP_INCREMENT = 5;
 export const DOUBLE_POWERUP_DURATION = 2500;
-export const SHIELD_POWERUP_TEXT = "Shields Online"
+export const SHIELD_POWERUP_TEXT = "Shields Online";
 export const SHIELD_Y_BUFFER = 10;
 export const SHIELD_POWERUP_DURATION = 2500;

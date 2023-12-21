@@ -12,7 +12,7 @@ export function getScreenCenter(mainCamera: Camera): Point2D {
     let centerX = mainCamera.width / 2;
     let centerY = mainCamera.height / 2;
 
-    return { x: centerX, y: centerY}
+    return { x: centerX, y: centerY };
 }
 
 export function getRandomFromSelection(selection: Array<any>){
@@ -34,5 +34,5 @@ export function debugLogGroupCount(group: Phaser.GameObjects.Group){
         return;
     }
 
-    console.log(`${group.getLength()}`)
+    console.log(`${group.getLength()}`);
 }

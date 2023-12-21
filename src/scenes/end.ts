@@ -3,7 +3,7 @@ import { getScreenCenter, Point2D } from '../helpers';
 import * as Assets from '../constants/assetConstants';
 
 export default class EndScene extends Phaser.Scene {
-    private screenCenter: Point2D
+    private screenCenter: Point2D;
     private restartKey: Phaser.Input.Keyboard.Key;
 
     private endMusic: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
@@ -11,7 +11,7 @@ export default class EndScene extends Phaser.Scene {
     private score: number = 0;
 
     constructor() {
-        super({ key: 'EndScene' })
+        super({ key: 'EndScene' });
     }
 
     init(data: any) {

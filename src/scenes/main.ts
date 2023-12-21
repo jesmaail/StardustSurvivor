@@ -10,9 +10,9 @@ export default class MainScene extends ScrollingSpaceScene {
     private music: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
 
     // Text
-    private ammoText: Phaser.GameObjects.Text
-    private scoreText: Phaser.GameObjects.Text
-    private shieldText: Phaser.GameObjects.Text
+    private ammoText: Phaser.GameObjects.Text;
+    private scoreText: Phaser.GameObjects.Text;
+    private shieldText: Phaser.GameObjects.Text;
 
     // Score
     private score: number = 0;
@@ -53,7 +53,7 @@ export default class MainScene extends ScrollingSpaceScene {
     private shieldDeflectSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
 
     constructor() {
-        super({ key: 'MainScene' })
+        super({ key: 'MainScene' });
     }
 
     preload () {
@@ -80,10 +80,10 @@ export default class MainScene extends ScrollingSpaceScene {
         this.initSpaceBackground();
         this.ammoText = this.add.text(30, GameConstants.TEXT_Y, "Ammo: "+ this.ammo , GameConstants.DEFAULT_TEXT_STYLE);
         this.ammoText.setDepth(GameConstants.TEXT_DEPTH);
-		this.scoreText = this.add.text(290, GameConstants.TEXT_Y, "Score: " + this.score , GameConstants.DEFAULT_TEXT_STYLE);
+        this.scoreText = this.add.text(290, GameConstants.TEXT_Y, "Score: " + this.score , GameConstants.DEFAULT_TEXT_STYLE);
         this.scoreText.setDepth(GameConstants.TEXT_DEPTH);
-		this.shieldText = this.add.text(200, GameConstants.TEXT_Y, "" , {font: GameConstants.TEXT_FONT, color: GameConstants.SHIELD_TEXT_COLOUR });
-        this.shieldText.setOrigin(0.5, 0)
+        this.shieldText = this.add.text(200, GameConstants.TEXT_Y, "" , {font: GameConstants.TEXT_FONT, color: GameConstants.SHIELD_TEXT_COLOUR });
+        this.shieldText.setOrigin(0.5, 0);
         this.shieldText.setDepth(GameConstants.TEXT_DEPTH);
 
 
@@ -132,7 +132,7 @@ export default class MainScene extends ScrollingSpaceScene {
         }
 
         this.ammoText.setText("Ammo: " + this.ammo);
-		this.scoreText.setText("Score: " + this.score);
+        this.scoreText.setText("Score: " + this.score);
 
 
         this.playerControls();
@@ -185,7 +185,7 @@ export default class MainScene extends ScrollingSpaceScene {
         let bullet = this.bullets.create(x, y, Assets.BULLET);
         bullet.setScale(GameConstants.SPRITE_SCALE);
         bullet.setOrigin(0.5, 0); 
-        bullet.setDepth(GameConstants.SPRITE_DEPTH)
+        bullet.setDepth(GameConstants.SPRITE_DEPTH);
 
         this.physics.world.enable(bullet);
         bullet.body.velocity.y = -GameConstants.BULLET_SPEED;
@@ -242,7 +242,7 @@ export default class MainScene extends ScrollingSpaceScene {
 
         let asteroid = this.largeAsteroids.create(spawnX, GameConstants.ASTEROID_SPAWN_Y, Assets.ASTEROID_BIG);
         asteroid.setScale(GameConstants.SPRITE_SCALE);
-        asteroid.setDepth(GameConstants.SPRITE_DEPTH)
+        asteroid.setDepth(GameConstants.SPRITE_DEPTH);
         this.physics.world.enable(asteroid);
         asteroid.body.velocity.x = GameConstants.ASTEROID_VELOCITY_X;
         asteroid.body.velocity.y = GameConstants.LARGE_ASTEROID_SPEED;
@@ -270,7 +270,7 @@ export default class MainScene extends ScrollingSpaceScene {
 
         let asteroid = this.asteroids.create(spawnX, spawnY, Assets.ASTEROID);
         asteroid.setScale(GameConstants.SPRITE_SCALE);
-        asteroid.setDepth(GameConstants.SPRITE_DEPTH)
+        asteroid.setDepth(GameConstants.SPRITE_DEPTH);
         this.physics.world.enable(asteroid);
         asteroid.body.velocity.x = velocityX;
         asteroid.body.velocity.y = velocityY;
@@ -280,9 +280,9 @@ export default class MainScene extends ScrollingSpaceScene {
 
     collisionDetection(){
         // Asteroid collisions
-        this.physics.add.collider(this.bullets, this.asteroids, this.collideBulletAsteroid, null, this)
-        this.physics.add.collider(this.bullets, this.largeAsteroids, this.collideBulletLargeAsteroid, null, this)
-        this.physics.add.collider(this.explosions, this.asteroids, this.collideBulletAsteroid, null, this)
+        this.physics.add.collider(this.bullets, this.asteroids, this.collideBulletAsteroid, null, this);
+        this.physics.add.collider(this.bullets, this.largeAsteroids, this.collideBulletLargeAsteroid, null, this);
+        this.physics.add.collider(this.explosions, this.asteroids, this.collideBulletAsteroid, null, this);
 
         // Powerup collisions
         this.physics.add.collider(this.player, this.ammoPowerups, this.obtainAmmoPowerup, null, this);
@@ -316,7 +316,7 @@ export default class MainScene extends ScrollingSpaceScene {
 
         let randomSpeed = Phaser.Math.Between(GameConstants.FRACTURED_ASTEROID_SPEED_MIN, GameConstants.FRACTURED_ASTEROID_SPEED_MAX);
         let randomPositiveDrift = Phaser.Math.Between(0, GameConstants.FRACTURED_ASTEROID_DRIFT_MAX);
-        let randomNegativeDrift = Phaser.Math.Between(0, -GameConstants.FRACTURED_ASTEROID_DRIFT_MAX)
+        let randomNegativeDrift = Phaser.Math.Between(0, -GameConstants.FRACTURED_ASTEROID_DRIFT_MAX);
 
         largeAsteroid.destroy();
         this.hitSound.play();
@@ -372,7 +372,7 @@ export default class MainScene extends ScrollingSpaceScene {
             GameConstants.SHIELD_POWERUP_FRAME_KEY,
             GameConstants.DOUBLE_POWERUP_FRAME_KEY,
             GameConstants.AMMO_POWERUP_FRAME_KEY
-        ]
+        ];
 
         let selectedPowerupFrameKey = getRandomFromSelection(powerups);
 
@@ -439,18 +439,19 @@ export default class MainScene extends ScrollingSpaceScene {
             if(bullet.y < this.physics.world.bounds.top){
                 bullet.destroy();
             }
-        })
+        });
 
         this.asteroids.getChildren().forEach((asteroid: Phaser.GameObjects.Sprite) => {
             if(asteroid.y > this.physics.world.bounds.bottom){
                 asteroid.destroy();
             }
-        })
+        });
+
         this.largeAsteroids.getChildren().forEach((largeAsteroid: Phaser.GameObjects.Sprite) => {
             if((largeAsteroid.y - largeAsteroid.height) > this.physics.world.bounds.bottom){
                 largeAsteroid.destroy();
             }
-        })
+        });
     }
 
     endingHandler(){
