@@ -1,8 +1,8 @@
 import * as Phaser from 'phaser';
-import { AUDIO_PATH, IMAGE_PATH } from '../constants';
+import { AUDIO_PATH, IMAGE_PATH, SITE_LINK } from '../constants/assetConstants';
 import { getScreenCenter, Point2D } from '../helpers';
 import ScrollingSpaceScene from './scrollingSpaceScene';
-import * as GameConstants from '../constants';
+import * as GameConstants from '../constants/gameplayConstants';
 
 import ImageFrameConfig = Phaser.Types.Loader.FileTypes.ImageFrameConfig
 
@@ -127,7 +127,7 @@ export default class PreloadScene extends ScrollingSpaceScene {
     }
 
     linkToSite(){
-		window.open(GameConstants.SITE_LINK, '_blank');
+		window.open(SITE_LINK, '_blank');
 	}
 
 }

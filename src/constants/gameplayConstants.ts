@@ -1,11 +1,3 @@
-export const SITE_LINK = "https://twitter.com/DeciGames"
-
-export const IMAGE_PATH = "assets/img";
-export const AUDIO_PATH = "assets/audio";
-
-export const DEBUG_ENABLED = false;
-export const AUDIO_ENABLED = true;
-
 export const TEXT_DEPTH = Number.MAX_VALUE;
 export const SPRITE_DEPTH = Number.MAX_VALUE / 2;
 
@@ -47,5 +39,3 @@ export const DOUBLE_POWERUP_DURATION = 2500;
 export const SHIELD_POWERUP_TEXT = "Shields Online"
 export const SHIELD_Y_BUFFER = 10;
 export const SHIELD_POWERUP_DURATION = 2500;
-
-// TODO - Would be nice to have another constants file for asset/sprite names

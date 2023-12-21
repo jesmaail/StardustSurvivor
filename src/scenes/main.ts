@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import { Point2D, getRandomFromSelection, rollPercentageChance, debugLogGroupCount } from '../helpers';
 import ScrollingSpaceScene from './scrollingSpaceScene';
-import * as GameConstants from '../constants';
+import * as GameConstants from '../constants/gameplayConstants';
 
 export default class MainScene extends ScrollingSpaceScene {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;

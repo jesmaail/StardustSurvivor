@@ -1,6 +1,5 @@
 import * as Phaser from 'phaser';
 import { getScreenCenter, Point2D } from '../helpers';
-import * as GameConstants from '../constants';
 
 export default class EndScene extends Phaser.Scene {
     private screenCenter: Point2D
