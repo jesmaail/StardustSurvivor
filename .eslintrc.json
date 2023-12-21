@@ -1,0 +1,31 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:@typescript-eslint/eslint-recommended"
+    ],
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "env": {
+      "browser": true,
+      "node": true,
+      "es6": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module"
+    },
+    "rules": {
+      "indent": ["warn", 4],
+      "quotes": ["warn", "double"],
+      "semi": ["error", "always"],
+      "prefer-const": "error",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/no-non-null-assertion": "warn"
+    }
+  }
+  
