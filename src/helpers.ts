@@ -9,17 +9,17 @@ export type Point2D = {
 }
 
 export function getScreenCenter(mainCamera: Camera): Point2D {
-    let centerX = mainCamera.width / 2;
-    let centerY = mainCamera.height / 2;
+    const centerX = mainCamera.width / 2;
+    const centerY = mainCamera.height / 2;
 
     return { x: centerX, y: centerY };
 }
 
 export function getRandomFromSelection(selection: Array<any>){
     // -1 because although rare it can hit the max and then be out of bounds
-    let upperBound = (selection.length * 100) - 1;
-    let random = Phaser.Math.Between(0, upperBound);
-    let roundedRandom = Math.floor(random / 100);
+    const upperBound = (selection.length * 100) - 1;
+    const random = Phaser.Math.Between(0, upperBound);
+    const roundedRandom = Math.floor(random / 100);
 
     return selection[roundedRandom];
 }

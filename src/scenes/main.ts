@@ -182,7 +182,7 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     createBullet(x: number, y: number) {
-        let bullet = this.bullets.create(x, y, Assets.BULLET);
+        const bullet = this.bullets.create(x, y, Assets.BULLET);
         bullet.setScale(GameConstants.SPRITE_SCALE);
         bullet.setOrigin(0.5, 0); 
         bullet.setDepth(GameConstants.SPRITE_DEPTH);
@@ -214,13 +214,13 @@ export default class MainScene extends ScrollingSpaceScene {
             this.asteroidY -=1;
         }
 
-        let spawnPointX = Phaser.Math.Between(-100, 4050) / 10; // Again, why these numbers?
+        const spawnPointX = Phaser.Math.Between(-100, 4050) / 10; // Again, why these numbers?
 
         if(rollPercentageChance(GameConstants.LARGE_ASTEROID_CHANCE)){
             this.spawnLargeAsteroid(spawnPointX);
             return;
         }
-        let asteroidSpeed = Phaser.Math.Between(GameConstants.ASTEROID_SPEED_MIN, GameConstants.ASTEROID_SPEED_MAX);
+        const asteroidSpeed = Phaser.Math.Between(GameConstants.ASTEROID_SPEED_MIN, GameConstants.ASTEROID_SPEED_MAX);
         this.spawnNormalAsteroid(spawnPointX, asteroidSpeed);
     }
 
@@ -228,8 +228,8 @@ export default class MainScene extends ScrollingSpaceScene {
         // TODO - There is a third animation frame
         // but it isn't loading, either fix or throw out when improving
         // graphics
-        let asteroidAnimations = ['la0', 'la1'];
-        let selectedAnimation = getRandomFromSelection(asteroidAnimations);
+        const asteroidAnimations = ['la0', 'la1'];
+        const selectedAnimation = getRandomFromSelection(asteroidAnimations);
 
         if(this.largeAsteroids.getLength() == 0){
             asteroidAnimations.forEach((value: string, index: number) => {
@@ -240,7 +240,7 @@ export default class MainScene extends ScrollingSpaceScene {
             });    
         }
 
-        let asteroid = this.largeAsteroids.create(spawnX, GameConstants.ASTEROID_SPAWN_Y, Assets.ASTEROID_BIG);
+        const asteroid = this.largeAsteroids.create(spawnX, GameConstants.ASTEROID_SPAWN_Y, Assets.ASTEROID_BIG);
         asteroid.setScale(GameConstants.SPRITE_SCALE);
         asteroid.setDepth(GameConstants.SPRITE_DEPTH);
         this.physics.world.enable(asteroid);
@@ -256,8 +256,8 @@ export default class MainScene extends ScrollingSpaceScene {
         spawnY: number = GameConstants.ASTEROID_SPAWN_Y,
         velocityX: number = GameConstants.ASTEROID_VELOCITY_X){
 
-        let asteroidAnimations = ['a0', 'a1', 'a2', 'a3'];
-        let selectedAnimation = getRandomFromSelection(asteroidAnimations);
+        const asteroidAnimations = ['a0', 'a1', 'a2', 'a3'];
+        const selectedAnimation = getRandomFromSelection(asteroidAnimations);
 
         if(this.asteroids.getLength() == 0){
             asteroidAnimations.forEach((value: string, index: number) => {
@@ -268,7 +268,7 @@ export default class MainScene extends ScrollingSpaceScene {
             });    
         }
 
-        let asteroid = this.asteroids.create(spawnX, spawnY, Assets.ASTEROID);
+        const asteroid = this.asteroids.create(spawnX, spawnY, Assets.ASTEROID);
         asteroid.setScale(GameConstants.SPRITE_SCALE);
         asteroid.setDepth(GameConstants.SPRITE_DEPTH);
         this.physics.world.enable(asteroid);
@@ -300,7 +300,7 @@ export default class MainScene extends ScrollingSpaceScene {
 
     collideBulletAsteroid(bullet: Phaser.Physics.Arcade.Sprite, asteroid: Phaser.Physics.Arcade.Sprite){
         bullet.destroy();
-        let collisionPoint: Point2D = { x: asteroid.x, y: asteroid.y};
+        const collisionPoint: Point2D = { x: asteroid.x, y: asteroid.y};
         asteroid.destroy();
         this.createExplosion(collisionPoint);
 
@@ -312,11 +312,11 @@ export default class MainScene extends ScrollingSpaceScene {
     collideBulletLargeAsteroid(bullet: Phaser.Physics.Arcade.Sprite, largeAsteroid: Phaser.Physics.Arcade.Sprite){
         bullet.destroy();
 
-        let collisionPoint: Point2D = { x: largeAsteroid.x, y: largeAsteroid.y};
+        const collisionPoint: Point2D = { x: largeAsteroid.x, y: largeAsteroid.y};
 
-        let randomSpeed = Phaser.Math.Between(GameConstants.FRACTURED_ASTEROID_SPEED_MIN, GameConstants.FRACTURED_ASTEROID_SPEED_MAX);
-        let randomPositiveDrift = Phaser.Math.Between(0, GameConstants.FRACTURED_ASTEROID_DRIFT_MAX);
-        let randomNegativeDrift = Phaser.Math.Between(0, -GameConstants.FRACTURED_ASTEROID_DRIFT_MAX);
+        const randomSpeed = Phaser.Math.Between(GameConstants.FRACTURED_ASTEROID_SPEED_MIN, GameConstants.FRACTURED_ASTEROID_SPEED_MAX);
+        const randomPositiveDrift = Phaser.Math.Between(0, GameConstants.FRACTURED_ASTEROID_DRIFT_MAX);
+        const randomNegativeDrift = Phaser.Math.Between(0, -GameConstants.FRACTURED_ASTEROID_DRIFT_MAX);
 
         largeAsteroid.destroy();
         this.hitSound.play();
@@ -347,7 +347,7 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     createExplosion(spawn: Point2D){
-        let explosion: Phaser.Physics.Arcade.Sprite = this.explosions.create(spawn.x, spawn.y, Assets.EXPLOSION);
+        const explosion: Phaser.Physics.Arcade.Sprite = this.explosions.create(spawn.x, spawn.y, Assets.EXPLOSION);
         explosion.setDepth(GameConstants.SPRITE_DEPTH);
         this.physics.world.enable(explosion);
 
@@ -368,13 +368,13 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     spawnPowerup(spawn: Point2D){
-        let powerups = [
+        const powerups = [
             GameConstants.SHIELD_POWERUP_FRAME_KEY,
             GameConstants.DOUBLE_POWERUP_FRAME_KEY,
             GameConstants.AMMO_POWERUP_FRAME_KEY
         ];
 
-        let selectedPowerupFrameKey = getRandomFromSelection(powerups);
+        const selectedPowerupFrameKey = getRandomFromSelection(powerups);
 
         let powerupSpawnGroup: Phaser.GameObjects.Group = null;
 
@@ -391,7 +391,7 @@ export default class MainScene extends ScrollingSpaceScene {
                 break;
         }
 
-        let powerup = powerupSpawnGroup.create(spawn.x, spawn.y, Assets.POWERUPS, selectedPowerupFrameKey);
+        const powerup = powerupSpawnGroup.create(spawn.x, spawn.y, Assets.POWERUPS, selectedPowerupFrameKey);
         powerup.setScale(GameConstants.SPRITE_SCALE);
         powerup.setDepth(GameConstants.SPRITE_DEPTH);
         
@@ -421,7 +421,7 @@ export default class MainScene extends ScrollingSpaceScene {
     shieldSystem(){
         if(this.shieldTimer > this.time.now){
             this.shield.setVisible(true);
-            let shieldBody = this.shield.body as Phaser.Physics.Arcade.Body;
+            const shieldBody = this.shield.body as Phaser.Physics.Arcade.Body;
             shieldBody.x = this.playerBody.x;
             shieldBody.y = this.playerBody.y - GameConstants.SHIELD_Y_BUFFER;
         }else{
@@ -456,7 +456,7 @@ export default class MainScene extends ScrollingSpaceScene {
 
     endingHandler(){
         if(this.playerDeathTimer < this.time.now){
-            let finalScore = this.score;
+            const finalScore = this.score;
 
             // Clean up state ready for restart
             this.playerDeathTimer = 0;

@@ -19,7 +19,7 @@ export default class PreloadScene extends ScrollingSpaceScene {
 
     preload() {
         this.screenCenter = getScreenCenter(this.cameras.main);
-        let loading = this.add.text(this.screenCenter.x, this.screenCenter.y, "LOADING...");
+        const loading = this.add.text(this.screenCenter.x, this.screenCenter.y, "LOADING...");
         loading.setOrigin(0.5);
 
         this.loadImages();
@@ -32,16 +32,16 @@ export default class PreloadScene extends ScrollingSpaceScene {
         this.initSpaceBackground();
         this.music = this.game.sound.add(Assets.MENU_MUSIC);
 
-        let title = this.add.image(40, 50, Assets.TITLE_TEXT);
+        const title = this.add.image(40, 50, Assets.TITLE_TEXT);
         title.setOrigin(0, 0);
         title.setDepth(GameConstants.SPRITE_DEPTH);
         
-        let start = this.add.image(this.screenCenter.x, this.cameras.main.height - 150, Assets.START_TEXT);
+        const start = this.add.image(this.screenCenter.x, this.cameras.main.height - 150, Assets.START_TEXT);
         start.setOrigin(0.5);
         start.setDepth(GameConstants.SPRITE_DEPTH);
 
         
-        let logo = this.add.image(this.cameras.main.width - 50, this.cameras.main.height - 50, Assets.DECIGAMES_LOGO);
+        const logo = this.add.image(this.cameras.main.width - 50, this.cameras.main.height - 50, Assets.DECIGAMES_LOGO);
         logo.setScale(0.5);
         logo.setOrigin(0.5);
         logo.setDepth(GameConstants.SPRITE_DEPTH);
@@ -89,33 +89,33 @@ export default class PreloadScene extends ScrollingSpaceScene {
     }
 
     private loadSpritesheets() {
-        let asteroid_sprite_config: ImageFrameConfig = {
+        const asteroid_sprite_config: ImageFrameConfig = {
             frameWidth: 150,
             frameHeight: 150
         };
         this.load.spritesheet(Assets.ASTEROID, `${IMAGE_PATH}/asteroid.png`, asteroid_sprite_config);
 
-        let big_asteroid_sprite_config: ImageFrameConfig = {
+        const big_asteroid_sprite_config: ImageFrameConfig = {
             frameWidth: 289,
             frameHeight: 289
         };
         this.load.spritesheet(Assets.ASTEROID_BIG, `${IMAGE_PATH}/asteroidBig.png`, big_asteroid_sprite_config);
 
-        let explosion_sprite_config: ImageFrameConfig = {
+        const explosion_sprite_config: ImageFrameConfig = {
             frameWidth: 40,
             frameHeight: 40
         };
         this.load.spritesheet(Assets.EXPLOSION, `${IMAGE_PATH}/explosion.png`, explosion_sprite_config);
 
-        let powerup_sprite_config: ImageFrameConfig = {
+        const powerup_sprite_config: ImageFrameConfig = {
             frameWidth: 144,
             frameHeight: 144
         };
         this.load.spritesheet(Assets.POWERUPS, `${IMAGE_PATH}/powerups.png`, powerup_sprite_config);
     }
 
-    private loadAudio() {;
-        this.load.audio(Assets.MENU_MUSIC, `${AUDIO_PATH}/startMusic.mp3`)
+    private loadAudio() {
+        this.load.audio(Assets.MENU_MUSIC, `${AUDIO_PATH}/startMusic.mp3`);
         this.load.audio(Assets.GAME_MUSIC, `${AUDIO_PATH}/gameMusic.mp3`);
         this.load.audio(Assets.FIRE_SOUND, `${AUDIO_PATH}/fire.mp3`);
         this.load.audio(Assets.DEATH_SOUND, `${AUDIO_PATH}/playerDeath.mp3`);
