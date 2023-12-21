@@ -2,8 +2,6 @@ name: Node.js Build and Release
 
 on:
   push:
-    branches:
-      - main
     tags:
       - 'v*'
 jobs:
@@ -24,8 +22,10 @@ jobs:
     - name: Build
       run: npm run build
 
-    - name: Zip the dist folder
-      run: zip -r dist.zip dist/
+    - name: Zip the contents of the dist folder
+      run: |
+        cd dist
+        zip -r ../dist.zip .
 
     - name: Create Release
       id: create_release
