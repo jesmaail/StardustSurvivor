@@ -27,6 +27,7 @@ export default class EndScene extends Phaser.Scene {
     }
 
     create() {
+        this.endMusic.play();
         let background = this.add.sprite(0, 0, 'space');
         background.setOrigin(0, 0);
 

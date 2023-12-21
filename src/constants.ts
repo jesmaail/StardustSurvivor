@@ -1,8 +1,10 @@
+export const SITE_LINK = "https://twitter.com/DeciGames"
+
 export const IMAGE_PATH = "assets/img";
 export const AUDIO_PATH = "assets/audio";
 
 export const DEBUG_ENABLED = false;
-export const AUDIO_ENABLED = false;
+export const AUDIO_ENABLED = true;
 
 export const TEXT_DEPTH = Number.MAX_VALUE;
 export const SPRITE_DEPTH = Number.MAX_VALUE / 2;

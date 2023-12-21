@@ -10,37 +10,47 @@ export default class PreloadScene extends ScrollingSpaceScene {
     private screenCenter: Point2D
     private startKey: Phaser.Input.Keyboard.Key;
 
+    private music: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
+    
     constructor() {
         super({ key: 'PreloadScene' })
     }
 
     preload() {
         this.screenCenter = getScreenCenter(this.cameras.main);
-
         let loading = this.add.text(this.screenCenter.x, this.screenCenter.y, "LOADING...");
         loading.setOrigin(0.5)
 
         this.loadImages();
         this.loadSpritesheets();
-        this.loadAudio();
+        this.loadAudio();  
     }
 
     // TODO - Clean up positioning
     create() {
         this.initSpaceBackground();
+        this.music = this.game.sound.add('menuMusic')
 
         let title = this.add.image(40, 50, 'title');
         title.setOrigin(0, 0);
-        title.setDepth(Number.MAX_VALUE)
+        title.setDepth(GameConstants.SPRITE_DEPTH)
 
-        let start = this.add.image(this.screenCenter.x, this.cameras.main.height - 50, 'start');
+        let start = this.add.image(this.screenCenter.x, this.cameras.main.height - 150, 'start');
         start.setOrigin(0.5);
-        start.setDepth(Number.MAX_VALUE)
+        start.setDepth(GameConstants.SPRITE_DEPTH)
+
+        
+        let logo = this.add.image(this.cameras.main.width - 50, this.cameras.main.height - 50, 'dg');
+        logo.setScale(0.5);
+        logo.setOrigin(0.5);
+        logo.setDepth(GameConstants.SPRITE_DEPTH);
+        logo.setInteractive();
+        logo.on('pointerdown', () => this.linkToSite());
+
 
         if(GameConstants.AUDIO_ENABLED){
-            let startMusic = this.game.sound.add('menuMusic')
-            startMusic.loop = true;
-            startMusic.play();
+            this.music.loop = true;
+            this.music.play();
         }
 
         this.startKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
@@ -48,6 +58,7 @@ export default class PreloadScene extends ScrollingSpaceScene {
 
     update() { 
         if (this.startKey.isDown){
+            this.music.stop();
             this.scene.start('MainScene');
         }
 
@@ -71,6 +82,9 @@ export default class PreloadScene extends ScrollingSpaceScene {
 		this.load.image('ship', `${IMAGE_PATH}/ship.png`);
 		this.load.image('bullet', `${IMAGE_PATH}/rocket.png`);
 		this.load.image('shield', `${IMAGE_PATH}/shield.png`);
+
+        // Logo
+		this.load.image('dg', `${IMAGE_PATH}/dg.png`);
     }
 
     private loadSpritesheets() {
@@ -111,5 +125,9 @@ export default class PreloadScene extends ScrollingSpaceScene {
         this.load.audio('deflect', `${AUDIO_PATH}/deflect.mp3`)
         this.load.audio('endMusic', `${AUDIO_PATH}/endScreen.mp3`)
     }
+
+    linkToSite(){
+		window.open(GameConstants.SITE_LINK, '_blank');
+	}
 
 }
