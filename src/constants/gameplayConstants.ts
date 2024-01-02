@@ -7,6 +7,7 @@ export const SPRITE_DEPTH = Number.MAX_VALUE / 2;
 export const TEXT_Y = 30;
 
 export const SPRITE_SCALE = 0.2;
+export const NEW_SPRITE_SCALE = 0.8;
 
 export const SCORE_INCREMENT = 1000;
 export const PLAYER_SPEED = 350;

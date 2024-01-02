@@ -90,14 +90,14 @@ export default class PreloadScene extends ScrollingSpaceScene {
 
     private loadSpritesheets() {
         const asteroid_sprite_config: ImageFrameConfig = {
-            frameWidth: 150,
-            frameHeight: 150
+            frameWidth: 32,
+            frameHeight: 32
         };
         this.load.spritesheet(Assets.ASTEROID, `${IMAGE_PATH}/asteroid.png`, asteroid_sprite_config);
 
         const big_asteroid_sprite_config: ImageFrameConfig = {
-            frameWidth: 289,
-            frameHeight: 289
+            frameWidth: 48,
+            frameHeight: 48
         };
         this.load.spritesheet(Assets.ASTEROID_BIG, `${IMAGE_PATH}/asteroidBig.png`, big_asteroid_sprite_config);
 

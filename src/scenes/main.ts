@@ -96,7 +96,7 @@ export default class MainScene extends ScrollingSpaceScene {
 
         this.player = this.physics.add.sprite(200, 540, Assets.SHIP);
         this.player.setOrigin(0.5, 0);
-        this.player.setScale(GameConstants.SPRITE_SCALE);
+        this.player.setScale(GameConstants.NEW_SPRITE_SCALE);
         this.player.setDepth(GameConstants.SPRITE_DEPTH);
         this.physics.world.enable(this.player);
 
@@ -183,7 +183,7 @@ export default class MainScene extends ScrollingSpaceScene {
 
     createBullet(x: number, y: number) {
         const bullet = this.bullets.create(x, y, Assets.BULLET);
-        bullet.setScale(GameConstants.SPRITE_SCALE);
+        bullet.setScale(GameConstants.NEW_SPRITE_SCALE);
         bullet.setOrigin(0.5, 0); 
         bullet.setDepth(GameConstants.SPRITE_DEPTH);
 
@@ -241,7 +241,7 @@ export default class MainScene extends ScrollingSpaceScene {
         }
 
         const asteroid = this.largeAsteroids.create(spawnX, GameConstants.ASTEROID_SPAWN_Y, Assets.ASTEROID_BIG);
-        asteroid.setScale(GameConstants.SPRITE_SCALE);
+        asteroid.setScale(GameConstants.NEW_SPRITE_SCALE);
         asteroid.setDepth(GameConstants.SPRITE_DEPTH);
         this.physics.world.enable(asteroid);
         asteroid.body.velocity.x = GameConstants.ASTEROID_VELOCITY_X;
@@ -269,7 +269,7 @@ export default class MainScene extends ScrollingSpaceScene {
         }
 
         const asteroid = this.asteroids.create(spawnX, spawnY, Assets.ASTEROID);
-        asteroid.setScale(GameConstants.SPRITE_SCALE);
+        asteroid.setScale(GameConstants.NEW_SPRITE_SCALE);
         asteroid.setDepth(GameConstants.SPRITE_DEPTH);
         this.physics.world.enable(asteroid);
         asteroid.body.velocity.x = velocityX;
