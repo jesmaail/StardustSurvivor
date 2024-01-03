@@ -6,8 +6,7 @@ export const SPRITE_DEPTH = Number.MAX_VALUE / 2;
 
 export const TEXT_Y = 30;
 
-export const SPRITE_SCALE = 0.2;
-export const NEW_SPRITE_SCALE = 0.8;
+export const SPRITE_SCALE = 0.6;
 
 export const SCORE_INCREMENT = 1000;
 export const PLAYER_SPEED = 350;
@@ -34,12 +33,13 @@ export const FRACTURED_ASTEROID_DRIFT_MIN = 0;
 export const FRACTURED_ASTEROID_DRIFT_MAX = 150;
 
 export const POWERUP_SPAWN_CHANCE = 25;
-export const SHIELD_POWERUP_FRAME_KEY = 0;
-export const DOUBLE_POWERUP_FRAME_KEY = 1;
-export const AMMO_POWERUP_FRAME_KEY = 2;
+export const SHIELD_POWERUP_FRAME_KEY = "powerupShield";
+export const DOUBLE_POWERUP_FRAME_KEY = "powerupDouble";
+export const AMMO_POWERUP_FRAME_KEY = "powerupAmmo";
 export const POWERUP_SPEED = 200;
 export const AMMO_POWERUP_INCREMENT = 5;
 export const DOUBLE_POWERUP_DURATION = 2500;
 export const SHIELD_POWERUP_TEXT = "Shields Online";
-export const SHIELD_Y_BUFFER = 10;
+export const SHIELD_X_OFFSET = 10;
+export const SHIELD_Y_OFFSET = 15;
 export const SHIELD_POWERUP_DURATION = 2500;

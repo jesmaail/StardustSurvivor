@@ -22,9 +22,19 @@ export default class PreloadScene extends ScrollingSpaceScene {
         const loading = this.add.text(this.screenCenter.x, this.screenCenter.y, "LOADING...");
         loading.setOrigin(0.5);
 
-        this.loadImages();
-        this.loadSpritesheets();
-        this.loadAudio();  
+        // this.loadImages();
+        // this.loadSpritesheets();
+        this.loadAudio();
+        this.load.image(Assets.SPACE_BACKGROUND, `${IMAGE_PATH}/space.png`);
+        const explosion_sprite_config: ImageFrameConfig = {
+            frameWidth: 40,
+            frameHeight: 40
+        };
+        this.load.spritesheet(Assets.EXPLOSION, `${IMAGE_PATH}/explosion.png`, explosion_sprite_config);
+
+        this.load.path = `${IMAGE_PATH}/`;
+        this.load.multiatlas(Assets.SPRITE_ATLAS, "sprite_atlas.json");
+        this.load.multiatlas(Assets.TEXT_ATLAS, "text_atlas.json");
     }
 
     // TODO - Clean up positioning
@@ -32,16 +42,15 @@ export default class PreloadScene extends ScrollingSpaceScene {
         this.initSpaceBackground();
         this.music = this.game.sound.add(Assets.MENU_MUSIC);
 
-        const title = this.add.image(40, 50, Assets.TITLE_TEXT);
+        const title = this.add.image(40, 50, Assets.TEXT_ATLAS, Assets.TITLE_TEXT);
         title.setOrigin(0, 0);
         title.setDepth(GameConstants.SPRITE_DEPTH);
         
-        const start = this.add.image(this.screenCenter.x, this.cameras.main.height - 150, Assets.START_TEXT);
+        const start = this.add.image(this.screenCenter.x, this.cameras.main.height - 150, Assets.TEXT_ATLAS, Assets.START_TEXT);
         start.setOrigin(0.5);
         start.setDepth(GameConstants.SPRITE_DEPTH);
-
         
-        const logo = this.add.image(this.cameras.main.width - 50, this.cameras.main.height - 50, Assets.DECIGAMES_LOGO);
+        const logo = this.add.image(this.cameras.main.width - 50, this.cameras.main.height - 50, Assets.TEXT_ATLAS, Assets.DECIGAMES_LOGO);
         logo.setScale(0.5);
         logo.setOrigin(0.5);
         logo.setDepth(GameConstants.SPRITE_DEPTH);
@@ -101,11 +110,7 @@ export default class PreloadScene extends ScrollingSpaceScene {
         };
         this.load.spritesheet(Assets.ASTEROID_BIG, `${IMAGE_PATH}/asteroidBig.png`, big_asteroid_sprite_config);
 
-        const explosion_sprite_config: ImageFrameConfig = {
-            frameWidth: 40,
-            frameHeight: 40
-        };
-        this.load.spritesheet(Assets.EXPLOSION, `${IMAGE_PATH}/explosion.png`, explosion_sprite_config);
+        
 
         const powerup_sprite_config: ImageFrameConfig = {
             frameWidth: 144,

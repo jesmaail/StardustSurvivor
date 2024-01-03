@@ -39,6 +39,8 @@ export default class MainScene extends ScrollingSpaceScene {
     private explosions: Phaser.GameObjects.Group;
     private hitSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
     private explosionSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
+    private asteroidFrames: string[] = [];
+    private largeAsteroidFrames: string[] = [];
 
     // Powerups 
     private shieldPowerups: Phaser.GameObjects.Group;
@@ -74,6 +76,14 @@ export default class MainScene extends ScrollingSpaceScene {
         this.shieldDeflectSound = this.game.sound.add(Assets.DEFLECT_SOUND);
         this.playerDeathSound = this.game.sound.add(Assets.DEATH_SOUND);
         this.music = this.game.sound.add(Assets.GAME_MUSIC);
+
+        // TODO - Laziness here, will preprocess this much earlier in the process if at all.
+        for (let i = 0; i < Assets.ASTEROID_COUNT; i++) {
+            this.asteroidFrames.push(Assets.ASTEROID + i);
+        }
+        for (let i = 0; i < Assets.LARGE_ASTEROID_COUNT; i++) {
+            this.largeAsteroidFrames.push(Assets.ASTEROID_BIG + i);
+        }
     }
 
     create() {
@@ -93,10 +103,10 @@ export default class MainScene extends ScrollingSpaceScene {
         }
         
         this.cursors = this.input.keyboard.createCursorKeys();
-
-        this.player = this.physics.add.sprite(200, 540, Assets.SHIP);
+        
+        this.player = this.physics.add.sprite(200, 540, Assets.SPRITE_ATLAS, Assets.SHIP);
         this.player.setOrigin(0.5, 0);
-        this.player.setScale(GameConstants.NEW_SPRITE_SCALE);
+        this.player.setScale(GameConstants.SPRITE_SCALE);
         this.player.setDepth(GameConstants.SPRITE_DEPTH);
         this.physics.world.enable(this.player);
 
@@ -105,7 +115,8 @@ export default class MainScene extends ScrollingSpaceScene {
         this.playerBody.setCollideWorldBounds(true);
         this.playerBody.setImmovable(true);
 
-        this.shield = this.physics.add.sprite(-100, -100, Assets.SHIELD);
+        this.shield = this.physics.add.sprite(-100, -100, Assets.SPRITE_ATLAS, Assets.SHIELD);
+        this.shield.setOrigin(0.5, 0);
         this.shield.setScale(GameConstants.SPRITE_SCALE);
         this.shield.setDepth(GameConstants.SPRITE_DEPTH);
         this.shield.setVisible(false);
@@ -174,7 +185,7 @@ export default class MainScene extends ScrollingSpaceScene {
         
         if(this.doubleBulletTimer > this.time.now){
             this.createBullet(this.playerBody.x, this.playerBody.y);
-            this.createBullet((this.playerBody.x + this.playerBody.width), this.playerBody.y);
+            this.createBullet((this.playerBody.x + this.playerBody.width-1), this.playerBody.y);
             return;
         }
         
@@ -182,8 +193,8 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     createBullet(x: number, y: number) {
-        const bullet = this.bullets.create(x, y, Assets.BULLET);
-        bullet.setScale(GameConstants.NEW_SPRITE_SCALE);
+        const bullet = this.bullets.create(x, y, Assets.SPRITE_ATLAS, Assets.BULLET);
+        bullet.setScale(GameConstants.SPRITE_SCALE);
         bullet.setOrigin(0.5, 0); 
         bullet.setDepth(GameConstants.SPRITE_DEPTH);
 
@@ -196,6 +207,8 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     spawnAsteroids() {
+        // TODO - Normal and Large asteroid loading is now essentially the same,
+        //        so they should be merged.
         // TODO - Probably worth extracting Asteroid spawn logic out entirely.
 
         // I need to remember what this is for...
@@ -225,29 +238,14 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     spawnLargeAsteroid(spawnX: number){
-        // TODO - There is a third animation frame
-        // but it isn't loading, either fix or throw out when improving
-        // graphics
-        const asteroidAnimations = ["la0", "la1"];
-        const selectedAnimation = getRandomFromSelection(asteroidAnimations);
+        const asteroidFrame = getRandomFromSelection(this.largeAsteroidFrames);
 
-        if(this.largeAsteroids.getLength() == 0){
-            asteroidAnimations.forEach((value: string, index: number) => {
-                this.anims.create({
-                    key: value,
-                    frames: [{key: Assets.ASTEROID_BIG, frame: index}]
-                });
-            });    
-        }
-
-        const asteroid = this.largeAsteroids.create(spawnX, GameConstants.ASTEROID_SPAWN_Y, Assets.ASTEROID_BIG);
-        asteroid.setScale(GameConstants.NEW_SPRITE_SCALE);
+        const asteroid = this.largeAsteroids.create(spawnX, GameConstants.ASTEROID_SPAWN_Y, Assets.SPRITE_ATLAS, asteroidFrame);
+        asteroid.setScale(GameConstants.SPRITE_SCALE);
         asteroid.setDepth(GameConstants.SPRITE_DEPTH);
         this.physics.world.enable(asteroid);
         asteroid.body.velocity.x = GameConstants.ASTEROID_VELOCITY_X;
         asteroid.body.velocity.y = GameConstants.LARGE_ASTEROID_SPEED;
-        
-        asteroid.play(selectedAnimation);
     }
 
     spawnNormalAsteroid(
@@ -256,26 +254,14 @@ export default class MainScene extends ScrollingSpaceScene {
         spawnY: number = GameConstants.ASTEROID_SPAWN_Y,
         velocityX: number = GameConstants.ASTEROID_VELOCITY_X){
 
-        const asteroidAnimations = ["a0", "a1", "a2", "a3"];
-        const selectedAnimation = getRandomFromSelection(asteroidAnimations);
+        const asteroidFrame = getRandomFromSelection(this.asteroidFrames);
 
-        if(this.asteroids.getLength() == 0){
-            asteroidAnimations.forEach((value: string, index: number) => {
-                this.anims.create({
-                    key: value,
-                    frames: [{key: Assets.ASTEROID, frame: index}]
-                });
-            });    
-        }
-
-        const asteroid = this.asteroids.create(spawnX, spawnY, Assets.ASTEROID);
-        asteroid.setScale(GameConstants.NEW_SPRITE_SCALE);
+        const asteroid = this.asteroids.create(spawnX, spawnY, Assets.SPRITE_ATLAS, asteroidFrame);
+        asteroid.setScale(GameConstants.SPRITE_SCALE);
         asteroid.setDepth(GameConstants.SPRITE_DEPTH);
         this.physics.world.enable(asteroid);
         asteroid.body.velocity.x = velocityX;
         asteroid.body.velocity.y = velocityY;
-        
-        asteroid.play(selectedAnimation);
     }
 
     collisionDetection(){
@@ -390,8 +376,7 @@ export default class MainScene extends ScrollingSpaceScene {
                 powerupSpawnGroup = this.ammoPowerups;
                 break;
         }
-
-        const powerup = powerupSpawnGroup.create(spawn.x, spawn.y, Assets.POWERUPS, selectedPowerupFrameKey);
+        const powerup = powerupSpawnGroup.create(spawn.x, spawn.y, Assets.SPRITE_ATLAS, selectedPowerupFrameKey);
         powerup.setScale(GameConstants.SPRITE_SCALE);
         powerup.setDepth(GameConstants.SPRITE_DEPTH);
         
@@ -422,16 +407,15 @@ export default class MainScene extends ScrollingSpaceScene {
         if(this.shieldTimer > this.time.now){
             this.shield.setVisible(true);
             const shieldBody = this.shield.body as Phaser.Physics.Arcade.Body;
-            shieldBody.x = this.playerBody.x;
-            shieldBody.y = this.playerBody.y - GameConstants.SHIELD_Y_BUFFER;
+            shieldBody.x = this.playerBody.x - GameConstants.SHIELD_X_OFFSET;
+            shieldBody.y = this.playerBody.y - GameConstants.SHIELD_Y_OFFSET;
         }else{
             this.shield.setVisible(false);
         }
 
         if(this.shieldAvailable){
             this.shieldText.setText(GameConstants.SHIELD_POWERUP_TEXT);
-        }
-        
+        }    
     }
 
     gameObjectCulling(){

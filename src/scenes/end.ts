@@ -33,10 +33,10 @@ export default class EndScene extends Phaser.Scene {
         const background = this.add.sprite(0, 0, Assets.SPACE_BACKGROUND);
         background.setOrigin(0, 0);
 
-        const deathText = this.add.sprite(this.screenCenter.x, 20, Assets.DEATH_TEXT);
+        const deathText = this.add.sprite(this.screenCenter.x, 20, Assets.TEXT_ATLAS, Assets.DEATH_TEXT);
         deathText.setOrigin(0.5, 0);
 
-        const restartText = this.add.sprite(this.screenCenter.x, 500, Assets.RESTART_TEXT);
+        const restartText = this.add.sprite(this.screenCenter.x, 500, Assets.TEXT_ATLAS, Assets.RESTART_TEXT);
         restartText.setOrigin(0.5, 0);
 
         const scoreText = this.add.text(this.cameras.main.centerX, 350, `YOU SURVIVED ${this.score} SECONDS!`, { 

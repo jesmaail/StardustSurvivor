@@ -3,14 +3,17 @@ export const SITE_LINK = "https://twitter.com/DeciGames";
 export const IMAGE_PATH = "assets/img";
 export const AUDIO_PATH = "assets/audio";
 
+export const TEXT_ATLAS = "text";
+export const SPRITE_ATLAS = "sprites";
+
 // Images
 export const SPACE_BACKGROUND = "space";
-export const DEATH_TEXT = "Assets.DEATH_TEXT";
+export const DEATH_TEXT = "dead";
 export const RESTART_TEXT = "restart";
 export const TITLE_TEXT = "title";
 export const START_TEXT = "start";
 export const SHIP = "ship";
-export const BULLET = "bullet";
+export const BULLET = "laser";
 export const SHIELD = "shield";
 export const DECIGAMES_LOGO = "dg";
 
@@ -19,6 +22,9 @@ export const ASTEROID = "asteroid";
 export const ASTEROID_BIG = "asteroidBig";
 export const EXPLOSION = "explosion";
 export const POWERUPS = "powerups";
+
+export const ASTEROID_COUNT = 6;
+export const LARGE_ASTEROID_COUNT = 8;
 
 // Audio
 export const MENU_MUSIC = "menuMusic";
