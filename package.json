@@ -4,9 +4,9 @@
     "description": "Redo of my first ever webgame.",
     "main": "src/game.ts",
     "scripts": {
-        "dev": "rollup --config rollup.config.dev.mjs",
-        "build": "rollup --config rollup.config.dist.mjs",
-        "watch": "rollup --watch --config rollup.config.dev.mjs"
+        "dev": "rollup --config buildTools/rollup.config.dev.mjs",
+        "build": "rollup --config buildTools/rollup.config.dist.mjs",
+        "watch": "rollup --watch --config buildTools/rollup.config.dev.mjs"
     },
     "author": "Joseph Esmaail",
     "devDependencies": {
