@@ -11,7 +11,7 @@
     "textureName": "sprite_atlas",
     "textureFormat": "png",
     "removeFileExtension": true,
-    "prependFolderName": true,
+    "prependFolderName": false,
     "base64Export": false,
     "tinify": false,
     "tinifyKey": "",
@@ -32,6 +32,6 @@
     "alphaThreshold": "0",
     "detectIdentical": true,
     "packer": "MaxRectsPacker",
-    "packerMethod": "Smart"
+    "packerMethod": "Square"
   }
 }
