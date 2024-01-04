@@ -158,7 +158,6 @@ export default class MainScene extends ScrollingSpaceScene {
         this.ammoText.setText("Ammo: " + this.ammo);
         this.scoreText.setText("Score: " + this.score);
 
-
         this.playerControls();
         this.collisionDetection();
         this.shieldSystem();
@@ -182,6 +181,9 @@ export default class MainScene extends ScrollingSpaceScene {
                 }
                 break;
             case this.cursors.down.isDown:
+                if(!this.shieldAvailable){
+                    break;
+                }
                 this.shieldText.setText("");
                 this.shieldTimer = this.time.now + GameConstants.SHIELD_POWERUP_DURATION;
                 this.shieldAvailable = false;
@@ -439,6 +441,7 @@ export default class MainScene extends ScrollingSpaceScene {
             // Clean up state ready for restart
             this.playerDeathTimer = 0;
             this.shieldTimer = 0;
+            this.doubleBulletTimer = 0;
             this.ammo = GameConstants.STARTING_AMMO;
             this.score = 0;
             this.playerDestroyed = false;
