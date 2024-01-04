@@ -9,13 +9,13 @@ export const TEXT_Y = 30;
 export const SPRITE_SCALE = 0.6;
 
 export const SCORE_INCREMENT = 1000;
-export const PLAYER_SPEED = 350;
-export const FIRE_DELAY = 550;
-export const STARTING_AMMO = 30;
-export const BULLET_SPEED = 600;
+export const PLAYER_SPEED = 500;
+export const FIRE_DELAY = 300;
+export const STARTING_AMMO = 40;
+export const BULLET_SPEED = 800;
 export const PLAYER_DEATH_WAIT = 500;
-export const ASTEROID_SPAWN_RATE = 50;
-export const DIFFICULTY_INCREASE_RATE = 50; // Lower is harder
+export const ASTEROID_SPAWN_RATE = 75;
+export const DIFFICULTY_INCREASE_RATE = 100; // Lower is harder
 
 // TODO - Improve the font?
 export const TEXT_FONT = "15px Arial";
@@ -42,6 +42,6 @@ export const POWERUP_SPEED = 200;
 export const AMMO_POWERUP_INCREMENT = 5;
 export const DOUBLE_POWERUP_DURATION = 2500;
 export const SHIELD_POWERUP_TEXT = "Shields Online";
-export const SHIELD_X_OFFSET = 10;
+export const SHIELD_X_OFFSET = 17;
 export const SHIELD_Y_OFFSET = 15;
 export const SHIELD_POWERUP_DURATION = 2500;
