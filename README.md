@@ -6,20 +6,29 @@ Game has been ported across from Phaser 2 Javascript to Phaser 3 Typescript :tad
 
 # TODO
 - New name?
-    - Kuiper Clash
+    - Kuiper Klash
+    - Asteroid Clash
+    - Kuiper Quest
+    - Cosmic Collider
+    - Asteroid Assault
+    - Cosmic Dodger
+    - Meteor Mayhem
+    - Asteroid Arena
+    - Starship Survival
+    - Asteroid Annihilator
+    - Orbit Odyssey
+    - Galactic Gauntlet
+    - Void Voyager
+    - Stellar Striker
+
 
 ## Improvements
 - Add rollup plugins to prod build
-- Add more simple textures than my old handmades
-    - Explosions
-    - Text
+- Use a font rather than images - https://fonts.google.com/specimen/Press+Start+2P
 - Abstract logic out of main.ts
 - Encapsulate behaviours
     - e.g. Ship, Asteroids, Powerups.
     - Asteroid and LargeAsteroid spawn logic now identical so needs consolidation
-- Improve asteroid spawning pattern
-    - Preserve old behaviour as "2014 mode"
-    - This has gotten a lot worse with improved more varied sprites.
 - Powerup improvements
     - Use icon to signify online/available
     - Duration indicator
