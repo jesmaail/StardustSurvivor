@@ -22,6 +22,7 @@ export const ASTEROID = "asteroid";
 export const ASTEROID_BIG = "asteroidBig";
 export const EXPLOSION = "explosion";
 export const POWERUPS = "powerups";
+export const EXPLOSION_ANIMATIONS = "explosionAnimation";
 
 export const ASTEROID_COUNT = 6;
 export const LARGE_ASTEROID_COUNT = 8;

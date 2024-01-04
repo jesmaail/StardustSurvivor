@@ -77,6 +77,17 @@ export default class MainScene extends ScrollingSpaceScene {
         this.playerDeathSound = this.game.sound.add(Assets.DEATH_SOUND);
         this.music = this.game.sound.add(Assets.GAME_MUSIC);
 
+        this.anims.create({
+            key: Assets.EXPLOSION_ANIMATIONS,
+            frames: [
+                { key: Assets.SPRITE_ATLAS, frame: `${Assets.EXPLOSION}0`},
+                { key: Assets.SPRITE_ATLAS, frame: `${Assets.EXPLOSION}1`},
+                { key: Assets.SPRITE_ATLAS, frame: `${Assets.EXPLOSION}2`}
+            ],
+            frameRate: 15,
+            repeat: 0
+        });
+
         // TODO - Laziness here, will preprocess this much earlier in the process if at all.
         for (let i = 0; i < Assets.ASTEROID_COUNT; i++) {
             this.asteroidFrames.push(Assets.ASTEROID + i);
@@ -337,19 +348,11 @@ export default class MainScene extends ScrollingSpaceScene {
         explosion.setDepth(GameConstants.SPRITE_DEPTH);
         this.physics.world.enable(explosion);
 
-        // TODO - Can use this animations config to set up animations once rather than each creation
-        const config = {
-            key: "boom",
-            frames: Assets.EXPLOSION,
-            frameRate: 15,
-            repeat: 0
-        };
-        this.anims.create(config);
-        explosion.on("animationcomplete-boom", () => {
+        explosion.on(`animationcomplete-${Assets.EXPLOSION_ANIMATIONS}`, () => {
             explosion.destroy();
         });
 
-        explosion.play("boom");
+        explosion.play(Assets.EXPLOSION_ANIMATIONS);
         this.explosionSound.play();
     }
 
@@ -363,7 +366,6 @@ export default class MainScene extends ScrollingSpaceScene {
         const selectedPowerupFrameKey = getRandomFromSelection(powerups);
 
         let powerupSpawnGroup: Phaser.GameObjects.Group = null;
-
 
         switch(selectedPowerupFrameKey){
             case GameConstants.SHIELD_POWERUP_FRAME_KEY:

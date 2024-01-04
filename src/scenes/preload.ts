@@ -22,15 +22,13 @@ export default class PreloadScene extends ScrollingSpaceScene {
         const loading = this.add.text(this.screenCenter.x, this.screenCenter.y, "LOADING...");
         loading.setOrigin(0.5);
 
-        // this.loadImages();
-        // this.loadSpritesheets();
         this.loadAudio();
         this.load.image(Assets.SPACE_BACKGROUND, `${IMAGE_PATH}/space.png`);
-        const explosion_sprite_config: ImageFrameConfig = {
-            frameWidth: 40,
-            frameHeight: 40
-        };
-        this.load.spritesheet(Assets.EXPLOSION, `${IMAGE_PATH}/explosion.png`, explosion_sprite_config);
+        // const explosion_sprite_config: ImageFrameConfig = {
+        //     frameWidth: 40,
+        //     frameHeight: 40
+        // };
+        // this.load.spritesheet(Assets.EXPLOSION, `${IMAGE_PATH}/explosion.png`, explosion_sprite_config);
 
         this.load.path = `${IMAGE_PATH}/`;
         this.load.multiatlas(Assets.SPRITE_ATLAS, "sprite_atlas.json");
@@ -73,50 +71,6 @@ export default class PreloadScene extends ScrollingSpaceScene {
         }
 
         this.scrollSpaceBackground();
-    }
-
-    private loadImages() {
-        // Backgrounds
-        this.load.image(Assets.SPACE_BACKGROUND, `${IMAGE_PATH}/space.png`);
-
-        // Text
-        this.load.image(Assets.DEATH_TEXT, `${IMAGE_PATH}/dead.png`);
-        this.load.image(Assets.RESTART_TEXT, `${IMAGE_PATH}/restart.png`);
-
-        // Menus
-        this.load.image(Assets.TITLE_TEXT, `${IMAGE_PATH}/title.png`);
-        this.load.image(Assets.START_TEXT, `${IMAGE_PATH}/start.png`);
-
-
-        // Sprites
-        this.load.image(Assets.SHIP, `${IMAGE_PATH}/ship.png`);
-        this.load.image(Assets.BULLET, `${IMAGE_PATH}/rocket.png`);
-        this.load.image(Assets.SHIELD, `${IMAGE_PATH}/shield.png`);
-
-        // Logo
-        this.load.image(Assets.DECIGAMES_LOGO, `${IMAGE_PATH}/dg.png`);
-    }
-
-    private loadSpritesheets() {
-        const asteroid_sprite_config: ImageFrameConfig = {
-            frameWidth: 32,
-            frameHeight: 32
-        };
-        this.load.spritesheet(Assets.ASTEROID, `${IMAGE_PATH}/asteroid.png`, asteroid_sprite_config);
-
-        const big_asteroid_sprite_config: ImageFrameConfig = {
-            frameWidth: 48,
-            frameHeight: 48
-        };
-        this.load.spritesheet(Assets.ASTEROID_BIG, `${IMAGE_PATH}/asteroidBig.png`, big_asteroid_sprite_config);
-
-        
-
-        const powerup_sprite_config: ImageFrameConfig = {
-            frameWidth: 144,
-            frameHeight: 144
-        };
-        this.load.spritesheet(Assets.POWERUPS, `${IMAGE_PATH}/powerups.png`, powerup_sprite_config);
     }
 
     private loadAudio() {
