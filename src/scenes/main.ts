@@ -9,6 +9,8 @@ export default class MainScene extends ScrollingSpaceScene {
 
     private music: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
 
+    private gameTick: number = 0;
+
     // Text
     private ammoText: Phaser.GameObjects.Text;
     private scoreText: Phaser.GameObjects.Text;
@@ -34,8 +36,6 @@ export default class MainScene extends ScrollingSpaceScene {
     // Asteroids
     private asteroids: Phaser.GameObjects.Group;
     private largeAsteroids: Phaser.GameObjects.Group;
-    private asteroidX: number = 0;
-    private asteroidY: number = 20;
     private explosions: Phaser.GameObjects.Group;
     private hitSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
     private explosionSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
@@ -135,6 +135,8 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     update() {
+        this.gameTick++;
+
         debugLogGroupCount(this.explosions);
         
         this.scrollSpaceBackground();
@@ -219,24 +221,14 @@ export default class MainScene extends ScrollingSpaceScene {
 
     spawnAsteroids() {
         // TODO - Normal and Large asteroid loading is now essentially the same,
-        //        so they should be merged.
-        // TODO - Probably worth extracting Asteroid spawn logic out entirely.
+        //        so they should be merged when extracted out.
 
-        // I need to remember what this is for...
-        // Looks like X and Y were bad values for this.
-        this.asteroidX++; 
-
-        if(this.asteroidX % this.asteroidY != 0){
+        const difficultyMultiplier = Math.floor(this.gameTick / GameConstants.DIFFICULTY_INCREASE_RATE);
+        const spawnRate = Math.max(GameConstants.ASTEROID_SPAWN_RATE - difficultyMultiplier,  10);
+        
+        if(this.gameTick % spawnRate !== 0){
             return;
-        }
-
-        // Not sure what this logic chunk is doing either :D
-        if(this.asteroidX % 25 == 0){
-            if(this.asteroidY == 3){
-                this.asteroidY = 20;
-            }
-            this.asteroidY -=1;
-        }
+        } 
 
         const spawnPointX = Phaser.Math.Between(-100, 4050) / 10; // Again, why these numbers?
 

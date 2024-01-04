@@ -14,6 +14,8 @@ export const FIRE_DELAY = 550;
 export const STARTING_AMMO = 30;
 export const BULLET_SPEED = 600;
 export const PLAYER_DEATH_WAIT = 500;
+export const ASTEROID_SPAWN_RATE = 50;
+export const DIFFICULTY_INCREASE_RATE = 50; // Lower is harder
 
 // TODO - Improve the font?
 export const TEXT_FONT = "15px Arial";
