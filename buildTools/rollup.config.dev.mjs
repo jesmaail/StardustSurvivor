@@ -9,8 +9,6 @@ import createIndexHtml from "./plugins/createIndexHtml.mjs";
 const assetFiles = [
     "assets/img/sprite_atlas.png", 
     "assets/img/sprite_atlas.json",
-    "assets/img/text_atlas.png", 
-    "assets/img/text_atlas.json",
     "assets/img/space.png",
     "assets/audio/deflect.mp3",
     "assets/audio/endScreen.mp3",

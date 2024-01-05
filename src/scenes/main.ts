@@ -99,9 +99,9 @@ export default class MainScene extends ScrollingSpaceScene {
 
     create() {
         this.initSpaceBackground();
-        this.ammoText = this.add.text(30, GameConstants.TEXT_Y, "Ammo: "+ this.ammo , GameConstants.DEFAULT_TEXT_STYLE);
+        this.ammoText = this.add.text(30, GameConstants.TEXT_Y, "Ammo: "+ this.ammo , GameConstants.INGAME_TEXT_STYLE);
         this.ammoText.setDepth(GameConstants.TEXT_DEPTH);
-        this.scoreText = this.add.text(290, GameConstants.TEXT_Y, "Score: " + this.score , GameConstants.DEFAULT_TEXT_STYLE);
+        this.scoreText = this.add.text(290, GameConstants.TEXT_Y, "Score: " + this.score , GameConstants.INGAME_TEXT_STYLE);
         this.scoreText.setDepth(GameConstants.TEXT_DEPTH);
         this.shieldText = this.add.text(200, GameConstants.TEXT_Y, "" , {font: GameConstants.TEXT_FONT, color: GameConstants.SHIELD_TEXT_COLOUR });
         this.shieldText.setOrigin(0.5, 0);

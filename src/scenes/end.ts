@@ -1,6 +1,7 @@
 import * as Phaser from "phaser";
 import { getScreenCenter, Point2D } from "../helpers";
 import * as Assets from "../constants/assetConstants";
+import * as GameConstants from "../constants/gameplayConstants";
 
 export default class EndScene extends Phaser.Scene {
     private screenCenter: Point2D;
@@ -16,7 +17,6 @@ export default class EndScene extends Phaser.Scene {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     init(data: any) {
-        console.log(data);
         this.score = data.score;
     }
 
@@ -33,17 +33,24 @@ export default class EndScene extends Phaser.Scene {
         const background = this.add.sprite(0, 0, Assets.SPACE_BACKGROUND);
         background.setOrigin(0, 0);
 
-        const deathText = this.add.sprite(this.screenCenter.x, 20, Assets.TEXT_ATLAS, Assets.DEATH_TEXT);
-        deathText.setOrigin(0.5, 0);
+        const dramaticReadout1 = "YOUR SHIP CRASHED\nINTO AN ASTEROID.";
+        const dramaticReadout2 = "ALL CREW ABOARD\nWERE INCINERATED\nUPON IMPACT.";
+        const dramaticReadout3 = "AND IT WAS ALL\nYOUR FAULT.";
+        const fullDramaticReadout = `${dramaticReadout1}\n\n${dramaticReadout2}\n\n${dramaticReadout3}`;
 
-        const restartText = this.add.sprite(this.screenCenter.x, 500, Assets.TEXT_ATLAS, Assets.RESTART_TEXT);
-        restartText.setOrigin(0.5, 0);
+        const dramaticTextConfig = {fontFamily: GameConstants.TEXT_FONT, fontSize: 20, color: GameConstants.DEFAULT_TEXT_COLOUR};
+        const dramaticText = this.add.text(this.screenCenter.x, 20, fullDramaticReadout, dramaticTextConfig);
+        dramaticText.setOrigin(0.5, 0);
+        dramaticText.setDepth(GameConstants.SPRITE_DEPTH);
 
-        const scoreText = this.add.text(this.cameras.main.centerX, 350, `YOU SURVIVED ${this.score} SECONDS!`, { 
-            font: "bold 23px Courier New", 
-            color: "#ff7800",
-            align: "center"
-        });
+        const restartTextYPosition = this.cameras.main.height - 100;
+        const restartTextConfig = {fontFamily: GameConstants.TEXT_FONT, fontSize: 18, color: GameConstants.DEFAULT_TEXT_COLOUR};
+        const restartText = this.add.text(this.screenCenter.x, restartTextYPosition, "PRESS [↑] TO RESTART", restartTextConfig);
+        restartText.setOrigin(0.5);
+        restartText.setDepth(GameConstants.SPRITE_DEPTH);
+
+        const scoreTextConfig = {fontFamily: GameConstants.TEXT_FONT, fontSize: 20, color: "#ff7800", align: "center"};
+        const scoreText = this.add.text(this.cameras.main.centerX, 350, `YOU SURVIVED\n${this.score}\nSECONDS!`, scoreTextConfig);
         scoreText.setOrigin(0.5, 0);
     }
 

@@ -1,30 +1,11 @@
-# AsteroidGame
-DeciGames Asteroid game
+# Stardust Survivor
+_Working title: "Space Fighters: Asteroid Field"_
 
-
-Game has been ported across from Phaser 2 Javascript to Phaser 3 Typescript :tada:
-
-# TODO
-- New name?
-    - Kuiper Klash
-    - Asteroid Clash
-    - Kuiper Quest
-    - Cosmic Collider
-    - Asteroid Assault
-    - Cosmic Dodger
-    - Meteor Mayhem
-    - Asteroid Arena
-    - Starship Survival
-    - Asteroid Annihilator
-    - Orbit Odyssey
-    - Galactic Gauntlet
-    - Void Voyager
-    - Stellar Striker
+This game has been ported across from Phaser 2 Javascript to Phaser 3 Typescript :tada:
 
 
 ## Improvements
 - Add rollup plugins to prod build
-- Use a font rather than images - https://fonts.google.com/specimen/Press+Start+2P
 - Abstract logic out of main.ts
 - Encapsulate behaviours
     - e.g. Ship, Asteroids, Powerups.
@@ -44,4 +25,4 @@ Game has been ported across from Phaser 2 Javascript to Phaser 3 Typescript :tad
 
 - [Kenney Space Shooter Redux](https://kenney.nl/assets/space-shooter-reduxe)
 - [TexturePacker](https://www.codeandweb.com/texturepacker)
-- [`Press Start 2P` Font](https://fonts.google.com/specimen/Press+Start+2P)
+- ['Press Start 2P' Font](https://fonts.google.com/specimen/Press+Start+2P)

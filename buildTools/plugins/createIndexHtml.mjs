@@ -9,7 +9,7 @@ const htmlContent = `<!DOCTYPE html>
     <style media='screen' type='text/css'>
       @font-face {
         font-family: PressStart2P;
-        src: url('./assets/fonts/PressStart2P-Regular.ttf');
+        src: url('./assets/fonts/PressStart2P/PressStart2P-Regular.ttf');
         font-weight:400;
         font-weight:normal;
       }

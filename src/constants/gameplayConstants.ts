@@ -20,7 +20,7 @@ export const DIFFICULTY_INCREASE_RATE = 100; // Lower is harder
 export const TEXT_FONT = "PressStart2P";
 export const DEFAULT_TEXT_COLOUR = "#fff";
 export const SHIELD_TEXT_COLOUR = "#ff0000";
-export const DEFAULT_TEXT_STYLE = {fontFamily: TEXT_FONT, fontSize: 10, color: DEFAULT_TEXT_COLOUR};
+export const INGAME_TEXT_STYLE = {fontFamily: TEXT_FONT, fontSize: 10, color: DEFAULT_TEXT_COLOUR};
 
 export const LARGE_ASTEROID_CHANCE = 10;
 export const LARGE_ASTEROID_SPEED = 250;

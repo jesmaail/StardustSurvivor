@@ -25,23 +25,24 @@ export default class PreloadScene extends ScrollingSpaceScene {
 
         this.load.path = `${IMAGE_PATH}/`;
         this.load.multiatlas(Assets.SPRITE_ATLAS, "sprite_atlas.json");
-        this.load.multiatlas(Assets.TEXT_ATLAS, "text_atlas.json");
     }
 
     // TODO - Clean up positioning
     create() {
         this.initSpaceBackground();
         this.music = this.game.sound.add(Assets.MENU_MUSIC);
+        
+        const titleText = this.add.text(this.screenCenter.x, 50, "STARDUST\nSURVIVOR", {fontFamily: GameConstants.TEXT_FONT, fontSize: 40, color: GameConstants.DEFAULT_TEXT_COLOUR});
+        titleText.setOrigin(0.5, 0);
+        titleText.setDepth(GameConstants.SPRITE_DEPTH);
 
-        const title = this.add.image(40, 50, Assets.TEXT_ATLAS, Assets.TITLE_TEXT);
-        title.setOrigin(0, 0);
-        title.setDepth(GameConstants.SPRITE_DEPTH);
+        const startTextYPosition = this.cameras.main.height - 150;
+        const startTextConfig = {fontFamily: GameConstants.TEXT_FONT, fontSize: 18, color: GameConstants.DEFAULT_TEXT_COLOUR};
+        const startText = this.add.text(this.screenCenter.x, startTextYPosition, "PRESS [↑] TO START!", startTextConfig);
+        startText.setOrigin(0.5);
+        startText.setDepth(GameConstants.SPRITE_DEPTH);
         
-        const start = this.add.image(this.screenCenter.x, this.cameras.main.height - 150, Assets.TEXT_ATLAS, Assets.START_TEXT);
-        start.setOrigin(0.5);
-        start.setDepth(GameConstants.SPRITE_DEPTH);
-        
-        const logo = this.add.image(this.cameras.main.width - 50, this.cameras.main.height - 50, Assets.TEXT_ATLAS, Assets.DECIGAMES_LOGO);
+        const logo = this.add.image(this.cameras.main.width - 50, this.cameras.main.height - 50, Assets.SPRITE_ATLAS, Assets.DECIGAMES_LOGO);
         logo.setScale(0.5);
         logo.setOrigin(0.5);
         logo.setDepth(GameConstants.SPRITE_DEPTH);
