@@ -1,26 +1,47 @@
 import fs from "fs";
 import path from "path";
 
-// TODO - Create directory if doesn't exist.
-const moveAssets = (fileList) => {
+const moveAssets = (destinationDirectory, manifestDirectory, manifestFileName = "manifest.json") => {
     return {
         name: "move-assets",
         writeBundle: () => {
-            console.log("Moving asset files...");
-            const destinationDirectory = "./dist";
+            const manifestFilePath = path.join(manifestDirectory, manifestFileName);
+            console.log(`Moving asset files defined in ${manifestFilePath}`);
 
-            fileList.forEach(file => {
-                console.log(`Moving ${file}`);
-                const destinationPath = path.join(destinationDirectory, file);
+            const manifestJsonString = fs.readFileSync(manifestFilePath, "utf-8");
+            const manifest = JSON.parse(manifestJsonString);
 
-                if(fs.existsSync(file)){
-                    fs.copyFileSync(file, destinationPath);
-                } else {
-                    console.warn(`File not found ${file}`);
-                }
+            manifest.assetGroups.forEach(assetGroup => {
+                const assetInputPath = path.join(manifestDirectory, assetGroup.folderName);
+                const assetOutputPath = path.join(destinationDirectory, manifestDirectory, assetGroup.folderName);
+                    
+                assetGroup.files.forEach(file => {
+                    const nestedDirectories = path.dirname(file);
+                    const outputDirectory = path.join(assetOutputPath, nestedDirectories);
+                    createDirectoryIfNotExists(outputDirectory);
+
+                    const inputFilePath = path.join(assetInputPath, file);
+                    const outputFilePath = path.join(assetOutputPath, file);
+                    
+                    copyFileIfExists(inputFilePath, outputFilePath);
+
+                });
             });
         }
     };
 };
 
+const createDirectoryIfNotExists = (directory) => {
+    if (!fs.existsSync(directory)) {
+        fs.mkdirSync(directory, { recursive: true });
+    }
+};
+
+const copyFileIfExists = (filename, destinationPath) => {
+    if(fs.existsSync(filename)){
+        fs.copyFileSync(filename, destinationPath);
+    } else {
+        console.warn(`Error moving file - ${filename}`);
+    }
+};
 export default moveAssets;

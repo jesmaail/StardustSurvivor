@@ -6,23 +6,6 @@ import typescript from "@rollup/plugin-typescript";
 import moveAssets from "./plugins/moveAssetsPlugin.mjs";
 import createIndexHtml from "./plugins/createIndexHtml.mjs";
 
-const assetFiles = [
-    "assets/img/sprite_atlas.png", 
-    "assets/img/sprite_atlas.json",
-    "assets/img/space.png",
-    "assets/audio/deflect.mp3",
-    "assets/audio/endScreen.mp3",
-    "assets/audio/explode.mp3",
-    "assets/audio/fire.mp3",
-    "assets/audio/gameMusic.mp3",
-    "assets/audio/hit.mp3",
-    "assets/audio/playerDeath.mp3",
-    "assets/audio/powerup.mp3",
-    "assets/audio/shieldActivate.mp3",
-    "assets/audio/startMusic.mp3",
-    "assets/fonts/PressStart2P/PressStart2P-Regular.ttf"
-];
-
 export default {
 
     //  Game entrypoint
@@ -43,11 +26,8 @@ export default {
 
 
     plugins: [
-        // TODO - Add these to prod also when finalising for commit
-        // TODO - Remove the old dist/ files from source
-        // TODO - May need to update assetFiles list
         createIndexHtml(),
-        moveAssets(assetFiles),
+        moveAssets("./dist", "./assets"),
 
         //  Toggle the booleans here to enable / disable Phaser 3 features:
         replace({

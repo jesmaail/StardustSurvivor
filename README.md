@@ -5,7 +5,7 @@ This game has been ported across from Phaser 2 Javascript to Phaser 3 Typescript
 
 
 ## Improvements
-- Add rollup plugins to prod build
+- "GameFeel" improvements
 - Abstract logic out of main.ts
 - Encapsulate behaviours
     - e.g. Ship, Asteroids, Powerups.
@@ -16,8 +16,6 @@ This game has been ported across from Phaser 2 Javascript to Phaser 3 Typescript
 - Turn down the audio level
 
 ## Gotchas
-- Need to create asset folders under dist before running rollup
-    - Will improve the plugin to ensure it's created
 - Need to append '.png' to image name under the json file for texture atlas files so Phaser can load it.
     - A potential thing to add into the rollup pipeline via a plugin in the future?
 

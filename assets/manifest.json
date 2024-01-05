@@ -1,0 +1,33 @@
+{
+    "assetGroups": [
+        {
+            "folderName": "img",
+            "files": [
+                "sprite_atlas.png", 
+                "sprite_atlas.json",
+                "space.png"
+            ]
+        },
+        {
+            "folderName": "audio",
+            "files": [
+                "deflect.mp3",
+                "endScreen.mp3",
+                "explode.mp3",
+                "fire.mp3",
+                "gameMusic.mp3",
+                "hit.mp3",
+                "playerDeath.mp3",
+                "powerup.mp3",
+                "shieldActivate.mp3",
+                "startMusic.mp3"
+            ]
+        },
+        {
+            "folderName": "fonts",
+            "files": [
+                "PressStart2P/PressStart2P-Regular.ttf"
+            ]
+        }
+    ]
+}
