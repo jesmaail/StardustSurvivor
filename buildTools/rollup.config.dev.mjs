@@ -11,7 +11,6 @@ const assetFiles = [
     "assets/img/sprite_atlas.json",
     "assets/img/text_atlas.png", 
     "assets/img/text_atlas.json",
-    "assets/img/explosion.png", // Legacy files
     "assets/img/space.png",
     "assets/audio/deflect.mp3",
     "assets/audio/endScreen.mp3",
@@ -22,7 +21,8 @@ const assetFiles = [
     "assets/audio/playerDeath.mp3",
     "assets/audio/powerup.mp3",
     "assets/audio/shieldActivate.mp3",
-    "assets/audio/startMusic.mp3"
+    "assets/audio/startMusic.mp3",
+    "assets/fonts/PressStart2P/PressStart2P-Regular.ttf"
 ];
 
 export default {

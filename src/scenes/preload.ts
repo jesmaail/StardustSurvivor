@@ -5,8 +5,6 @@ import ScrollingSpaceScene from "./scrollingSpaceScene";
 import * as GameConstants from "../constants/gameplayConstants";
 import * as Assets from "../constants/assetConstants";
 
-import ImageFrameConfig = Phaser.Types.Loader.FileTypes.ImageFrameConfig
-
 export default class PreloadScene extends ScrollingSpaceScene {
     private screenCenter: Point2D;
     private startKey: Phaser.Input.Keyboard.Key;
@@ -24,11 +22,6 @@ export default class PreloadScene extends ScrollingSpaceScene {
 
         this.loadAudio();
         this.load.image(Assets.SPACE_BACKGROUND, `${IMAGE_PATH}/space.png`);
-        // const explosion_sprite_config: ImageFrameConfig = {
-        //     frameWidth: 40,
-        //     frameHeight: 40
-        // };
-        // this.load.spritesheet(Assets.EXPLOSION, `${IMAGE_PATH}/explosion.png`, explosion_sprite_config);
 
         this.load.path = `${IMAGE_PATH}/`;
         this.load.multiatlas(Assets.SPRITE_ATLAS, "sprite_atlas.json");

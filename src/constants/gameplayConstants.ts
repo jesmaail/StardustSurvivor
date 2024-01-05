@@ -17,11 +17,10 @@ export const PLAYER_DEATH_WAIT = 500;
 export const ASTEROID_SPAWN_RATE = 75;
 export const DIFFICULTY_INCREASE_RATE = 100; // Lower is harder
 
-// TODO - Improve the font?
-export const TEXT_FONT = "15px Arial";
+export const TEXT_FONT = "PressStart2P";
 export const DEFAULT_TEXT_COLOUR = "#fff";
 export const SHIELD_TEXT_COLOUR = "#ff0000";
-export const DEFAULT_TEXT_STYLE = {font: TEXT_FONT, color: DEFAULT_TEXT_COLOUR};
+export const DEFAULT_TEXT_STYLE = {fontFamily: TEXT_FONT, fontSize: 10, color: DEFAULT_TEXT_COLOUR};
 
 export const LARGE_ASTEROID_CHANCE = 10;
 export const LARGE_ASTEROID_SPEED = 250;

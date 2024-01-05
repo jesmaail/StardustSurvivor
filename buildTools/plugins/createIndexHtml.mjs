@@ -6,7 +6,16 @@ const htmlContent = `<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
+    <style media='screen' type='text/css'>
+      @font-face {
+        font-family: PressStart2P;
+        src: url('./assets/fonts/PressStart2P-Regular.ttf');
+        font-weight:400;
+        font-weight:normal;
+      }
+    </style>
     <script src="game.js"></script>
+    <div style="font-family:PressStart2P; position:absolute; left:-1000px; visibility:hidden;">.</div>
   </head>
   <body>
   </body>

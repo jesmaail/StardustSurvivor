@@ -44,3 +44,4 @@ Game has been ported across from Phaser 2 Javascript to Phaser 3 Typescript :tad
 
 - [Kenney Space Shooter Redux](https://kenney.nl/assets/space-shooter-reduxe)
 - [TexturePacker](https://www.codeandweb.com/texturepacker)
+- [`Press Start 2P` Font](https://fonts.google.com/specimen/Press+Start+2P)
