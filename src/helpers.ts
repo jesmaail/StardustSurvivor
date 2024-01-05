@@ -36,3 +36,12 @@ export function debugLogGroupCount(group: Phaser.GameObjects.Group){
 
     console.log(`${group.getLength()}`);
 }
+
+export function debugLog(gameScene: Phaser.Scene, fpsReadout: Phaser.GameObjects.Text){
+    if(!GameConstants.DEBUG_ENABLED){
+        return;
+    }
+    const fps = gameScene.game.loop.actualFps.toFixed(2);
+    fpsReadout.setText(`FPS: ${fps}`);
+    fpsReadout.setDepth(GameConstants.TEXT_DEPTH);
+}

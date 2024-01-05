@@ -2,6 +2,7 @@ import * as Phaser from "phaser";
 import * as Assets from "../constants/assetConstants";
 
 export default class ScrollingSpaceScene extends Phaser.Scene {
+    fps: Phaser.GameObjects.Text;
     scrollBuffer: number = 0;
     spaceScrollVelocity: number = 200;
     spaceScroll: Phaser.GameObjects.Group;
@@ -11,6 +12,11 @@ export default class ScrollingSpaceScene extends Phaser.Scene {
     }
 
     initSpaceBackground() {
+        const maxX = this.cameras.main.width;
+        const maxY = this.cameras.main.height;
+        this.fps = this.add.text(maxX - 5, maxY - 5, "");
+        this.fps.setOrigin(1, 1);
+        
         const background = this.add.sprite(0, 0, Assets.SPACE_BACKGROUND);
         background.setOrigin(0, 0);
         this.physics.world.enable(background);

@@ -1,5 +1,5 @@
 import * as Phaser from "phaser";
-import { Point2D, getRandomFromSelection, rollPercentageChance, debugLogGroupCount } from "../helpers";
+import { Point2D, getRandomFromSelection, rollPercentageChance, debugLog } from "../helpers";
 import ScrollingSpaceScene from "./scrollingSpaceScene";
 import * as GameConstants from "../constants/gameplayConstants";
 import * as Assets from "../constants/assetConstants";
@@ -136,8 +136,7 @@ export default class MainScene extends ScrollingSpaceScene {
 
     update() {
         this.gameTick++;
-
-        debugLogGroupCount(this.explosions);
+        debugLog(this, this.fps);
         
         this.scrollSpaceBackground();
         this.spawnAsteroids();

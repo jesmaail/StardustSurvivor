@@ -50,7 +50,6 @@ export default class PreloadScene extends ScrollingSpaceScene {
         logo.setInteractive();
         logo.on("pointerdown", () => this.linkToSite());
 
-
         if(GameConstants.AUDIO_ENABLED){
             this.music.loop = true;
             this.music.play();
