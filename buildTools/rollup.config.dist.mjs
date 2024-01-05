@@ -5,6 +5,7 @@ import terser from "@rollup/plugin-terser";
 import typescript from "@rollup/plugin-typescript";
 import moveAssets from "./plugins/moveAssetsPlugin.mjs";
 import createIndexHtml from "./plugins/createIndexHtml.mjs";
+import freeTexturePackerPhaserFix from "./plugins/freeTextPackerPhaserFix.mjs";
 
 export default {
 
@@ -27,6 +28,7 @@ export default {
     plugins: [
         createIndexHtml(),
         moveAssets("./dist", "./assets"),
+        freeTexturePackerPhaserFix(["./dist/assets/img/sprite_atlas.json"]),
 
         //  Toggle the booleans here to enable / disable Phaser 3 features:
         replace({

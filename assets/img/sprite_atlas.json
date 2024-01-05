@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "sprite_atlas.png",
+			"image": "sprite_atlas",
 			"format": "RGBA8888",
 			"size": {
 				"w": 1184,
