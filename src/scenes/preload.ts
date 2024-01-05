@@ -25,6 +25,7 @@ export default class PreloadScene extends ScrollingSpaceScene {
 
         this.load.path = `${IMAGE_PATH}/`;
         this.load.multiatlas(Assets.SPRITE_ATLAS, "sprite_atlas.json");
+        this.sound.volume = GameConstants.DEFAULT_VOLUME;
     }
 
     // TODO - Clean up positioning
