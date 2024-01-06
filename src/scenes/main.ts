@@ -1,9 +1,14 @@
 import * as Phaser from "phaser";
-import { Point2D, getRandomFromSelection, rollPercentageChance, debugLog } from "../helpers";
-import ScrollingSpaceScene from "./scrollingSpaceScene";
+
 import * as GameConstants from "../constants/gameplayConstants";
 import * as Assets from "../constants/assetConstants";
-import IAsteroidPool, { Asteroid, AsteroidType } from "../sprites/AsteroidPool";
+
+import IAsteroidPool from "../sprites/AsteroidPool";
+import ScrollingSpaceScene from "./scrollingSpaceScene";
+
+import { Point2D, getRandomFromSelection, rollPercentageChance, debugLog } from "../helpers";
+import { AsteroidType } from "../sprites/AsteroidType";
+import { Asteroid } from "../sprites/Asteroid";
 
 export default class MainScene extends ScrollingSpaceScene {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;

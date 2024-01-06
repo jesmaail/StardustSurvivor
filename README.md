@@ -8,8 +8,7 @@ This game has been ported across from Phaser 2 Javascript to Phaser 3 Typescript
 - "GameFeel" improvements
 - Abstract logic out of main.ts
 - Encapsulate behaviours
-    - e.g. Ship, Asteroids, Powerups.
-    - Asteroid and LargeAsteroid spawn logic now identical so needs consolidation
+    - e.g. Ship, Asteroids, Powerups
 - Performance
     - Review object culling
     - Object recycling

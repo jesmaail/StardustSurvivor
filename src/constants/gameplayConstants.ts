@@ -1,4 +1,4 @@
-export const DEBUG_ENABLED = false;
+export const DEBUG_ENABLED = true;
 export const AUDIO_ENABLED = true;
 
 export const TEXT_DEPTH = Number.MAX_VALUE;
@@ -22,17 +22,6 @@ export const TEXT_FONT = "PressStart2P";
 export const DEFAULT_TEXT_COLOUR = "#fff";
 export const SHIELD_TEXT_COLOUR = "#ff0000";
 export const INGAME_TEXT_STYLE = {fontFamily: TEXT_FONT, fontSize: 10, color: DEFAULT_TEXT_COLOUR};
-
-export const LARGE_ASTEROID_CHANCE = 10;
-export const LARGE_ASTEROID_SPEED = 250;
-export const ASTEROID_SPEED_MIN = 325;
-export const ASTEROID_SPEED_MAX = 375;
-export const ASTEROID_SPAWN_Y = -50;
-export const ASTEROID_VELOCITY_X = 0;
-export const FRACTURED_ASTEROID_SPEED_MIN = 250;
-export const FRACTURED_ASTEROID_SPEED_MAX = 350;
-export const FRACTURED_ASTEROID_DRIFT_MIN = 0;
-export const FRACTURED_ASTEROID_DRIFT_MAX = 150;
 
 export const POWERUP_SPAWN_CHANCE = 25;
 export const SHIELD_POWERUP_FRAME_KEY = "powerupShield";
