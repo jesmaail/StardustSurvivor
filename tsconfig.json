@@ -1,10 +1,10 @@
 {
     "compilerOptions": {
-        "target": "es5",
-        "moduleResolution": "node"
+        "target": "ES2019",
     },
     "include": [
-        "./src/**/*"
+        "src/**/*",
+        "types/**/*"
     ],
     "typeRoots": [
         "node_modules/@types",

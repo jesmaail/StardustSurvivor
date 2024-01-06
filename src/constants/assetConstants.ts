@@ -17,6 +17,14 @@ export const SHIELD = "shield";
 export const DECIGAMES_LOGO = "dg";
 
 // Spritesheets
+export const ASTEROID_SPRITE_FRAMES: string[] = [
+    "asteroid0", 
+    "asteroid1", 
+    "asteroid2", 
+    "asteroid3", 
+    "asteroid4", 
+    "asteroid5"
+];
 export const ASTEROID = "asteroid";
 export const ASTEROID_BIG = "asteroidBig";
 export const EXPLOSION = "explosion";

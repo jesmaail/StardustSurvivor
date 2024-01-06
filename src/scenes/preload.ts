@@ -4,6 +4,7 @@ import { getScreenCenter, Point2D } from "../helpers";
 import ScrollingSpaceScene from "./scrollingSpaceScene";
 import * as GameConstants from "../constants/gameplayConstants";
 import * as Assets from "../constants/assetConstants";
+import AsteroidPool from "../sprites/AsteroidPool";
 
 export default class PreloadScene extends ScrollingSpaceScene {
     private screenCenter: Point2D;
@@ -13,6 +14,11 @@ export default class PreloadScene extends ScrollingSpaceScene {
     
     constructor() {
         super({ key: "PreloadScene" });
+
+        // TODO - Split out into some kind of DI file
+        Phaser.GameObjects.GameObjectFactory.register("asteroidPool", function () {
+            return this.updateList.add(new AsteroidPool(this.scene));
+        });
     }
 
     preload() {

@@ -10,10 +10,12 @@ This game has been ported across from Phaser 2 Javascript to Phaser 3 Typescript
 - Encapsulate behaviours
     - e.g. Ship, Asteroids, Powerups.
     - Asteroid and LargeAsteroid spawn logic now identical so needs consolidation
+- Performance
+    - Review object culling
+    - Object recycling
 - Powerup improvements
     - Use icon to signify online/available
     - Duration indicator
-- Turn down the audio level
 
 
 # Credits
