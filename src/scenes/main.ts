@@ -4,11 +4,13 @@ import * as GameConstants from "../constants/gameplayConstants";
 import * as Assets from "../constants/assetConstants";
 
 import IAsteroidPool from "../sprites/AsteroidPool";
+import IMissilePool from "../sprites/MissilePool";
 import ScrollingSpaceScene from "./scrollingSpaceScene";
 
 import { Point2D, getRandomFromSelection, rollPercentageChance, debugLog } from "../helpers";
 import { AsteroidType } from "../sprites/AsteroidType";
 import { Asteroid } from "../sprites/Asteroid";
+import { PlayerShip, ShipAction } from "../sprites/PlayerShip";
 
 export default class MainScene extends ScrollingSpaceScene {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -27,13 +29,14 @@ export default class MainScene extends ScrollingSpaceScene {
     private scoreTimer: number = 0;
 
     // Player
-    private player: Phaser.GameObjects.Sprite;
+    private player: PlayerShip;
     private playerBody: Phaser.Physics.Arcade.Body;
     private playerDeathSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
     private playerDestroyed: boolean = false;
     private playerDeathTimer: number;
 
     // Bullets
+    private missilePool: IMissilePool;
     private bullets: Phaser.GameObjects.Group;
     private bulletSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
     private ammo: number;
@@ -63,6 +66,7 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     preload () {
+        this.missilePool = this.add.missilePool();
         this.bullets = this.add.group();
         this.spaceScroll = this.add.group();
         this.explosions = this.add.group();
@@ -96,7 +100,9 @@ export default class MainScene extends ScrollingSpaceScene {
         this.ammo = GameConstants.STARTING_AMMO;
         // this.physics.world.createDebugGraphic();
 
+        // TODO - move to preload?
         this.asteroidPool = this.add.asteroidPool();
+
         this.initSpaceBackground();
         this.ammoText = this.add.text(30, GameConstants.TEXT_Y, "Ammo: "+ this.ammo , GameConstants.INGAME_TEXT_STYLE);
         this.ammoText.setDepth(GameConstants.TEXT_DEPTH);
@@ -112,17 +118,8 @@ export default class MainScene extends ScrollingSpaceScene {
         }
         
         this.cursors = this.input.keyboard.createCursorKeys();
-        
-        this.player = this.physics.add.sprite(200, 540, Assets.SPRITE_ATLAS, Assets.SHIP);
-        this.player.setOrigin(0.5, 0);
-        this.player.setScale(GameConstants.SPRITE_SCALE);
-        this.player.setDepth(GameConstants.SPRITE_DEPTH);
-        this.physics.world.enable(this.player);
 
-        // Issue with type-checking on setCollideWorldBounds()
-        this.playerBody = this.player.body as Phaser.Physics.Arcade.Body;
-        this.playerBody.setCollideWorldBounds(true);
-        this.playerBody.setImmovable(true);
+        this.player = this.add.playerShip(this.missilePool);
 
         this.shield = this.physics.add.sprite(-100, -100, Assets.SPRITE_ATLAS, Assets.SHIELD);
         this.shield.setOrigin(0.5, 0);
@@ -167,24 +164,25 @@ export default class MainScene extends ScrollingSpaceScene {
 
         switch(true){
             case this.cursors.left.isDown:
-                this.player.body.velocity.x = -GameConstants.PLAYER_SPEED;
+                this.player.performAction(ShipAction.MoveLeft);
+                // this.player.body.velocity.x = -GameConstants.PLAYER_SPEED;
                 break;
             case this.cursors.right.isDown:
+                this.player.performAction(ShipAction.MoveRight);
                 this.player.body.velocity.x = GameConstants.PLAYER_SPEED;
                 break;
             case this.cursors.up.isDown:
-                if(this.fireTimer < this.time.now){
-                    this.fire();
-                }
+                this.player.performAction(ShipAction.FireMissile);
                 break;
             case this.cursors.down.isDown:
-                if(!this.shieldAvailable){
-                    break;
-                }
-                this.shieldText.setText("");
-                this.shieldTimer = this.time.now + GameConstants.SHIELD_POWERUP_DURATION;
-                this.shieldAvailable = false;
-                this.shieldActivateSound.play();
+                this.player.performAction(ShipAction.ActivateShield);
+                // if(!this.shieldAvailable){
+                //     break;
+                // }
+                // this.shieldText.setText("");
+                // this.shieldTimer = this.time.now + GameConstants.SHIELD_POWERUP_DURATION;
+                // this.shieldAvailable = false;
+                // this.shieldActivateSound.play();
                 break;
         }
     }

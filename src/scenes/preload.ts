@@ -5,6 +5,8 @@ import ScrollingSpaceScene from "./scrollingSpaceScene";
 import * as GameConstants from "../constants/gameplayConstants";
 import * as Assets from "../constants/assetConstants";
 import AsteroidPool from "../sprites/AsteroidPool";
+import { PlayerShip } from "../sprites/PlayerShip";
+import MissilePool, { IMissilePool } from "../sprites/MissilePool";
 
 export default class PreloadScene extends ScrollingSpaceScene {
     private screenCenter: Point2D;
@@ -18,6 +20,16 @@ export default class PreloadScene extends ScrollingSpaceScene {
         // TODO - Split out into some kind of DI file
         Phaser.GameObjects.GameObjectFactory.register("asteroidPool", function () {
             return this.updateList.add(new AsteroidPool(this.scene));
+        });
+
+        Phaser.GameObjects.GameObjectFactory.register("missilePool", function () {
+            return this.updateList.add(new MissilePool(this.scene));
+        });
+
+        Phaser.GameObjects.GameObjectFactory.register("playerShip", function (this: Phaser.GameObjects.GameObjectFactory, missilePool: IMissilePool) {
+            const playerShip = new PlayerShip(this.scene, missilePool);
+            this.scene.add.existing(playerShip);
+            return this.updateList.add(playerShip);
         });
     }
 

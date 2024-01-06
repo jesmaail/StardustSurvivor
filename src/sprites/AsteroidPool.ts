@@ -4,7 +4,7 @@ import { Asteroid } from "./Asteroid";
 import { AsteroidType } from "./AsteroidType";
 
 declare interface IAsteroidPool extends Phaser.GameObjects.Group {
-    createAsteroid(): void;
+    createAsteroid(fracturePosition?: Point2D): void;
 }
 
 const LARGE_ASTEROID_CHANCE = 10;
