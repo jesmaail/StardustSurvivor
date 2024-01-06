@@ -3,7 +3,7 @@ import { Point2D, getRandomFromSelection, rollPercentageChance, debugLog } from 
 import ScrollingSpaceScene from "./scrollingSpaceScene";
 import * as GameConstants from "../constants/gameplayConstants";
 import * as Assets from "../constants/assetConstants";
-import IAsteroidPool from "../sprites/AsteroidPool";
+import IAsteroidPool, { Asteroid, AsteroidType } from "../sprites/AsteroidPool";
 
 export default class MainScene extends ScrollingSpaceScene {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -36,12 +36,9 @@ export default class MainScene extends ScrollingSpaceScene {
 
     // Asteroids
     private asteroidPool: IAsteroidPool;
-    private largeAsteroids: Phaser.GameObjects.Group;
     private explosions: Phaser.GameObjects.Group;
     private hitSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
     private explosionSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
-    private asteroidFrames: string[] = [];
-    private largeAsteroidFrames: string[] = [];
 
     // Powerups 
     private shieldPowerups: Phaser.GameObjects.Group;
@@ -63,7 +60,6 @@ export default class MainScene extends ScrollingSpaceScene {
     preload () {
         this.bullets = this.add.group();
         this.spaceScroll = this.add.group();
-        this.largeAsteroids = this.add.group();
         this.explosions = this.add.group();
         this.shieldPowerups = this.add.group();
         this.doublePowerups = this.add.group();
@@ -88,20 +84,13 @@ export default class MainScene extends ScrollingSpaceScene {
             frameRate: 15,
             repeat: 0
         });
-
-        // TODO - Laziness here, will preprocess this much earlier in the process if at all.
-        for (let i = 0; i < Assets.ASTEROID_COUNT; i++) {
-            this.asteroidFrames.push(Assets.ASTEROID + i);
-        }
-        for (let i = 0; i < Assets.LARGE_ASTEROID_COUNT; i++) {
-            this.largeAsteroidFrames.push(Assets.ASTEROID_BIG + i);
-        }
     }
 
     create() {
         this.gameTick = 0;
         this.ammo = GameConstants.STARTING_AMMO;
         // this.physics.world.createDebugGraphic();
+
         this.asteroidPool = this.add.asteroidPool();
         this.initSpaceBackground();
         this.ammoText = this.add.text(30, GameConstants.TEXT_Y, "Ammo: "+ this.ammo , GameConstants.INGAME_TEXT_STYLE);
@@ -225,40 +214,18 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     spawnAsteroids() {
-        // TODO - Roll Large asteroid logic into new Pool/Sprite.
-
         const difficultyMultiplier = Math.floor(this.gameTick / GameConstants.DIFFICULTY_INCREASE_RATE);
         const spawnRate = Math.max(GameConstants.ASTEROID_SPAWN_RATE - difficultyMultiplier,  10);
         
         if(this.gameTick % spawnRate !== 0){
             return;
-        } 
-
-        const spawnPointX = Phaser.Math.Between(-100, 4050) / 10; // Again, why these numbers?
-
-        if(rollPercentageChance(GameConstants.LARGE_ASTEROID_CHANCE)){
-            this.spawnLargeAsteroid(spawnPointX);
-            return;
         }
-        const asteroidSpeed = Phaser.Math.Between(GameConstants.ASTEROID_SPEED_MIN, GameConstants.ASTEROID_SPEED_MAX);
-        this.asteroidPool.createAsteroid({x: spawnPointX, y: GameConstants.ASTEROID_SPAWN_Y}, {x: GameConstants.ASTEROID_VELOCITY_X, y: asteroidSpeed}, false);
-    }
-
-    spawnLargeAsteroid(spawnX: number){
-        const asteroidFrame = getRandomFromSelection(this.largeAsteroidFrames);
-
-        const asteroid = this.largeAsteroids.create(spawnX, GameConstants.ASTEROID_SPAWN_Y, Assets.SPRITE_ATLAS, asteroidFrame);
-        asteroid.setScale(GameConstants.SPRITE_SCALE);
-        asteroid.setDepth(GameConstants.SPRITE_DEPTH);
-        this.physics.world.enable(asteroid);
-        asteroid.body.velocity.x = GameConstants.ASTEROID_VELOCITY_X;
-        asteroid.body.velocity.y = GameConstants.LARGE_ASTEROID_SPEED;
+        this.asteroidPool.createAsteroid();
     }
 
     collisionDetection(){
         // Asteroid collisions
         this.physics.add.collider(this.bullets, this.asteroidPool, this.collideBulletAsteroid, null, this);
-        this.physics.add.collider(this.bullets, this.largeAsteroids, this.collideBulletLargeAsteroid, null, this);
         this.physics.add.collider(this.explosions, this.asteroidPool, this.collideBulletAsteroid, null, this);
 
         // Powerup collisions
@@ -268,38 +235,25 @@ export default class MainScene extends ScrollingSpaceScene {
 
         // Shield collisions
         this.physics.add.collider(this.shield, this.asteroidPool, this.collideShieldAsteroid, null, this);
-        this.physics.add.collider(this.shield, this.largeAsteroids, this.collideShieldAsteroid, null, this);
 
         // Player collisions
         this.physics.add.collider(this.player, this.asteroidPool, this.collidePlayer, null, this);
-        this.physics.add.collider(this.player, this.largeAsteroids, this.collidePlayer, null, this);
     }
 
-    collideBulletAsteroid(bullet: Phaser.Physics.Arcade.Sprite, asteroid: Phaser.Physics.Arcade.Sprite){
+    collideBulletAsteroid(bullet: Phaser.Physics.Arcade.Sprite, asteroid: Asteroid){
         bullet.destroy();
         const collisionPoint: Point2D = { x: asteroid.x, y: asteroid.y};
         asteroid.destroy();
-        this.createExplosion(collisionPoint);
 
-        if(rollPercentageChance(GameConstants.POWERUP_SPAWN_CHANCE)){
-            this.spawnPowerup(collisionPoint);
+        if(asteroid.asteroidType !== AsteroidType.Large){
+            this.createExplosion(collisionPoint);
+            if(rollPercentageChance(GameConstants.POWERUP_SPAWN_CHANCE)){
+                this.spawnPowerup(collisionPoint);
+            }
+            return;
         }
-    }
-
-    collideBulletLargeAsteroid(bullet: Phaser.Physics.Arcade.Sprite, largeAsteroid: Phaser.Physics.Arcade.Sprite){
-        bullet.destroy();
-
-        const collisionPoint: Point2D = { x: largeAsteroid.x, y: largeAsteroid.y};
-
-        const randomSpeed = Phaser.Math.Between(GameConstants.FRACTURED_ASTEROID_SPEED_MIN, GameConstants.FRACTURED_ASTEROID_SPEED_MAX);
-        const randomPositiveDrift = Phaser.Math.Between(0, GameConstants.FRACTURED_ASTEROID_DRIFT_MAX);
-        const randomNegativeDrift = Phaser.Math.Between(0, -GameConstants.FRACTURED_ASTEROID_DRIFT_MAX);
-
-        largeAsteroid.destroy();
         this.hitSound.play();
-
-        this.asteroidPool.createAsteroid(collisionPoint, {x: randomPositiveDrift, y: randomSpeed}, false);
-        this.asteroidPool.createAsteroid(collisionPoint, {x: randomNegativeDrift, y: randomSpeed}, false);
+        this.asteroidPool.createAsteroid(collisionPoint);
     }
 
     collideShieldAsteroid(_shield: Phaser.Physics.Arcade.Sprite, asteroid: Phaser.Physics.Arcade.Sprite){
@@ -410,12 +364,6 @@ export default class MainScene extends ScrollingSpaceScene {
         this.asteroidPool.getChildren().forEach((asteroid: Phaser.GameObjects.Sprite) => {
             if(asteroid.y > this.physics.world.bounds.bottom){
                 asteroid.destroy();
-            }
-        });
-
-        this.largeAsteroids.getChildren().forEach((largeAsteroid: Phaser.GameObjects.Sprite) => {
-            if((largeAsteroid.y - largeAsteroid.height) > this.physics.world.bounds.bottom){
-                largeAsteroid.destroy();
             }
         });
     }

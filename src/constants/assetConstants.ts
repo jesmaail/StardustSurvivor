@@ -25,14 +25,21 @@ export const ASTEROID_SPRITE_FRAMES: string[] = [
     "asteroid4", 
     "asteroid5"
 ];
+export const LARGE_ASTEROID_SPRITE_FRAMES: string[] = [
+    "asteroidBig0", 
+    "asteroidBig1", 
+    "asteroidBig2", 
+    "asteroidBig3", 
+    "asteroidBig4", 
+    "asteroidBig5",
+    "asteroidBig6",
+    "asteroidBig7"
+];
 export const ASTEROID = "asteroid";
 export const ASTEROID_BIG = "asteroidBig";
 export const EXPLOSION = "explosion";
 export const POWERUPS = "powerups";
 export const EXPLOSION_ANIMATIONS = "explosionAnimation";
-
-export const ASTEROID_COUNT = 6;
-export const LARGE_ASTEROID_COUNT = 8;
 
 // Audio
 export const MENU_MUSIC = "menuMusic";
