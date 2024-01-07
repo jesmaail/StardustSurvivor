@@ -55,7 +55,6 @@ export class PlayerShip extends Phaser.Physics.Arcade.Sprite {
 
     // CHECKPOINT <---------------
     // TODO - Finish player sprite
-    //      - Fire Missile needs double powerup interactions and collisions
     //      - Add shield functionality
     //      - Add powerup acquisition
     performAction(action: ShipAction) {
@@ -69,11 +68,7 @@ export class PlayerShip extends Phaser.Physics.Arcade.Sprite {
                 break;
             
             case ShipAction.FireMissile:
-                if(this.fireTimer < this.scene.time.now){
-                    this.fireTimer = this.scene.time.now + MISSILE_DELAY;
-                    const spawnPosition: Point2D = { x: this.physicsBody.x, y: this.physicsBody.y };
-                    this.missilePool.createMissile(spawnPosition);
-                }
+                this.fireMissile();
                 break;
             case ShipAction.ObtainAmmo:
                 this.ammo += AMMO_POWERUP_INCREMENT;
@@ -85,5 +80,39 @@ export class PlayerShip extends Phaser.Physics.Arcade.Sprite {
                 this.doubleTimer = this.scene.time.now + DOUBLE_POWERUP_DURATION;
                 break;
         }
+    }
+
+    fireMissile(){
+        if(this.fireTimer > this.scene.time.now || this.ammo < 1){
+            return;
+        }
+        this.fireTimer = this.scene.time.now + MISSILE_DELAY;
+
+        if(this.doubleTimer < this.scene.time.now){
+            const spawnPosition: Point2D = { 
+                x: this.physicsBody.x + (this.physicsBody.width/2), 
+                y: this.physicsBody.y };
+            this.missilePool.createMissile(spawnPosition);
+            this.ammo--;
+            return;
+        }
+
+        if(this.ammo < 2){
+            return;
+        }
+
+        const leftMissile: Point2D = {
+            x: this.physicsBody.x,
+            y: this.physicsBody.y
+        };
+        this.missilePool.createMissile(leftMissile);
+
+        const rightMissile: Point2D = {
+            x: this.physicsBody.x + this.physicsBody.width-1,
+            y: this.physicsBody.y
+        };
+        this.missilePool.createMissile(rightMissile);
+
+        this.ammo -= 2;
     }
 }

@@ -37,10 +37,6 @@ export default class MainScene extends ScrollingSpaceScene {
 
     // Bullets
     private missilePool: IMissilePool;
-    private bullets: Phaser.GameObjects.Group;
-    private bulletSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
-    private ammo: number;
-    private fireTimer: number = 0;
 
     // Asteroids
     private asteroidPool: IAsteroidPool;
@@ -55,7 +51,6 @@ export default class MainScene extends ScrollingSpaceScene {
     private powerupSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
     private shieldAvailable: boolean = false;
     private shieldTimer: number = 0;
-    private doubleBulletTimer: number = 0;
     private shield: Phaser.GameObjects.Sprite;
     private shieldActivateSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
     private shieldDeflectSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
@@ -67,14 +62,12 @@ export default class MainScene extends ScrollingSpaceScene {
 
     preload () {
         this.missilePool = this.add.missilePool();
-        this.bullets = this.add.group();
         this.spaceScroll = this.add.group();
         this.explosions = this.add.group();
         this.shieldPowerups = this.add.group();
         this.doublePowerups = this.add.group();
         this.ammoPowerups = this.add.group();
 
-        this.bulletSound = this.game.sound.add(Assets.FIRE_SOUND);
         this.hitSound = this.game.sound.add(Assets.HIT_SOUND);
         this.explosionSound = this.game.sound.add(Assets.EXPLODE_SOUND);
         this.powerupSound = this.game.sound.add(Assets.POWERUP_SOUND);
@@ -97,14 +90,14 @@ export default class MainScene extends ScrollingSpaceScene {
 
     create() {
         this.gameTick = 0;
-        this.ammo = GameConstants.STARTING_AMMO;
         // this.physics.world.createDebugGraphic();
 
         // TODO - move to preload?
         this.asteroidPool = this.add.asteroidPool();
+        this.player = this.add.playerShip(this.missilePool);
 
         this.initSpaceBackground();
-        this.ammoText = this.add.text(30, GameConstants.TEXT_Y, "Ammo: "+ this.ammo , GameConstants.INGAME_TEXT_STYLE);
+        this.ammoText = this.add.text(30, GameConstants.TEXT_Y, "Ammo: "+ this.player.ammo , GameConstants.INGAME_TEXT_STYLE);
         this.ammoText.setDepth(GameConstants.TEXT_DEPTH);
         this.scoreText = this.add.text(290, GameConstants.TEXT_Y, "Score: " + this.score , GameConstants.INGAME_TEXT_STYLE);
         this.scoreText.setDepth(GameConstants.TEXT_DEPTH);
@@ -119,7 +112,6 @@ export default class MainScene extends ScrollingSpaceScene {
         
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        this.player = this.add.playerShip(this.missilePool);
 
         this.shield = this.physics.add.sprite(-100, -100, Assets.SPRITE_ATLAS, Assets.SHIELD);
         this.shield.setOrigin(0.5, 0);
@@ -149,7 +141,7 @@ export default class MainScene extends ScrollingSpaceScene {
             this.score++;
         }
 
-        this.ammoText.setText("Ammo: " + this.ammo);
+        this.ammoText.setText("Ammo: " + this.player.ammo);
         this.scoreText.setText("Score: " + this.score);
 
         this.playerControls();
@@ -187,35 +179,6 @@ export default class MainScene extends ScrollingSpaceScene {
         }
     }
 
-    fire(){
-        this.fireTimer = this.time.now + GameConstants.FIRE_DELAY;
-        if(this.ammo <= 0){
-            return;
-        }
-        
-        if(this.doubleBulletTimer > this.time.now){
-            this.createBullet(this.playerBody.x, this.playerBody.y);
-            this.createBullet((this.playerBody.x + this.playerBody.width-1), this.playerBody.y);
-            return;
-        }
-        
-        this.createBullet(this.playerBody.x + (this.playerBody.width/2), this.playerBody.y - 30);
-    }
-
-    createBullet(x: number, y: number) {
-        const bullet = this.bullets.create(x, y, Assets.SPRITE_ATLAS, Assets.BULLET);
-        bullet.setScale(GameConstants.SPRITE_SCALE);
-        bullet.setOrigin(0.5, 0); 
-        bullet.setDepth(GameConstants.SPRITE_DEPTH);
-
-        this.physics.world.enable(bullet);
-        bullet.body.velocity.y = -GameConstants.BULLET_SPEED;
-
-        this.bulletSound.play();
-
-        this.ammo--;
-    }
-
     spawnAsteroids() {
         const difficultyMultiplier = Math.floor(this.gameTick / GameConstants.DIFFICULTY_INCREASE_RATE);
         const spawnRate = Math.max(GameConstants.ASTEROID_SPAWN_RATE - difficultyMultiplier,  10);
@@ -228,7 +191,7 @@ export default class MainScene extends ScrollingSpaceScene {
 
     collisionDetection(){
         // Asteroid collisions
-        this.physics.add.collider(this.bullets, this.asteroidPool, this.collideBulletAsteroid, null, this);
+        this.physics.add.collider(this.missilePool, this.asteroidPool, this.collideBulletAsteroid, null, this);
         this.physics.add.collider(this.explosions, this.asteroidPool, this.collideBulletAsteroid, null, this);
 
         // Powerup collisions
@@ -327,13 +290,13 @@ export default class MainScene extends ScrollingSpaceScene {
     obtainAmmoPowerup(_player: Phaser.Physics.Arcade.Sprite, powerup: Phaser.Physics.Arcade.Sprite){
         powerup.destroy();
         this.powerupSound.play();
-        this.ammo += GameConstants.AMMO_POWERUP_INCREMENT;
+        this.player.ammo += GameConstants.AMMO_POWERUP_INCREMENT;
     }
 
     obtainDoublePowerup(_player: Phaser.Physics.Arcade.Sprite, powerup: Phaser.Physics.Arcade.Sprite){
         powerup.destroy();
         this.powerupSound.play();
-        this.doubleBulletTimer = this.time.now + GameConstants.DOUBLE_POWERUP_DURATION;
+        this.player.doubleTimer = this.time.now + GameConstants.DOUBLE_POWERUP_DURATION;
     }
 
     obtainShieldPowerup(_player: Phaser.Physics.Arcade.Sprite, powerup: Phaser.Physics.Arcade.Sprite){
@@ -358,7 +321,7 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     gameObjectCulling(){
-        this.bullets.getChildren().forEach((bullet: Phaser.GameObjects.Sprite) => {
+        this.missilePool.getChildren().forEach((bullet: Phaser.GameObjects.Sprite) => {
             if(bullet.y < this.physics.world.bounds.top){
                 bullet.destroy();
             }
@@ -377,8 +340,7 @@ export default class MainScene extends ScrollingSpaceScene {
 
             // Clean up state ready for restart
             this.playerDeathTimer = 0;
-            this.shieldTimer = 0;
-            this.doubleBulletTimer = 0;            
+            this.shieldTimer = 0;    
             this.score = 0;
             this.playerDestroyed = false;
             this.shieldAvailable = false;
