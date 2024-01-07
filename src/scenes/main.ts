@@ -20,9 +20,7 @@ export default class MainScene extends ScrollingSpaceScene {
     private gameTick: number;
 
     // Text
-    private ammoText: Phaser.GameObjects.Text;
     private scoreText: Phaser.GameObjects.Text;
-    private shieldText: Phaser.GameObjects.Text;
 
     // Score
     private score: number = 0;
@@ -30,7 +28,6 @@ export default class MainScene extends ScrollingSpaceScene {
 
     // Player
     private player: PlayerShip;
-    private playerBody: Phaser.Physics.Arcade.Body;
     private playerDeathSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
     private playerDestroyed: boolean = false;
     private playerDeathTimer: number;
@@ -49,10 +46,6 @@ export default class MainScene extends ScrollingSpaceScene {
     private doublePowerups: Phaser.GameObjects.Group;
     private ammoPowerups: Phaser.GameObjects.Group;
     private powerupSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
-    private shieldAvailable: boolean = false;
-    private shieldTimer: number = 0;
-    private shield: Phaser.GameObjects.Sprite;
-    private shieldActivateSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
     private shieldDeflectSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
 
 
@@ -71,7 +64,6 @@ export default class MainScene extends ScrollingSpaceScene {
         this.hitSound = this.game.sound.add(Assets.HIT_SOUND);
         this.explosionSound = this.game.sound.add(Assets.EXPLODE_SOUND);
         this.powerupSound = this.game.sound.add(Assets.POWERUP_SOUND);
-        this.shieldActivateSound = this.game.sound.add(Assets.SHIELD_SOUND);
         this.shieldDeflectSound = this.game.sound.add(Assets.DEFLECT_SOUND);
         this.playerDeathSound = this.game.sound.add(Assets.DEATH_SOUND);
         this.music = this.game.sound.add(Assets.GAME_MUSIC);
@@ -97,13 +89,8 @@ export default class MainScene extends ScrollingSpaceScene {
         this.player = this.add.playerShip(this.missilePool);
 
         this.initSpaceBackground();
-        this.ammoText = this.add.text(30, GameConstants.TEXT_Y, "Ammo: "+ this.player.ammo , GameConstants.INGAME_TEXT_STYLE);
-        this.ammoText.setDepth(GameConstants.TEXT_DEPTH);
         this.scoreText = this.add.text(290, GameConstants.TEXT_Y, "Score: " + this.score , GameConstants.INGAME_TEXT_STYLE);
         this.scoreText.setDepth(GameConstants.TEXT_DEPTH);
-        this.shieldText = this.add.text(200, GameConstants.TEXT_Y, "" , {font: GameConstants.TEXT_FONT, color: GameConstants.SHIELD_TEXT_COLOUR });
-        this.shieldText.setOrigin(0.5, 0);
-        this.shieldText.setDepth(GameConstants.TEXT_DEPTH);
 
         if(GameConstants.AUDIO_ENABLED){
             this.music.loop = true;
@@ -111,14 +98,6 @@ export default class MainScene extends ScrollingSpaceScene {
         }
         
         this.cursors = this.input.keyboard.createCursorKeys();
-
-
-        this.shield = this.physics.add.sprite(-100, -100, Assets.SPRITE_ATLAS, Assets.SHIELD);
-        this.shield.setOrigin(0.5, 0);
-        this.shield.setScale(GameConstants.SPRITE_SCALE);
-        this.shield.setDepth(GameConstants.SPRITE_DEPTH);
-        this.shield.setVisible(false);
-        this.physics.world.enable(this.shield);
     }
 
     update() {
@@ -141,12 +120,11 @@ export default class MainScene extends ScrollingSpaceScene {
             this.score++;
         }
 
-        this.ammoText.setText("Ammo: " + this.player.ammo);
         this.scoreText.setText("Score: " + this.score);
 
         this.playerControls();
         this.collisionDetection();
-        this.shieldSystem();
+        this.player.shieldSystem();
     }
 
     playerControls(){
@@ -157,7 +135,6 @@ export default class MainScene extends ScrollingSpaceScene {
         switch(true){
             case this.cursors.left.isDown:
                 this.player.performAction(ShipAction.MoveLeft);
-                // this.player.body.velocity.x = -GameConstants.PLAYER_SPEED;
                 break;
             case this.cursors.right.isDown:
                 this.player.performAction(ShipAction.MoveRight);
@@ -168,13 +145,6 @@ export default class MainScene extends ScrollingSpaceScene {
                 break;
             case this.cursors.down.isDown:
                 this.player.performAction(ShipAction.ActivateShield);
-                // if(!this.shieldAvailable){
-                //     break;
-                // }
-                // this.shieldText.setText("");
-                // this.shieldTimer = this.time.now + GameConstants.SHIELD_POWERUP_DURATION;
-                // this.shieldAvailable = false;
-                // this.shieldActivateSound.play();
                 break;
         }
     }
@@ -200,7 +170,7 @@ export default class MainScene extends ScrollingSpaceScene {
         this.physics.add.collider(this.player, this.shieldPowerups, this.obtainShieldPowerup, null, this);
 
         // Shield collisions
-        this.physics.add.collider(this.shield, this.asteroidPool, this.collideShieldAsteroid, null, this);
+        this.physics.add.collider(this.player.shield, this.asteroidPool, this.collideShieldAsteroid, null, this);
 
         // Player collisions
         this.physics.add.collider(this.player, this.asteroidPool, this.collidePlayer, null, this);
@@ -223,9 +193,10 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     collideShieldAsteroid(_shield: Phaser.Physics.Arcade.Sprite, asteroid: Phaser.Physics.Arcade.Sprite){
-        if(this.shieldTimer < this.time.now){
+        if(this.player.shieldTimer < this.time.now){
             return;
         }
+        console.log("Collision");
         asteroid.destroy();
         this.shieldDeflectSound.play();
     }
@@ -302,22 +273,7 @@ export default class MainScene extends ScrollingSpaceScene {
     obtainShieldPowerup(_player: Phaser.Physics.Arcade.Sprite, powerup: Phaser.Physics.Arcade.Sprite){
         powerup.destroy();
         this.powerupSound.play();
-        this.shieldAvailable = true;
-    }
-
-    shieldSystem(){
-        if(this.shieldTimer > this.time.now){
-            this.shield.setVisible(true);
-            const shieldBody = this.shield.body as Phaser.Physics.Arcade.Body;
-            shieldBody.x = this.playerBody.x - GameConstants.SHIELD_X_OFFSET;
-            shieldBody.y = this.playerBody.y - GameConstants.SHIELD_Y_OFFSET;
-        }else{
-            this.shield.setVisible(false);
-        }
-
-        if(this.shieldAvailable){
-            this.shieldText.setText(GameConstants.SHIELD_POWERUP_TEXT);
-        }    
+        this.player.shieldAvailable = true;
     }
 
     gameObjectCulling(){
@@ -340,10 +296,8 @@ export default class MainScene extends ScrollingSpaceScene {
 
             // Clean up state ready for restart
             this.playerDeathTimer = 0;
-            this.shieldTimer = 0;    
             this.score = 0;
             this.playerDestroyed = false;
-            this.shieldAvailable = false;
 
             this.scene.stop();
             this.scene.start("EndScene", { score: finalScore });
