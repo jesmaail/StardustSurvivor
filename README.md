@@ -5,6 +5,8 @@ This game has been ported across from Phaser 2 Javascript to Phaser 3 Typescript
 
 
 ## Improvements
+- Base sprite class for WET code.
+- Better background than scrolling image
 - "GameFeel" improvements
 - Performance
     - Review object culling
