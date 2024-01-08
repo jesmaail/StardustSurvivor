@@ -1,41 +1,21 @@
 import * as Phaser from "phaser";
-import { AUDIO_PATH, IMAGE_PATH, SITE_LINK } from "../constants/assetConstants";
-import { getScreenCenter, Point2D } from "../helpers";
-import ScrollingSpaceScene from "./scrollingSpaceScene";
 import * as GameConstants from "../constants/gameplayConstants";
 import * as Assets from "../constants/assetConstants";
-import AsteroidPool from "../sprites/AsteroidPool";
-import { PlayerShip } from "../sprites/PlayerShip";
-import MissilePool, { IMissilePool } from "../sprites/MissilePool";
-import PowerupPool from "../sprites/PowerupPool";
+import ScrollingSpaceScene from "./scrollingSpaceScene";
+import { PhaserSound } from "../../types/PhaserExtensions";
+import { AUDIO_PATH, IMAGE_PATH, SITE_LINK } from "../constants/assetConstants";
+import { getScreenCenter, Point2D } from "../helpers";
+import { registerGameObjectFactoryExtensions } from "../PhaserFactoryExtensions";
 
 export default class PreloadScene extends ScrollingSpaceScene {
     private screenCenter: Point2D;
     private startKey: Phaser.Input.Keyboard.Key;
-
-    private music: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
+    private music: PhaserSound;
     
     constructor() {
         super({ key: "PreloadScene" });
 
-        // TODO - Split out into some kind of DI file
-        Phaser.GameObjects.GameObjectFactory.register("asteroidPool", function () {
-            return this.updateList.add(new AsteroidPool(this.scene));
-        });
-
-        Phaser.GameObjects.GameObjectFactory.register("missilePool", function () {
-            return this.updateList.add(new MissilePool(this.scene));
-        });
-
-        Phaser.GameObjects.GameObjectFactory.register("powerupPool", function () {
-            return this.updateList.add(new PowerupPool(this.scene));
-        });
-
-        Phaser.GameObjects.GameObjectFactory.register("playerShip", function (this: Phaser.GameObjects.GameObjectFactory, missilePool: IMissilePool) {
-            const playerShip = new PlayerShip(this.scene, missilePool);
-            this.scene.add.existing(playerShip);
-            return this.updateList.add(playerShip);
-        });
+        registerGameObjectFactoryExtensions();
     }
 
     preload() {
