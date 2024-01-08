@@ -8,11 +8,11 @@ const POWERUP_FRAMES: string[] = [
     PowerupType.Ammo,
     PowerupType.Double,
     PowerupType.Shield
-]
+];
 const SPEED = 200;
 
 export default class Powerup extends Phaser.Physics.Arcade.Sprite {
-    powerupType: PowerupType
+    powerupType: PowerupType;
 
     constructor(scene: Phaser.Scene, position: Point2D) {
         const assetFrame = getRandomFromSelection(POWERUP_FRAMES);

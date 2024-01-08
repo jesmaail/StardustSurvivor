@@ -1,11 +1,13 @@
 import * as Phaser from "phaser";
-import * as GameConstants from "../constants/gameplayConstants";
-import * as Assets from "../constants/assetConstants";
 import ScrollingSpaceScene from "./scrollingSpaceScene";
 import { PhaserSound } from "../../types/PhaserExtensions";
-import { AUDIO_PATH, IMAGE_PATH, SITE_LINK } from "../constants/assetConstants";
+import { AUDIO_PATH, DEATH_SOUND, DECIGAMES_LOGO, DEFLECT_SOUND, END_MUSIC, EXPLODE_SOUND, FIRE_SOUND, GAME_MUSIC, HIT_SOUND, IMAGE_PATH, MENU_MUSIC, POWERUP_SOUND, SHIELD_SOUND, SITE_LINK, SPACE_BACKGROUND, SPRITE_ATLAS } from "../constants/assetConstants";
 import { getScreenCenter, Point2D } from "../helpers";
 import { registerGameObjectFactoryExtensions } from "../PhaserFactoryExtensions";
+import { MAIN_SCENE_KEY } from "./main";
+import { DEFAULT_VOLUME, TEXT_FONT, DEFAULT_TEXT_COLOUR, SPRITE_DEPTH, AUDIO_ENABLED } from "../constants/gameplayConstants";
+
+export const PRELOAD_SCENE_KEY = "PreloadScene";
 
 export default class PreloadScene extends ScrollingSpaceScene {
     private screenCenter: Point2D;
@@ -13,7 +15,7 @@ export default class PreloadScene extends ScrollingSpaceScene {
     private music: PhaserSound;
     
     constructor() {
-        super({ key: "PreloadScene" });
+        super({ key: PRELOAD_SCENE_KEY });
 
         registerGameObjectFactoryExtensions();
     }
@@ -24,36 +26,36 @@ export default class PreloadScene extends ScrollingSpaceScene {
         loading.setOrigin(0.5);
 
         this.loadAudio();
-        this.load.image(Assets.SPACE_BACKGROUND, `${IMAGE_PATH}/space.png`);
+        this.load.image(SPACE_BACKGROUND, `${IMAGE_PATH}/space.png`);
 
         this.load.path = `${IMAGE_PATH}/`;
-        this.load.multiatlas(Assets.SPRITE_ATLAS, "sprite_atlas.json");
-        this.sound.volume = GameConstants.DEFAULT_VOLUME;
+        this.load.multiatlas(SPRITE_ATLAS, "sprite_atlas.json");
+        this.sound.volume = DEFAULT_VOLUME;
     }
 
     // TODO - Clean up positioning
     create() {
         this.initSpaceBackground();
-        this.music = this.game.sound.add(Assets.MENU_MUSIC);
+        this.music = this.game.sound.add(MENU_MUSIC);
         
-        const titleText = this.add.text(this.screenCenter.x, 50, "STARDUST\nSURVIVOR", {fontFamily: GameConstants.TEXT_FONT, fontSize: 40, color: GameConstants.DEFAULT_TEXT_COLOUR});
+        const titleText = this.add.text(this.screenCenter.x, 50, "STARDUST\nSURVIVOR", {fontFamily: TEXT_FONT, fontSize: 40, color: DEFAULT_TEXT_COLOUR});
         titleText.setOrigin(0.5, 0);
-        titleText.setDepth(GameConstants.SPRITE_DEPTH);
+        titleText.setDepth(SPRITE_DEPTH);
 
         const startTextYPosition = this.cameras.main.height - 150;
-        const startTextConfig = {fontFamily: GameConstants.TEXT_FONT, fontSize: 18, color: GameConstants.DEFAULT_TEXT_COLOUR};
+        const startTextConfig = {fontFamily: TEXT_FONT, fontSize: 18, color: DEFAULT_TEXT_COLOUR};
         const startText = this.add.text(this.screenCenter.x, startTextYPosition, "PRESS [↑] TO START!", startTextConfig);
         startText.setOrigin(0.5);
-        startText.setDepth(GameConstants.SPRITE_DEPTH);
+        startText.setDepth(SPRITE_DEPTH);
         
-        const logo = this.add.image(this.cameras.main.width - 50, this.cameras.main.height - 50, Assets.SPRITE_ATLAS, Assets.DECIGAMES_LOGO);
+        const logo = this.add.image(this.cameras.main.width - 50, this.cameras.main.height - 50, SPRITE_ATLAS, DECIGAMES_LOGO);
         logo.setScale(0.5);
         logo.setOrigin(0.5);
-        logo.setDepth(GameConstants.SPRITE_DEPTH);
+        logo.setDepth(SPRITE_DEPTH);
         logo.setInteractive();
         logo.on("pointerdown", () => this.linkToSite());
 
-        if(GameConstants.AUDIO_ENABLED){
+        if(AUDIO_ENABLED){
             this.music.loop = true;
             this.music.play();
         }
@@ -64,23 +66,23 @@ export default class PreloadScene extends ScrollingSpaceScene {
     update() { 
         if (this.startKey.isDown){
             this.music.stop();
-            this.scene.start("MainScene");
+            this.scene.start(MAIN_SCENE_KEY);
         }
 
         this.scrollSpaceBackground();
     }
 
     private loadAudio() {
-        this.load.audio(Assets.MENU_MUSIC, `${AUDIO_PATH}/startMusic.mp3`);
-        this.load.audio(Assets.GAME_MUSIC, `${AUDIO_PATH}/gameMusic.mp3`);
-        this.load.audio(Assets.FIRE_SOUND, `${AUDIO_PATH}/fire.mp3`);
-        this.load.audio(Assets.DEATH_SOUND, `${AUDIO_PATH}/playerDeath.mp3`);
-        this.load.audio(Assets.HIT_SOUND, `${AUDIO_PATH}/hit.mp3`);
-        this.load.audio(Assets.EXPLODE_SOUND, `${AUDIO_PATH}/explode.mp3`);
-        this.load.audio(Assets.POWERUP_SOUND, `${AUDIO_PATH}/powerup.mp3`);
-        this.load.audio(Assets.SHIELD_SOUND, `${AUDIO_PATH}/shieldActivate.mp3`);
-        this.load.audio(Assets.DEFLECT_SOUND, `${AUDIO_PATH}/deflect.mp3`);
-        this.load.audio(Assets.END_MUSIC, `${AUDIO_PATH}/endScreen.mp3`);
+        this.load.audio(MENU_MUSIC, `${AUDIO_PATH}/startMusic.mp3`);
+        this.load.audio(GAME_MUSIC, `${AUDIO_PATH}/gameMusic.mp3`);
+        this.load.audio(FIRE_SOUND, `${AUDIO_PATH}/fire.mp3`);
+        this.load.audio(DEATH_SOUND, `${AUDIO_PATH}/playerDeath.mp3`);
+        this.load.audio(HIT_SOUND, `${AUDIO_PATH}/hit.mp3`);
+        this.load.audio(EXPLODE_SOUND, `${AUDIO_PATH}/explode.mp3`);
+        this.load.audio(POWERUP_SOUND, `${AUDIO_PATH}/powerup.mp3`);
+        this.load.audio(SHIELD_SOUND, `${AUDIO_PATH}/shieldActivate.mp3`);
+        this.load.audio(DEFLECT_SOUND, `${AUDIO_PATH}/deflect.mp3`);
+        this.load.audio(END_MUSIC, `${AUDIO_PATH}/endScreen.mp3`);
     }
 
     linkToSite(){
