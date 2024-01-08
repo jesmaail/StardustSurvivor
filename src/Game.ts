@@ -1,7 +1,7 @@
 import * as Phaser from "phaser";
-import EndScene from "./scenes/end";
-import MainScene from "./scenes/main";
-import PreloadScene from "./scenes/preload";
+import EndScene from "./scenes/End";
+import MainScene from "./scenes/Main";
+import PreloadScene from "./scenes/Preload";
 
 import GameConfig = Phaser.Types.Core.GameConfig
 

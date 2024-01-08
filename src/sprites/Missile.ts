@@ -1,7 +1,7 @@
 import * as Phaser from "phaser";
-import { SPRITE_SCALE, SPRITE_DEPTH } from "../constants/gameplayConstants";
-import { SPRITE_ATLAS } from "../constants/assetConstants";
-import { Point2D } from "../helpers";
+import { SPRITE_SCALE, SPRITE_DEPTH } from "../constants/GameplayConstants";
+import { SPRITE_ATLAS } from "../constants/AssetConstants";
+import { Point2D } from "../Helpers";
 
 const ASSET_NAME = "laser";
 const SPEED = 800;

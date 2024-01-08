@@ -1,7 +1,7 @@
 import * as Phaser from "phaser";
-import { END_MUSIC, SPACE_BACKGROUND } from "../constants/assetConstants";
-import { DEFAULT_TEXT_COLOUR, SPRITE_DEPTH, TEXT_FONT } from "../constants/gameplayConstants";
-import { getScreenCenter, Point2D } from "../helpers";
+import { END_MUSIC, SPACE_BACKGROUND } from "../constants/AssetConstants";
+import { DEFAULT_TEXT_COLOUR, SPRITE_DEPTH, TEXT_FONT } from "../constants/GameplayConstants";
+import { getScreenCenter, Point2D } from "../Helpers";
 
 export const END_SCENE_KEY = "EndScene";
 

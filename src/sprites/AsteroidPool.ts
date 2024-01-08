@@ -1,5 +1,5 @@
 import * as Phaser from "phaser";
-import { Point2D, rollPercentageChance } from "../helpers";
+import { Point2D, rollPercentageChance } from "../Helpers";
 import { Asteroid } from "./Asteroid";
 import { AsteroidType } from "./AsteroidType";
 

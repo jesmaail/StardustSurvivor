@@ -1,17 +1,17 @@
 import * as Phaser from "phaser";
 import IAsteroidPool from "../sprites/AsteroidPool";
 import IMissilePool from "../sprites/MissilePool";
-import ScrollingSpaceScene from "./scrollingSpaceScene";
+import ScrollingSpaceScene from "./ScrollingSpaceScene";
 import Powerup from "../sprites/Powerup";
-import { Point2D, rollPercentageChance, debugLog } from "../helpers";
+import { Point2D, rollPercentageChance, debugLog } from "../Helpers";
 import { AsteroidType } from "../sprites/AsteroidType";
 import { Asteroid } from "../sprites/Asteroid";
 import { PlayerShip, ShipAction } from "../sprites/PlayerShip";
 import { IPowerupPool } from "../sprites/PowerupPool";
 import { PhaserSound } from "../../types/PhaserExtensions";
-import { END_SCENE_KEY } from "./end";
-import { HIT_SOUND, EXPLODE_SOUND, POWERUP_SOUND, DEFLECT_SOUND, DEATH_SOUND, GAME_MUSIC, EXPLOSION_ANIMATIONS, SPRITE_ATLAS, EXPLOSION } from "../constants/assetConstants";
-import { TEXT_Y, INGAME_TEXT_STYLE, TEXT_DEPTH, AUDIO_ENABLED, SCORE_INCREMENT, DIFFICULTY_INCREASE_RATE, ASTEROID_SPAWN_RATE, POWERUP_SPAWN_CHANCE, PLAYER_DEATH_WAIT, SPRITE_DEPTH } from "../constants/gameplayConstants";
+import { END_SCENE_KEY } from "./End";
+import { HIT_SOUND, EXPLODE_SOUND, POWERUP_SOUND, DEFLECT_SOUND, DEATH_SOUND, GAME_MUSIC, EXPLOSION_ANIMATIONS, SPRITE_ATLAS, EXPLOSION } from "../constants/AssetConstants";
+import { TEXT_Y, INGAME_TEXT_STYLE, TEXT_DEPTH, AUDIO_ENABLED, SCORE_INCREMENT, DIFFICULTY_INCREASE_RATE, ASTEROID_SPAWN_RATE, POWERUP_SPAWN_CHANCE, PLAYER_DEATH_WAIT, SPRITE_DEPTH } from "../constants/GameplayConstants";
 
 export const MAIN_SCENE_KEY = "MainScene";
 

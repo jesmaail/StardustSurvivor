@@ -1,5 +1,5 @@
 import * as Phaser from "phaser";
-import * as Assets from "../constants/assetConstants";
+import * as Assets from "../constants/AssetConstants";
 
 export default class ScrollingSpaceScene extends Phaser.Scene {
     fps: Phaser.GameObjects.Text;

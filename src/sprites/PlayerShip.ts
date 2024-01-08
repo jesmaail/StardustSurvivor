@@ -1,7 +1,7 @@
 import * as Phaser from "phaser";
-import { SPRITE_SCALE, SPRITE_DEPTH, INGAME_TEXT_STYLE, TEXT_Y, TEXT_DEPTH, SHIELD_TEXT_COLOUR, TEXT_FONT } from "../constants/gameplayConstants";
-import { SHIELD_SOUND, SPRITE_ATLAS } from "../constants/assetConstants";
-import { Point2D } from "../helpers";
+import { SPRITE_SCALE, SPRITE_DEPTH, INGAME_TEXT_STYLE, TEXT_Y, TEXT_DEPTH, SHIELD_TEXT_COLOUR, TEXT_FONT } from "../constants/GameplayConstants";
+import { SHIELD_SOUND, SPRITE_ATLAS } from "../constants/AssetConstants";
+import { Point2D } from "../Helpers";
 import { IMissilePool } from "./MissilePool";
 import { PhaserSound } from "../../types/PhaserExtensions";
 import { PowerupType } from "./PowerupType";

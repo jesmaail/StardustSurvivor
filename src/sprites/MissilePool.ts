@@ -1,6 +1,6 @@
 import * as Phaser from "phaser";
-import { FIRE_SOUND } from "../constants/assetConstants";
-import { Point2D } from "../helpers";
+import { FIRE_SOUND } from "../constants/AssetConstants";
+import { Point2D } from "../Helpers";
 import { Asteroid } from "./Asteroid";
 import { AsteroidType } from "./AsteroidType";
 import { PhaserSound } from "../../types/PhaserExtensions";

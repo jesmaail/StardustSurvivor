@@ -1,6 +1,6 @@
 import * as Phaser from "phaser";
 import Powerup from "./Powerup";
-import { Point2D } from "../helpers";
+import { Point2D } from "../Helpers";
 import { PhaserSound } from "../../types/PhaserExtensions";
 
 export declare interface IPowerupPool extends Phaser.GameObjects.Group {

@@ -1,11 +1,11 @@
 import * as Phaser from "phaser";
-import ScrollingSpaceScene from "./scrollingSpaceScene";
+import ScrollingSpaceScene from "./ScrollingSpaceScene";
 import { PhaserSound } from "../../types/PhaserExtensions";
-import { AUDIO_PATH, DEATH_SOUND, DECIGAMES_LOGO, DEFLECT_SOUND, END_MUSIC, EXPLODE_SOUND, FIRE_SOUND, GAME_MUSIC, HIT_SOUND, IMAGE_PATH, MENU_MUSIC, POWERUP_SOUND, SHIELD_SOUND, SITE_LINK, SPACE_BACKGROUND, SPRITE_ATLAS } from "../constants/assetConstants";
-import { getScreenCenter, Point2D } from "../helpers";
+import { AUDIO_PATH, DEATH_SOUND, DECIGAMES_LOGO, DEFLECT_SOUND, END_MUSIC, EXPLODE_SOUND, FIRE_SOUND, GAME_MUSIC, HIT_SOUND, IMAGE_PATH, MENU_MUSIC, POWERUP_SOUND, SHIELD_SOUND, SITE_LINK, SPACE_BACKGROUND, SPRITE_ATLAS } from "../constants/AssetConstants";
+import { getScreenCenter, Point2D } from "../Helpers";
 import { registerGameObjectFactoryExtensions } from "../PhaserFactoryExtensions";
-import { MAIN_SCENE_KEY } from "./main";
-import { DEFAULT_VOLUME, TEXT_FONT, DEFAULT_TEXT_COLOUR, SPRITE_DEPTH, AUDIO_ENABLED } from "../constants/gameplayConstants";
+import { MAIN_SCENE_KEY } from "./Main";
+import { DEFAULT_VOLUME, TEXT_FONT, DEFAULT_TEXT_COLOUR, SPRITE_DEPTH, AUDIO_ENABLED } from "../constants/GameplayConstants";
 
 export const PRELOAD_SCENE_KEY = "PreloadScene";
 
