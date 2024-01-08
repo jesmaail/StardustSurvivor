@@ -11,7 +11,7 @@ export default {
 
     //  Game entrypoint
     input: [
-        "./src/game.ts"
+        "./src/Game.ts"
     ],
 
     //  Where the build file is to be generated.

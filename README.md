@@ -5,10 +5,9 @@ This game has been ported across from Phaser 2 Javascript to Phaser 3 Typescript
 
 
 ## Improvements
+- Base sprite class for WET code.
+- Better background than scrolling image
 - "GameFeel" improvements
-- Abstract logic out of main.ts
-- Encapsulate behaviours
-    - e.g. Ship, Asteroids, Powerups
 - Performance
     - Review object culling
     - Object recycling
