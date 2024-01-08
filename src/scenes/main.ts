@@ -6,11 +6,12 @@ import * as Assets from "../constants/assetConstants";
 import IAsteroidPool from "../sprites/AsteroidPool";
 import IMissilePool from "../sprites/MissilePool";
 import ScrollingSpaceScene from "./scrollingSpaceScene";
-
-import { Point2D, getRandomFromSelection, rollPercentageChance, debugLog } from "../helpers";
+import { Point2D, rollPercentageChance, debugLog } from "../helpers";
 import { AsteroidType } from "../sprites/AsteroidType";
 import { Asteroid } from "../sprites/Asteroid";
 import { PlayerShip, ShipAction } from "../sprites/PlayerShip";
+import { IPowerupPool } from "../sprites/PowerupPool";
+import Powerup from "../sprites/Powerup";
 
 export default class MainScene extends ScrollingSpaceScene {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -42,9 +43,7 @@ export default class MainScene extends ScrollingSpaceScene {
     private explosionSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
 
     // Powerups 
-    private shieldPowerups: Phaser.GameObjects.Group;
-    private doublePowerups: Phaser.GameObjects.Group;
-    private ammoPowerups: Phaser.GameObjects.Group;
+    private powerupPool: IPowerupPool;
     private powerupSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
     private shieldDeflectSound: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
 
@@ -55,11 +54,9 @@ export default class MainScene extends ScrollingSpaceScene {
 
     preload () {
         this.missilePool = this.add.missilePool();
+        this.powerupPool = this.add.powerupPool();
         this.spaceScroll = this.add.group();
         this.explosions = this.add.group();
-        this.shieldPowerups = this.add.group();
-        this.doublePowerups = this.add.group();
-        this.ammoPowerups = this.add.group();
 
         this.hitSound = this.game.sound.add(Assets.HIT_SOUND);
         this.explosionSound = this.game.sound.add(Assets.EXPLODE_SOUND);
@@ -160,19 +157,10 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     collisionDetection(){
-        // Asteroid collisions
         this.physics.add.collider(this.missilePool, this.asteroidPool, this.collideBulletAsteroid, null, this);
         this.physics.add.collider(this.explosions, this.asteroidPool, this.collideBulletAsteroid, null, this);
-
-        // Powerup collisions
-        this.physics.add.collider(this.player, this.ammoPowerups, this.obtainAmmoPowerup, null, this);
-        this.physics.add.collider(this.player, this.doublePowerups, this.obtainDoublePowerup, null, this);
-        this.physics.add.collider(this.player, this.shieldPowerups, this.obtainShieldPowerup, null, this);
-
-        // Shield collisions
+        this.physics.add.collider(this.player, this.powerupPool, this.obtainPowerup, null, this);
         this.physics.add.collider(this.player.shield, this.asteroidPool, this.collideShieldAsteroid, null, this);
-
-        // Player collisions
         this.physics.add.collider(this.player, this.asteroidPool, this.collidePlayer, null, this);
     }
 
@@ -184,7 +172,7 @@ export default class MainScene extends ScrollingSpaceScene {
         if(asteroid.asteroidType !== AsteroidType.Large){
             this.createExplosion(collisionPoint);
             if(rollPercentageChance(GameConstants.POWERUP_SPAWN_CHANCE)){
-                this.spawnPowerup(collisionPoint);
+                this.powerupPool.createPowerup(collisionPoint);
             }
             return;
         }
@@ -196,7 +184,6 @@ export default class MainScene extends ScrollingSpaceScene {
         if(this.player.shieldTimer < this.time.now){
             return;
         }
-        console.log("Collision");
         asteroid.destroy();
         this.shieldDeflectSound.play();
     }
@@ -227,53 +214,10 @@ export default class MainScene extends ScrollingSpaceScene {
         this.explosionSound.play();
     }
 
-    spawnPowerup(spawn: Point2D){
-        const powerups = [
-            GameConstants.SHIELD_POWERUP_FRAME_KEY,
-            GameConstants.DOUBLE_POWERUP_FRAME_KEY,
-            GameConstants.AMMO_POWERUP_FRAME_KEY
-        ];
-
-        const selectedPowerupFrameKey = getRandomFromSelection(powerups);
-
-        let powerupSpawnGroup: Phaser.GameObjects.Group = null;
-
-        switch(selectedPowerupFrameKey){
-            case GameConstants.SHIELD_POWERUP_FRAME_KEY:
-                powerupSpawnGroup = this.shieldPowerups;
-                break;
-            case GameConstants.DOUBLE_POWERUP_FRAME_KEY:
-                powerupSpawnGroup = this.doublePowerups;
-                break;
-            case GameConstants.AMMO_POWERUP_FRAME_KEY:
-                powerupSpawnGroup = this.ammoPowerups;
-                break;
-        }
-        const powerup = powerupSpawnGroup.create(spawn.x, spawn.y, Assets.SPRITE_ATLAS, selectedPowerupFrameKey);
-        powerup.setScale(GameConstants.SPRITE_SCALE);
-        powerup.setDepth(GameConstants.SPRITE_DEPTH);
-        
-        this.physics.world.enable(powerup);
-
-        powerup.body.velocity.y = GameConstants.POWERUP_SPEED;
-    }
-
-    obtainAmmoPowerup(_player: Phaser.Physics.Arcade.Sprite, powerup: Phaser.Physics.Arcade.Sprite){
+    obtainPowerup(player: PlayerShip, powerup: Powerup){
         powerup.destroy();
         this.powerupSound.play();
-        this.player.ammo += GameConstants.AMMO_POWERUP_INCREMENT;
-    }
-
-    obtainDoublePowerup(_player: Phaser.Physics.Arcade.Sprite, powerup: Phaser.Physics.Arcade.Sprite){
-        powerup.destroy();
-        this.powerupSound.play();
-        this.player.doubleTimer = this.time.now + GameConstants.DOUBLE_POWERUP_DURATION;
-    }
-
-    obtainShieldPowerup(_player: Phaser.Physics.Arcade.Sprite, powerup: Phaser.Physics.Arcade.Sprite){
-        powerup.destroy();
-        this.powerupSound.play();
-        this.player.shieldAvailable = true;
+        player.obtainPowerup(powerup.powerupType);
     }
 
     gameObjectCulling(){
@@ -286,6 +230,12 @@ export default class MainScene extends ScrollingSpaceScene {
         this.asteroidPool.getChildren().forEach((asteroid: Phaser.GameObjects.Sprite) => {
             if(asteroid.y > this.physics.world.bounds.bottom){
                 asteroid.destroy();
+            }
+        });
+
+        this.powerupPool.getChildren().forEach((powerup: Phaser.GameObjects.Sprite) => {
+            if(powerup.y > this.physics.world.bounds.bottom){
+                powerup.destroy();
             }
         });
     }

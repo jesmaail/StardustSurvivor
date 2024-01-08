@@ -4,6 +4,7 @@ import { SHIELD_SOUND, SPRITE_ATLAS } from "../constants/assetConstants";
 import { Point2D } from "../helpers";
 import { IMissilePool } from "./MissilePool";
 import { PhaserSound } from "../../types/PhaserExtensions";
+import { PowerupType } from "./PowerupType";
 
 const ASSET_NAME = "ship";
 const SHIELD_ASSET_NAME = "shield";
@@ -25,19 +26,15 @@ export enum ShipAction {
     ActivateShield,
     MoveLeft,
     MoveRight,
-    ObtainAmmo,
-    ObtainShield,
-    ObtainDouble
 }
 
-// TODO - Shield logic in here also (will need to expose the shield sprite for collisions)
 export class PlayerShip extends Phaser.Physics.Arcade.Sprite {
     physicsBody: Phaser.Physics.Arcade.Body;
     missilePool: IMissilePool;
     shield: Phaser.Physics.Arcade.Sprite;
     ammo: number = STARTING_AMMO;
 
-    shieldAvailable: boolean = true;
+    shieldAvailable: boolean = false;
     doubleTimer: number = 0;
     shieldTimer: number = 0;
     private fireTimer: number = 0;
@@ -97,9 +94,10 @@ export class PlayerShip extends Phaser.Physics.Arcade.Sprite {
         this.shieldSound.play();
     }
 
-    // CHECKPOINT <---------------
-    // TODO - Finish player sprite
-    //      - Add powerup acquisition
+    private refreshAmmoText(){
+        this.ammoText.setText("Ammo: " + this.ammo);
+    }
+
     performAction(action: ShipAction) {
         switch(action){
             case ShipAction.MoveLeft:
@@ -114,14 +112,20 @@ export class PlayerShip extends Phaser.Physics.Arcade.Sprite {
             case ShipAction.ActivateShield:
                 this.activateShield();
                 break;
-            case ShipAction.ObtainAmmo:
+        }
+    }
+
+    obtainPowerup(powerupType: PowerupType){
+        switch(powerupType){
+            case PowerupType.Ammo:
                 this.ammo += AMMO_POWERUP_INCREMENT;
+                this.refreshAmmoText();
                 break;
-            case ShipAction.ObtainShield:
-                this.shieldAvailable = true;
-                break;
-            case ShipAction.ObtainDouble:
+            case PowerupType.Double:
                 this.doubleTimer = this.scene.time.now + DOUBLE_POWERUP_DURATION;
+                break;
+            case PowerupType.Shield:
+                this.shieldAvailable = true;
                 break;
         }
     }
@@ -133,7 +137,7 @@ export class PlayerShip extends Phaser.Physics.Arcade.Sprite {
         this.fireTimer = this.scene.time.now + MISSILE_DELAY;
 
         this.ammo--;
-        this.ammoText.setText("Ammo: " + this.ammo);
+        this.refreshAmmoText();
 
         if(this.doubleTimer < this.scene.time.now){
             const spawnPosition: Point2D = { 

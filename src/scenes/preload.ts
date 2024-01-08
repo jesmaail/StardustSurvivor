@@ -7,6 +7,7 @@ import * as Assets from "../constants/assetConstants";
 import AsteroidPool from "../sprites/AsteroidPool";
 import { PlayerShip } from "../sprites/PlayerShip";
 import MissilePool, { IMissilePool } from "../sprites/MissilePool";
+import PowerupPool from "../sprites/PowerupPool";
 
 export default class PreloadScene extends ScrollingSpaceScene {
     private screenCenter: Point2D;
@@ -24,6 +25,10 @@ export default class PreloadScene extends ScrollingSpaceScene {
 
         Phaser.GameObjects.GameObjectFactory.register("missilePool", function () {
             return this.updateList.add(new MissilePool(this.scene));
+        });
+
+        Phaser.GameObjects.GameObjectFactory.register("powerupPool", function () {
+            return this.updateList.add(new PowerupPool(this.scene));
         });
 
         Phaser.GameObjects.GameObjectFactory.register("playerShip", function (this: Phaser.GameObjects.GameObjectFactory, missilePool: IMissilePool) {
