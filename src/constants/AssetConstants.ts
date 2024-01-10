@@ -7,8 +7,6 @@ export const SPRITE_ATLAS = "sprites";
 
 export const SPACE_BACKGROUND = "space";
 export const DECIGAMES_LOGO = "dg";
-export const EXPLOSION = "explosion";
-export const EXPLOSION_ANIMATIONS = "explosionAnimation";
 
 export const MENU_MUSIC = "menuMusic";
 export const GAME_MUSIC = "gameMusic";
