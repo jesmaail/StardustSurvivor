@@ -27,13 +27,5 @@ export default class MissilePool extends Phaser.GameObjects.Group implements IMi
         const missile = new Missile(this.scene, position);
         this.add(missile, true);
         this.triggerSound.play();
-
-        this.addAsteroidToScene(AsteroidType.Normal);
-    }
-
-    private addAsteroidToScene(type: AsteroidType, position?: Point2D){
-        const asteroid = new Asteroid(this.scene, type, position);
-        asteroid.setVisible(true);
-        this.add(asteroid, true);
     }
 }
