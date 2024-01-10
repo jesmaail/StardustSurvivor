@@ -3,7 +3,7 @@ import IAsteroidPool from "../sprites/AsteroidPool";
 import IMissilePool from "../sprites/MissilePool";
 import ScrollingSpaceScene from "./ScrollingSpaceScene";
 import Powerup from "../sprites/Powerup";
-import { Point2D, rollPercentageChance, debugLog } from "../Helpers";
+import { Point2D, rollPercentageChance, debugLog, cullObjectGroupByCondition } from "../Helpers";
 import { AsteroidType } from "../sprites/AsteroidType";
 import { Asteroid } from "../sprites/Asteroid";
 import { PlayerShip, ShipAction } from "../sprites/PlayerShip";
@@ -215,23 +215,9 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     gameObjectCulling(){
-        this.missilePool.getChildren().forEach((bullet: Phaser.GameObjects.Sprite) => {
-            if(bullet.y < this.physics.world.bounds.top){
-                bullet.destroy();
-            }
-        });
-
-        this.asteroidPool.getChildren().forEach((asteroid: Phaser.GameObjects.Sprite) => {
-            if(asteroid.y > this.physics.world.bounds.bottom){
-                asteroid.destroy();
-            }
-        });
-
-        this.powerupPool.getChildren().forEach((powerup: Phaser.GameObjects.Sprite) => {
-            if(powerup.y > this.physics.world.bounds.bottom){
-                powerup.destroy();
-            }
-        });
+        cullObjectGroupByCondition(this.missilePool, (missile) => missile.y < this.physics.world.bounds.top);
+        cullObjectGroupByCondition(this.asteroidPool, (asteroid) => asteroid.y > this.physics.world.bounds.bottom);
+        cullObjectGroupByCondition(this.powerupPool, (powerup) => powerup.y > this.physics.world.bounds.bottom);
     }
 
     endingHandler(){

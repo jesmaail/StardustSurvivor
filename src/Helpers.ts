@@ -29,6 +29,15 @@ export function rollPercentageChance(chance: number): boolean {
     return randomNumber < chance;
 }
 
+export function cullObjectGroupByCondition(group: Phaser.GameObjects.Group, condition: (sprite: Phaser.GameObjects.Sprite) => boolean){
+    group.getChildren().forEach((sprite: Phaser.GameObjects.Sprite) => {
+        if(condition(sprite)){
+            console.log("Cull");
+            sprite.destroy();
+        }
+    });
+}
+
 export function debugLogGroupCount(group: Phaser.GameObjects.Group){
     if(!GameConstants.DEBUG_ENABLED){
         return;
