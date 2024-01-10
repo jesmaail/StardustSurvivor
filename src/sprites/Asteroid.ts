@@ -1,8 +1,7 @@
 import * as Phaser from "phaser";
-import { SPRITE_SCALE, SPRITE_DEPTH } from "../constants/GameplayConstants";
-import { SPRITE_ATLAS } from "../constants/AssetConstants";
 import { getRandomFromSelection, Point2D, } from "../Helpers";
 import { AsteroidType } from "./AsteroidType";
+import { PhysicsSpriteBase } from "./PhysicsSpriteBase";
 
 const ASTEROID_SPRITE_FRAMES: string[] = [
     "asteroid0", 
@@ -32,7 +31,7 @@ const FRACTURED_ASTEROID_SPEED_MAX = 350;
 const FRACTURED_ASTEROID_DRIFT_MIN = 0;
 const FRACTURED_ASTEROID_DRIFT_MAX = 150;
 
-export class Asteroid extends Phaser.Physics.Arcade.Sprite {
+export class Asteroid extends PhysicsSpriteBase {
     asteroidType: AsteroidType;
     
     constructor(scene: Phaser.Scene, asteroidType: AsteroidType, position?: Point2D) {
@@ -46,18 +45,11 @@ export class Asteroid extends Phaser.Physics.Arcade.Sprite {
             };
         }
 
-        super(scene, position.x, position.y, SPRITE_ATLAS, asteroidFrame);
+        super(scene, position, asteroidFrame);
 
         this.asteroidType = asteroidType;
 
-        scene.physics.add.existing(this);
-
-        this.setScale(SPRITE_SCALE);
-        this.setDepth(SPRITE_DEPTH);
-        scene.physics.world.enable(this);
-
         const velocity = this.determineAsteroidSpeed(asteroidType);
-
         this.body.velocity.x = velocity.x;
         this.body.velocity.y = velocity.y;
     }

@@ -5,6 +5,7 @@ import { Point2D } from "../Helpers";
 import { IMissilePool } from "./MissilePool";
 import { PhaserSound } from "../../types/PhaserExtensions";
 import { PowerupType } from "./PowerupType";
+import { PhysicsSpriteBase } from "./PhysicsSpriteBase";
 
 const ASSET_NAME = "ship";
 const SHIELD_ASSET_NAME = "shield";
@@ -28,7 +29,7 @@ export enum ShipAction {
     MoveRight,
 }
 
-export class PlayerShip extends Phaser.Physics.Arcade.Sprite {
+export class PlayerShip extends PhysicsSpriteBase {
     physicsBody: Phaser.Physics.Arcade.Body;
     missilePool: IMissilePool;
     shield: Phaser.Physics.Arcade.Sprite;
@@ -43,12 +44,9 @@ export class PlayerShip extends Phaser.Physics.Arcade.Sprite {
     private ammoText: Phaser.GameObjects.Text;
 
     constructor(scene: Phaser.Scene, missilePool: IMissilePool) {
-        super(scene, SPAWN_POSITION.x, SPAWN_POSITION.y, SPRITE_ATLAS, ASSET_NAME);
+        super(scene, SPAWN_POSITION, ASSET_NAME);
         this.setOrigin(0.5, 0);
-        this.setScale(SPRITE_SCALE);
-        this.setDepth(SPRITE_DEPTH);
 
-        scene.physics.add.existing(this);
         this.physicsBody = this.body as Phaser.Physics.Arcade.Body;
 
         this.setupPhysicsBody();
