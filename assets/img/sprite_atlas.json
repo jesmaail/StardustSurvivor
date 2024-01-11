@@ -5,7 +5,7 @@
 			"format": "RGBA8888",
 			"size": {
 				"w": 1184,
-				"h": 168
+				"h": 177
 			},
 			"scale": 1,
 			"frames": [
@@ -94,7 +94,7 @@
 					}
 				},
 				{
-					"filename": "asteroidBig7",
+					"filename": "asteroidBig3",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -115,7 +115,7 @@
 					}
 				},
 				{
-					"filename": "asteroidBig3",
+					"filename": "asteroidBig7",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -136,7 +136,7 @@
 					}
 				},
 				{
-					"filename": "asteroidBig0",
+					"filename": "asteroidBig4",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -157,7 +157,7 @@
 					}
 				},
 				{
-					"filename": "asteroidBig4",
+					"filename": "asteroidBig0",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -178,7 +178,7 @@
 					}
 				},
 				{
-					"filename": "asteroidBig6",
+					"filename": "asteroidBig2",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -199,7 +199,7 @@
 					}
 				},
 				{
-					"filename": "asteroidBig2",
+					"filename": "asteroidBig6",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -241,7 +241,7 @@
 					}
 				},
 				{
-					"filename": "asteroid5",
+					"filename": "asteroid2",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -262,7 +262,7 @@
 					}
 				},
 				{
-					"filename": "asteroid2",
+					"filename": "asteroid5",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -493,6 +493,69 @@
 					}
 				},
 				{
+					"filename": "star0",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 25,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 25,
+						"h": 24
+					},
+					"frame": {
+						"x": 832,
+						"y": 122,
+						"w": 25,
+						"h": 24
+					}
+				},
+				{
+					"filename": "star1",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 25,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 25,
+						"h": 24
+					},
+					"frame": {
+						"x": 832,
+						"y": 148,
+						"w": 25,
+						"h": 24
+					}
+				},
+				{
+					"filename": "star2",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 24,
+						"h": 24
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 24,
+						"h": 24
+					},
+					"frame": {
+						"x": 904,
+						"y": 130,
+						"w": 24,
+						"h": 24
+					}
+				},
+				{
 					"filename": "laser",
 					"rotated": false,
 					"trimmed": false,
@@ -507,8 +570,8 @@
 						"h": 54
 					},
 					"frame": {
-						"x": 908,
-						"y": 87,
+						"x": 859,
+						"y": 122,
 						"w": 9,
 						"h": 54
 					}

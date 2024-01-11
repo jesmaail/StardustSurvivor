@@ -2,10 +2,10 @@
   "meta": {
     "version": "0.6.7"
   },
-  "savePath": "C:\\dev\\games\\space-fighters-game\\assets\\img",
+  "savePath": "C:\\dev\\games\\StarshipSurvivors\\assets\\img",
   "images": [],
   "folders": [
-    "C:/dev/games/space-fighters-game/assets/img/sprites"
+    "C:/dev/games/StarshipSurvivors/assets/img/sprites"
   ],
   "packOptions": {
     "textureName": "sprite_atlas",
@@ -19,7 +19,7 @@
     "filter": "none",
     "exporter": "Phaser 3",
     "fileName": "pack-result",
-    "savePath": "C:\\dev\\games\\space-fighters-game\\assets\\img",
+    "savePath": "C:\\dev\\games\\StarshipSurvivors\\assets\\img",
     "width": 2048,
     "height": 2048,
     "fixedSize": false,
@@ -32,6 +32,6 @@
     "alphaThreshold": "0",
     "detectIdentical": true,
     "packer": "MaxRectsPacker",
-    "packerMethod": "SquareArea"
+    "packerMethod": "Smart"
   }
 }

@@ -4,8 +4,6 @@ export const IMAGE_PATH = "assets/img";
 export const AUDIO_PATH = "assets/audio";
 
 export const SPRITE_ATLAS = "sprites";
-
-export const SPACE_BACKGROUND = "space";
 export const DECIGAMES_LOGO = "dg";
 
 export const MENU_MUSIC = "menuMusic";

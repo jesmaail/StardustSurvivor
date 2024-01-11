@@ -2,7 +2,7 @@ import * as Phaser from "phaser";
 import { EXPLODE_SOUND, SPRITE_ATLAS } from "../constants/AssetConstants";
 import { Point2D } from "../Helpers";
 import { PhaserSound } from "../../types/PhaserExtensions";
-import { SPRITE_DEPTH } from "../constants/GameplayConstants";
+import { SPRITE_DEPTH, SPRITE_SCALE } from "../constants/GameplayConstants";
 
 const ASSET_NAME = "explosion";
 const ASSET_ANIMATION_KEY = "explosionAnimation";
@@ -41,9 +41,10 @@ export default class ExplosionPool extends Phaser.GameObjects.Group implements I
     createExplosion(position: Point2D){
         const explosion = this.scene.add.sprite(position.x, position.y, SPRITE_ATLAS, ASSET_NAME);
         explosion.setDepth(SPRITE_DEPTH);
+        explosion.setScale(SPRITE_SCALE);
         
         this.add(explosion, true);
-        this.scene.physics.add.existing(explosion);
+        this.scene.physics.add.existing(explosion); // This is making the explosion bound-box bigger than it needs to be
 
         explosion.on(`animationcomplete-${ASSET_ANIMATION_KEY}`, () => {
             explosion.destroy();

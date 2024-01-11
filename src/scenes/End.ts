@@ -1,11 +1,12 @@
 import * as Phaser from "phaser";
-import { END_MUSIC, SPACE_BACKGROUND } from "../constants/AssetConstants";
+import ScrollingSpaceScene from "./ScrollingSpaceScene";
+import { END_MUSIC } from "../constants/AssetConstants";
 import { DEFAULT_TEXT_COLOUR, SPRITE_DEPTH, TEXT_FONT } from "../constants/GameplayConstants";
 import { getScreenCenter, Point2D } from "../Helpers";
 
 export const END_SCENE_KEY = "EndScene";
 
-export default class EndScene extends Phaser.Scene {
+export default class EndScene extends ScrollingSpaceScene {
     private screenCenter: Point2D;
     private restartKey: Phaser.Input.Keyboard.Key;
 
@@ -32,8 +33,7 @@ export default class EndScene extends Phaser.Scene {
 
     create() {
         this.endMusic.play();
-        const background = this.add.sprite(0, 0, SPACE_BACKGROUND);
-        background.setOrigin(0, 0);
+        this.initSpaceBackground();
 
         const dramaticReadout1 = "YOUR SHIP CRASHED\nINTO AN ASTEROID.";
         const dramaticReadout2 = "ALL CREW ABOARD\nWERE INCINERATED\nUPON IMPACT.";

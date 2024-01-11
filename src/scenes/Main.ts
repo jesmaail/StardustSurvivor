@@ -10,8 +10,8 @@ import { PlayerShip, ShipAction } from "../sprites/PlayerShip";
 import { IPowerupPool } from "../sprites/PowerupPool";
 import { PhaserSound } from "../../types/PhaserExtensions";
 import { END_SCENE_KEY } from "./End";
-import { HIT_SOUND, POWERUP_SOUND, DEFLECT_SOUND, DEATH_SOUND, GAME_MUSIC} from "../constants/AssetConstants";
-import { TEXT_Y, INGAME_TEXT_STYLE, TEXT_DEPTH, AUDIO_ENABLED, SCORE_INCREMENT, DIFFICULTY_INCREASE_RATE, ASTEROID_SPAWN_RATE, POWERUP_SPAWN_CHANCE, PLAYER_DEATH_WAIT, SPRITE_DEPTH } from "../constants/GameplayConstants";
+import { HIT_SOUND, POWERUP_SOUND, DEFLECT_SOUND, DEATH_SOUND, GAME_MUSIC, SPRITE_ATLAS} from "../constants/AssetConstants";
+import { TEXT_Y, INGAME_TEXT_STYLE, TEXT_DEPTH, AUDIO_ENABLED, SCORE_INCREMENT, DIFFICULTY_INCREASE_RATE, ASTEROID_SPAWN_RATE, POWERUP_SPAWN_CHANCE, PLAYER_DEATH_WAIT, SPRITE_DEPTH, SPRITE_SCALE } from "../constants/GameplayConstants";
 import { IExplosionPool } from "../sprites/ExplosionPool";
 
 export const MAIN_SCENE_KEY = "MainScene";
@@ -47,7 +47,6 @@ export default class MainScene extends ScrollingSpaceScene {
         this.missilePool = this.add.missilePool();
         this.powerupPool = this.add.powerupPool();
         this.asteroidPool = this.add.asteroidPool();
-        this.spaceScroll = this.add.group();
         this.explosionPool = this.add.explosionPool();
 
         this.score = 0;
@@ -62,8 +61,8 @@ export default class MainScene extends ScrollingSpaceScene {
     }
 
     create() {
-        this.gameTick = 0;
         // this.physics.world.createDebugGraphic();
+        this.gameTick = 0;
         this.player = this.add.playerShip(this.missilePool);
 
         this.initSpaceBackground();
@@ -75,14 +74,14 @@ export default class MainScene extends ScrollingSpaceScene {
             this.music.play();
         }
         
+
         this.cursors = this.input.keyboard.createCursorKeys();
     }
 
     update() {
         this.gameTick++;
         debugLog(this, this.fps);
-        
-        this.scrollSpaceBackground();
+
         this.spawnAsteroids();
         this.player.body.velocity.x = 0;
         this.gameObjectCulling();

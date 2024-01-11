@@ -1,7 +1,7 @@
 import * as Phaser from "phaser";
 import ScrollingSpaceScene from "./ScrollingSpaceScene";
 import { PhaserSound } from "../../types/PhaserExtensions";
-import { AUDIO_PATH, DEATH_SOUND, DECIGAMES_LOGO, DEFLECT_SOUND, END_MUSIC, EXPLODE_SOUND, FIRE_SOUND, GAME_MUSIC, HIT_SOUND, IMAGE_PATH, MENU_MUSIC, POWERUP_SOUND, SHIELD_SOUND, SITE_LINK, SPACE_BACKGROUND, SPRITE_ATLAS } from "../constants/AssetConstants";
+import { AUDIO_PATH, DEATH_SOUND, DECIGAMES_LOGO, DEFLECT_SOUND, END_MUSIC, EXPLODE_SOUND, FIRE_SOUND, GAME_MUSIC, HIT_SOUND, IMAGE_PATH, MENU_MUSIC, POWERUP_SOUND, SHIELD_SOUND, SITE_LINK, SPRITE_ATLAS } from "../constants/AssetConstants";
 import { getScreenCenter, Point2D } from "../Helpers";
 import { registerGameObjectFactoryExtensions } from "../PhaserFactoryExtensions";
 import { MAIN_SCENE_KEY } from "./Main";
@@ -13,6 +13,7 @@ export default class PreloadScene extends ScrollingSpaceScene {
     private screenCenter: Point2D;
     private startKey: Phaser.Input.Keyboard.Key;
     private music: PhaserSound;
+    private loadingText: Phaser.GameObjects.Text;
     
     constructor() {
         super({ key: PRELOAD_SCENE_KEY });
@@ -22,11 +23,10 @@ export default class PreloadScene extends ScrollingSpaceScene {
 
     preload() {
         this.screenCenter = getScreenCenter(this.cameras.main);
-        const loading = this.add.text(this.screenCenter.x, this.screenCenter.y, "LOADING...");
-        loading.setOrigin(0.5);
+        this.loadingText = this.add.text(this.screenCenter.x, this.screenCenter.y, "LOADING...");
+        this.loadingText.setOrigin(0.5);
 
         this.loadAudio();
-        this.load.image(SPACE_BACKGROUND, `${IMAGE_PATH}/space.png`);
 
         this.load.path = `${IMAGE_PATH}/`;
         this.load.multiatlas(SPRITE_ATLAS, "sprite_atlas.json");
@@ -35,6 +35,7 @@ export default class PreloadScene extends ScrollingSpaceScene {
 
     // TODO - Clean up positioning
     create() {
+        this.loadingText.setVisible(false);
         this.initSpaceBackground();
         this.music = this.game.sound.add(MENU_MUSIC);
         
@@ -68,8 +69,6 @@ export default class PreloadScene extends ScrollingSpaceScene {
             this.music.stop();
             this.scene.start(MAIN_SCENE_KEY);
         }
-
-        this.scrollSpaceBackground();
     }
 
     private loadAudio() {
