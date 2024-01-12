@@ -14,6 +14,10 @@ export const PLAYER_DEATH_WAIT = 500;
 export const ASTEROID_SPAWN_RATE = 75;
 export const DIFFICULTY_INCREASE_RATE = 100; // Lower is harder
 export const POWERUP_SPAWN_CHANCE = 25;
+export const SCREENSHAKE_DURATION = 100;
+export const SCREENSHAKE_INTENSITY_SMALL = 0.0055;
+export const SCREENSHAKE_INTENSITY_STANDARD = 0.0075;
+export const SCREENSHAKE_INTENSITY_BIG = 0.012;
 
 export const TEXT_FONT = "PressStart2P";
 export const DEFAULT_TEXT_COLOUR = "#fff";

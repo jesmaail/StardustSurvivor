@@ -39,7 +39,7 @@ export default class ExplosionPool extends Phaser.GameObjects.Group implements I
     }
 
     createExplosion(position: Point2D){
-        const explosion = this.scene.add.sprite(position.x, position.y, SPRITE_ATLAS, ASSET_NAME);
+        const explosion = this.scene.add.sprite(position.x, position.y, SPRITE_ATLAS);
         explosion.setDepth(SPRITE_DEPTH);
         explosion.setScale(SPRITE_SCALE);
         
