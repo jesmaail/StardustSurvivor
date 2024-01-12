@@ -143,6 +143,8 @@ export default class MainScene extends ScrollingSpaceScene {
         asteroid.destroy();
         this.asteroidParticles.create(collisionPoint);
 
+        this.delayTime(20); // "GameFeel"
+
         if(asteroid.asteroidType !== AsteroidType.Large){
             this.cameras.main.shake(SCREENSHAKE_DURATION, SCREENSHAKE_INTENSITY_STANDARD);
             this.explosionSound.play();
@@ -154,6 +156,14 @@ export default class MainScene extends ScrollingSpaceScene {
         this.hitSound.play();
         this.cameras.main.shake(SCREENSHAKE_DURATION, SCREENSHAKE_INTENSITY_BIG);
         this.asteroidPool.createAsteroid(collisionPoint);
+    }
+
+    delayTime(durationMs: number){
+        this.physics.pause();
+
+        const resume = () => this.physics.resume();
+
+        this.time.delayedCall(durationMs, resume, [], this);
     }
 
     collideShieldAsteroid(_shield: Phaser.Physics.Arcade.Sprite, asteroid: Phaser.Physics.Arcade.Sprite){
