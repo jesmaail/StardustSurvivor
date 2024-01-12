@@ -9,6 +9,7 @@ export const END_SCENE_KEY = "EndScene";
 export default class EndScene extends ScrollingSpaceScene {
     private screenCenter: Point2D;
     private restartKey: Phaser.Input.Keyboard.Key;
+    private restartKeyAlt: Phaser.Input.Keyboard.Key;
 
     private endMusic: Phaser.Sound.HTML5AudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.WebAudioSound;
     
@@ -29,6 +30,7 @@ export default class EndScene extends ScrollingSpaceScene {
         this.endMusic = this.game.sound.add(END_MUSIC);
 
         this.restartKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        this.restartKeyAlt = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     }
 
     create() {
@@ -61,11 +63,10 @@ export default class EndScene extends ScrollingSpaceScene {
     }
 
     update() {
-        if(this.restartKey.isDown){
+        if(this.restartKey.isDown || this.restartKeyAlt.isDown){
             this.endMusic.stop();
             this.scene.stop();
             this.scene.start("MainScene");
-
         }
     }
 }

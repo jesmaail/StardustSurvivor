@@ -18,6 +18,11 @@ export const MAIN_SCENE_KEY = "MainScene";
 
 export default class MainScene extends ScrollingSpaceScene {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
+    private wKey: Phaser.Input.Keyboard.Key;
+    private aKey: Phaser.Input.Keyboard.Key;
+    private sKey: Phaser.Input.Keyboard.Key;
+    private dKey: Phaser.Input.Keyboard.Key;
+
     private music: PhaserSound;
     private scoreText: Phaser.GameObjects.Text;
 
@@ -56,6 +61,12 @@ export default class MainScene extends ScrollingSpaceScene {
         this.shieldDeflectSound = this.game.sound.add(DEFLECT_SOUND);
         this.explosionSound = this.game.sound.add(EXPLODE_SOUND);
         this.music = this.game.sound.add(GAME_MUSIC);
+
+        this.cursors = this.input.keyboard.createCursorKeys();
+        this.wKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.sKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     }
 
     create() {
@@ -71,8 +82,6 @@ export default class MainScene extends ScrollingSpaceScene {
             this.music.loop = true;
             this.music.play();
         }
-        
-        this.cursors = this.input.keyboard.createCursorKeys();
     }
 
     update() {
@@ -100,19 +109,17 @@ export default class MainScene extends ScrollingSpaceScene {
             return;
         }
 
-        switch(true){
-            case this.cursors.left.isDown:
-                this.player.performAction(ShipAction.MoveLeft);
-                break;
-            case this.cursors.right.isDown:
-                this.player.performAction(ShipAction.MoveRight);
-                break;
-            case this.cursors.up.isDown:
-                this.player.performAction(ShipAction.FireMissile);
-                break;
-            case this.cursors.down.isDown:
-                this.player.performAction(ShipAction.ActivateShield);
-                break;
+        if(this.cursors.left.isDown || this.aKey.isDown){
+            this.player.performAction(ShipAction.MoveLeft);
+        }
+        if(this.cursors.right.isDown || this.dKey.isDown){
+            this.player.performAction(ShipAction.MoveRight);
+        }
+        if(this.cursors.up.isDown || this.wKey.isDown){
+            this.player.performAction(ShipAction.FireMissile);
+        }
+        if(this.cursors.down.isDown || this.sKey.isDown){
+            this.player.performAction(ShipAction.ActivateShield);
         }
     }
 

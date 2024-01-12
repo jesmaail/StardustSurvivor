@@ -12,6 +12,7 @@ export const PRELOAD_SCENE_KEY = "PreloadScene";
 export default class PreloadScene extends ScrollingSpaceScene {
     private screenCenter: Point2D;
     private startKey: Phaser.Input.Keyboard.Key;
+    private startKeyAlt: Phaser.Input.Keyboard.Key;
     private music: PhaserSound;
     private loadingText: Phaser.GameObjects.Text;
     
@@ -62,10 +63,11 @@ export default class PreloadScene extends ScrollingSpaceScene {
         }
 
         this.startKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        this.startKeyAlt = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     }
 
     update() { 
-        if (this.startKey.isDown){
+        if (this.startKey.isDown || this.startKeyAlt.isDown){
             this.music.stop();
             this.scene.start(MAIN_SCENE_KEY);
         }
