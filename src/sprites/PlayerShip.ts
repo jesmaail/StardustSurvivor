@@ -1,6 +1,6 @@
 import * as Phaser from "phaser";
 import { SPRITE_SCALE, SPRITE_DEPTH, INGAME_TEXT_STYLE, TEXT_Y, TEXT_DEPTH, SHIELD_TEXT_COLOUR, TEXT_FONT } from "../constants/GameplayConstants";
-import { SHIELD_SOUND, SPRITE_ATLAS } from "../constants/AssetConstants";
+import { DEATH_SOUND, SHIELD_SOUND, SPRITE_ATLAS } from "../constants/AssetConstants";
 import { Point2D } from "../Helpers";
 import { IMissilePool } from "./MissilePool";
 import { PhaserSound } from "../../types/PhaserExtensions";
@@ -13,6 +13,7 @@ const SPAWN_POSITION: Point2D = { x: 200, y: 540};
 const SPEED = 500;
 const MISSILE_DELAY = 300;
 const STARTING_AMMO = 40;
+const DEATH_DURATION = 750;
 
 const AMMO_POWERUP_INCREMENT = 5;
 const DOUBLE_POWERUP_DURATION = 2500;
@@ -42,6 +43,7 @@ export class PlayerShip extends PhysicsSpriteBase {
     private shieldSound: PhaserSound;
     private shieldText: Phaser.GameObjects.Text;
     private ammoText: Phaser.GameObjects.Text;
+    private deathSound: PhaserSound;
 
     constructor(scene: Phaser.Scene, missilePool: IMissilePool) {
         super(scene, SPAWN_POSITION, ASSET_NAME);
@@ -54,6 +56,8 @@ export class PlayerShip extends PhysicsSpriteBase {
         this.setupShield();
 
         this.missilePool = missilePool;
+
+        this.deathSound = this.scene.game.sound.add(DEATH_SOUND);
     }
 
     private setupPhysicsBody(){
@@ -174,5 +178,35 @@ export class PlayerShip extends PhysicsSpriteBase {
 
         this.shield.setVisible(false);
         this.shieldText.setText("");
+    }
+
+    destroyShip(callback: () => void){
+        this.setVisible(false);
+        this.body.enable = false;
+        this.deathSound.play();
+
+        const deathX = this.body.x + (this.width / 2);
+        const deathY = this.body.y + (this.height / 2);
+
+        const deathSprite = this.scene.add.sprite(deathX, deathY, SPRITE_ATLAS, ASSET_NAME);
+        deathSprite.setScale(SPRITE_SCALE);
+        deathSprite.setOrigin(0.5);
+        
+        const horizontalOffset = Phaser.Math.FloatBetween(-50, 50);
+        const verticalOffset = 200;
+        const spinAmount = 360 * Phaser.Math.FloatBetween(-1.5, 1.5);
+
+        this.scene.tweens.add({
+            targets: deathSprite,
+            x: deathSprite.x + horizontalOffset,
+            y: deathSprite.y + verticalOffset,
+            angle: spinAmount,
+            ease: "Linear",
+            duration: DEATH_DURATION, 
+            onComplete: () => {
+                deathSprite.destroy();
+                callback.call(this.scene);
+            }
+        });
     }
 }
