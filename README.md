@@ -5,8 +5,6 @@ This game has been ported across from Phaser 2 Javascript to Phaser 3 Typescript
 
 
 ## Improvements
-- "GameFeel" improvements
-    - Particle emitter to small asteroid destruction with smallest asteroid pieces which won't physics collide
 - Performance
     - Review object culling
     - Object recycling

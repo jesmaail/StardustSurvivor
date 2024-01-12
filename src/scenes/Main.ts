@@ -12,7 +12,6 @@ import { PhaserSound } from "../../types/PhaserExtensions";
 import { END_SCENE_KEY } from "./End";
 import { HIT_SOUND, POWERUP_SOUND, DEFLECT_SOUND, GAME_MUSIC, EXPLODE_SOUND } from "../constants/AssetConstants";
 import { TEXT_Y, INGAME_TEXT_STYLE, TEXT_DEPTH, AUDIO_ENABLED, SCORE_INCREMENT, DIFFICULTY_INCREASE_RATE, ASTEROID_SPAWN_RATE, POWERUP_SPAWN_CHANCE, SCREENSHAKE_DURATION, SCREENSHAKE_INTENSITY_BIG, SCREENSHAKE_INTENSITY_STANDARD, SCREENSHAKE_INTENSITY_SMALL } from "../constants/GameplayConstants";
-import { IExplosionPool } from "../sprites/ExplosionPool";
 import AsteroidParticles from "../sprites/AsteroidParticles";
 
 export const MAIN_SCENE_KEY = "MainScene";
@@ -32,7 +31,6 @@ export default class MainScene extends ScrollingSpaceScene {
     private missilePool: IMissilePool;
     private asteroidPool: IAsteroidPool;
     private powerupPool: IPowerupPool;
-    private explosionPool: IExplosionPool;
     private asteroidParticles: AsteroidParticles;
 
     private hitSound: PhaserSound;
@@ -48,7 +46,6 @@ export default class MainScene extends ScrollingSpaceScene {
         this.missilePool = this.add.missilePool();
         this.powerupPool = this.add.powerupPool();
         this.asteroidPool = this.add.asteroidPool();
-        this.explosionPool = this.add.explosionPool();
         this.asteroidParticles = new AsteroidParticles(this.scene.scene);
 
         this.score = 0;
@@ -131,7 +128,6 @@ export default class MainScene extends ScrollingSpaceScene {
 
     collisionDetection(){
         this.physics.add.collider(this.missilePool, this.asteroidPool, this.collideBulletAsteroid, null, this);
-        this.physics.add.collider(this.explosionPool, this.asteroidPool, this.collideBulletAsteroid, null, this);
         this.physics.add.collider(this.player, this.powerupPool, this.obtainPowerup, null, this);
         this.physics.add.collider(this.player.shield, this.asteroidPool, this.collideShieldAsteroid, null, this);
         this.physics.add.collider(this.player, this.asteroidPool, this.collidePlayer, null, this);

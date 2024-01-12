@@ -5,7 +5,7 @@
 			"format": "RGBA8888",
 			"size": {
 				"w": 1184,
-				"h": 177
+				"h": 182
 			},
 			"scale": 1,
 			"frames": [
@@ -94,7 +94,7 @@
 					}
 				},
 				{
-					"filename": "asteroidBig3",
+					"filename": "asteroidBig7",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -115,7 +115,7 @@
 					}
 				},
 				{
-					"filename": "asteroidBig7",
+					"filename": "asteroidBig3",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -283,7 +283,7 @@
 					}
 				},
 				{
-					"filename": "asteroid4",
+					"filename": "asteroid1",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -304,7 +304,7 @@
 					}
 				},
 				{
-					"filename": "asteroid1",
+					"filename": "asteroid4",
 					"rotated": true,
 					"trimmed": false,
 					"sourceSize": {
@@ -325,69 +325,6 @@
 					}
 				},
 				{
-					"filename": "explosion0",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 40,
-						"h": 40
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 40,
-						"h": 40
-					},
-					"frame": {
-						"x": 1014,
-						"y": 127,
-						"w": 40,
-						"h": 40
-					}
-				},
-				{
-					"filename": "explosion1",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 40,
-						"h": 40
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 40,
-						"h": 40
-					},
-					"frame": {
-						"x": 718,
-						"y": 87,
-						"w": 40,
-						"h": 40
-					}
-				},
-				{
-					"filename": "explosion2",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 40,
-						"h": 40
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 40,
-						"h": 40
-					},
-					"frame": {
-						"x": 760,
-						"y": 87,
-						"w": 40,
-						"h": 40
-					}
-				},
-				{
 					"filename": "powerupDouble",
 					"rotated": false,
 					"trimmed": false,
@@ -402,8 +339,8 @@
 						"h": 33
 					},
 					"frame": {
-						"x": 802,
-						"y": 87,
+						"x": 1014,
+						"y": 127,
 						"w": 34,
 						"h": 33
 					}
@@ -423,7 +360,7 @@
 						"h": 33
 					},
 					"frame": {
-						"x": 838,
+						"x": 718,
 						"y": 87,
 						"w": 34,
 						"h": 33
@@ -444,31 +381,10 @@
 						"h": 32
 					},
 					"frame": {
-						"x": 874,
+						"x": 754,
 						"y": 87,
 						"w": 32,
 						"h": 32
-					}
-				},
-				{
-					"filename": "asteroid3",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 28,
-						"h": 28
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 28,
-						"h": 28
-					},
-					"frame": {
-						"x": 874,
-						"y": 121,
-						"w": 28,
-						"h": 28
 					}
 				},
 				{
@@ -486,8 +402,29 @@
 						"h": 28
 					},
 					"frame": {
-						"x": 802,
-						"y": 122,
+						"x": 788,
+						"y": 87,
+						"w": 28,
+						"h": 28
+					}
+				},
+				{
+					"filename": "asteroid3",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 28
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 28
+					},
+					"frame": {
+						"x": 818,
+						"y": 87,
 						"w": 28,
 						"h": 28
 					}
@@ -507,8 +444,8 @@
 						"h": 24
 					},
 					"frame": {
-						"x": 832,
-						"y": 122,
+						"x": 848,
+						"y": 87,
 						"w": 25,
 						"h": 24
 					}
@@ -528,8 +465,8 @@
 						"h": 24
 					},
 					"frame": {
-						"x": 832,
-						"y": 148,
+						"x": 875,
+						"y": 87,
 						"w": 25,
 						"h": 24
 					}
@@ -549,8 +486,8 @@
 						"h": 24
 					},
 					"frame": {
-						"x": 904,
-						"y": 130,
+						"x": 848,
+						"y": 113,
 						"w": 24,
 						"h": 24
 					}
@@ -570,8 +507,8 @@
 						"h": 54
 					},
 					"frame": {
-						"x": 859,
-						"y": 122,
+						"x": 1050,
+						"y": 127,
 						"w": 9,
 						"h": 54
 					}
