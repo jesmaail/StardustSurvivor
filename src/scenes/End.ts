@@ -35,13 +35,17 @@ export default class EndScene extends ScrollingSpaceScene {
         this.endMusic.play();
         this.initSpaceBackground();
 
+        const gameOverConfig = {fontFamily: TEXT_FONT, fontSize: 40, color: "#ff0000", align: "center"};
+        const gameOverText = this.add.text(this.screenCenter.x, 20, "GAME OVER", gameOverConfig);
+        gameOverText.setOrigin(0.5, 0);
+
         const dramaticReadout1 = "YOUR SHIP CRASHED\nINTO AN ASTEROID.";
         const dramaticReadout2 = "ALL CREW ABOARD\nWERE INCINERATED\nUPON IMPACT.";
         const dramaticReadout3 = "AND IT WAS ALL\nYOUR FAULT.";
         const fullDramaticReadout = `${dramaticReadout1}\n\n${dramaticReadout2}\n\n${dramaticReadout3}`;
 
         const dramaticTextConfig = {fontFamily: TEXT_FONT, fontSize: 20, color: DEFAULT_TEXT_COLOUR};
-        const dramaticText = this.add.text(this.screenCenter.x, 20, fullDramaticReadout, dramaticTextConfig);
+        const dramaticText = this.add.text(this.screenCenter.x, 100, fullDramaticReadout, dramaticTextConfig);
         dramaticText.setOrigin(0.5, 0);
         dramaticText.setDepth(SPRITE_DEPTH);
 
@@ -52,7 +56,7 @@ export default class EndScene extends ScrollingSpaceScene {
         restartText.setDepth(SPRITE_DEPTH);
 
         const scoreTextConfig = {fontFamily: TEXT_FONT, fontSize: 20, color: "#ff7800", align: "center"};
-        const scoreText = this.add.text(this.cameras.main.centerX, 350, `YOU SURVIVED\n${this.score}\nSECONDS!`, scoreTextConfig);
+        const scoreText = this.add.text(this.screenCenter.x, 350, `YOU SURVIVED\n${this.score}\nSECONDS!`, scoreTextConfig);
         scoreText.setOrigin(0.5, 0);
     }
 
