@@ -1,6 +1,8 @@
 # Stardust Survivor
 _Working title: "Space Fighters: Asteroid Field"_
 
+![](./assets/img/gameJoltThumbnail.png)
+
 This game has been ported across from Phaser 2 Javascript to Phaser 3 Typescript :tada:
 
 ## Current Release: v0.1.1 - Game Feel additions and behind the scenes improvements
