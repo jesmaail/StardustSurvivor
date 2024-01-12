@@ -1,4 +1,4 @@
-export const DEBUG_ENABLED = true;
+export const DEBUG_ENABLED = false;
 export const AUDIO_ENABLED = true;
 
 export const TEXT_DEPTH = Number.MAX_VALUE;

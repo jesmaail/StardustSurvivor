@@ -10,9 +10,10 @@ import { PlayerShip, ShipAction } from "../sprites/PlayerShip";
 import { IPowerupPool } from "../sprites/PowerupPool";
 import { PhaserSound } from "../../types/PhaserExtensions";
 import { END_SCENE_KEY } from "./End";
-import { HIT_SOUND, POWERUP_SOUND, DEFLECT_SOUND, DEATH_SOUND, GAME_MUSIC } from "../constants/AssetConstants";
+import { HIT_SOUND, POWERUP_SOUND, DEFLECT_SOUND, DEATH_SOUND, GAME_MUSIC, EXPLODE_SOUND } from "../constants/AssetConstants";
 import { TEXT_Y, INGAME_TEXT_STYLE, TEXT_DEPTH, AUDIO_ENABLED, SCORE_INCREMENT, DIFFICULTY_INCREASE_RATE, ASTEROID_SPAWN_RATE, POWERUP_SPAWN_CHANCE, PLAYER_DEATH_WAIT, SCREENSHAKE_DURATION, SCREENSHAKE_INTENSITY_BIG, SCREENSHAKE_INTENSITY_STANDARD, SCREENSHAKE_INTENSITY_SMALL } from "../constants/GameplayConstants";
 import { IExplosionPool } from "../sprites/ExplosionPool";
+import AsteroidParticles from "../sprites/AsteroidParticles";
 
 export const MAIN_SCENE_KEY = "MainScene";
 
@@ -34,10 +35,12 @@ export default class MainScene extends ScrollingSpaceScene {
     private asteroidPool: IAsteroidPool;
     private powerupPool: IPowerupPool;
     private explosionPool: IExplosionPool;
+    private asteroidParticles: AsteroidParticles;
 
     private hitSound: PhaserSound;
     private powerupSound: PhaserSound;
     private shieldDeflectSound: PhaserSound;
+    private explosionSound: PhaserSound;
 
     constructor() {
         super({ key: MAIN_SCENE_KEY });
@@ -48,6 +51,7 @@ export default class MainScene extends ScrollingSpaceScene {
         this.powerupPool = this.add.powerupPool();
         this.asteroidPool = this.add.asteroidPool();
         this.explosionPool = this.add.explosionPool();
+        this.asteroidParticles = new AsteroidParticles(this.scene.scene);
 
         this.score = 0;
         this.playerDeathTimer = 0;
@@ -57,6 +61,7 @@ export default class MainScene extends ScrollingSpaceScene {
         this.powerupSound = this.game.sound.add(POWERUP_SOUND);
         this.shieldDeflectSound = this.game.sound.add(DEFLECT_SOUND);
         this.playerDeathSound = this.game.sound.add(DEATH_SOUND);
+        this.explosionSound = this.game.sound.add(EXPLODE_SOUND);
         this.music = this.game.sound.add(GAME_MUSIC);
     }
 
@@ -146,10 +151,11 @@ export default class MainScene extends ScrollingSpaceScene {
         bullet.destroy();
         const collisionPoint: Point2D = { x: asteroid.x, y: asteroid.y};
         asteroid.destroy();
+        this.asteroidParticles.create(collisionPoint);
 
         if(asteroid.asteroidType !== AsteroidType.Large){
             this.cameras.main.shake(SCREENSHAKE_DURATION, SCREENSHAKE_INTENSITY_STANDARD);
-            this.explosionPool.createExplosion(collisionPoint);
+            this.explosionSound.play();
             if(rollPercentageChance(POWERUP_SPAWN_CHANCE)){
                 this.powerupPool.createPowerup(collisionPoint);
             }
