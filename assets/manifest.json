@@ -4,8 +4,7 @@
             "folderName": "img",
             "files": [
                 "sprite_atlas.png", 
-                "sprite_atlas.json",
-                "space.png"
+                "sprite_atlas.json"
             ]
         },
         {
