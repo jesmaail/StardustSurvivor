@@ -14,8 +14,8 @@ const htmlContent = `<!DOCTYPE html>
         font-weight:normal;
       }
     </style>
-    <script src="game.js"></script>
     <div style="font-family:PressStart2P; position:absolute; left:-1000px; visibility:hidden;">.</div>
+    <script src="game.js"></script>
   </head>
   <body>
   </body>
