@@ -1,6 +1,6 @@
 {
-    "name": "sf-redux",
-    "version": "0.1.0",
+    "name": "stardust-survivor",
+    "version": "0.1.2",
     "description": "Redo of my first ever webgame.",
     "main": "src/game.ts",
     "scripts": {
